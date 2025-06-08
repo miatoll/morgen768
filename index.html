@@ -132,17 +132,14 @@
     
     <div class="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
         <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
-            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a1 1 0 011 1v2a1 1 0 11-2 0V4a1 1 0 011-1zM18.364 5.636a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 010-1.414zM21 12a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM18.364 18.364a1 1 0 010 1.414l-1.414 1.414a1 1 0 01-1.414-1.414l1.414-1.414a1 1 0 011.414 0zM12 21a1 1 0 01-1-1v-2a1 1 0 112 0v2a1 1 0 01-1 1zM5.636 18.364a1 1 0 01-1.414 0l-1.414-1.414a1 1 0 011.414-1.414l1.414 1.414a1 1 0 010 1.414zM3 12a1 1 0 011-1h2a1 1 0 110 2H4a1 1 0 01-1-1zM5.636 5.636a1 1 0 010-1.414l1.414-1.414a1 1 0 111.414 1.414L7.05 5.636a1 1 0 01-1.414 0zM12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+            <span id="theme-emoji-icon" class="text-lg"></span>
             <span data-translate="theme_toggle_text"></span>
         </button>
 
         <!-- Language Switcher Dropdown -->
         <div class="relative" id="lang-switcher-container">
             <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
-                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A11.953 11.953 0 0112 13.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12" />
-                </svg>
+                <span class="text-xl">🌍</span>
             </button>
             <div id="lang-dropdown" class="hidden overflow-hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
@@ -292,9 +289,8 @@
             const langDropdown = document.getElementById('lang-dropdown');
             const langLinks = langDropdown.querySelectorAll('a[data-lang]');
             const themeToggleBtn = document.getElementById('theme-toggle');
-            const themeToggleText = document.querySelector('[data-translate="theme_toggle_text"]');
-            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+            const themeToggleText = themeToggleBtn.querySelector('[data-translate="theme_toggle_text"]');
+            const themeEmojiIcon = document.getElementById('theme-emoji-icon');
             
             function updateAllText(lang) {
                 if (!translations[lang]) return;
@@ -328,14 +324,12 @@
                 const lang = localStorage.getItem('language') || 'en';
                 if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
-                    themeToggleLightIcon.classList.remove('hidden');
-                    themeToggleDarkIcon.classList.add('hidden');
+                    themeEmojiIcon.textContent = '☀️';
                     themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
                     localStorage.setItem('color-theme', 'dark');
                 } else {
                     document.documentElement.classList.remove('dark');
-                    themeToggleDarkIcon.classList.remove('hidden');
-                    themeToggleLightIcon.classList.add('hidden');
+                    themeEmojiIcon.textContent = '🌙';
                     themeToggleText.textContent = translations[lang].theme_toggle_text_light;
                     localStorage.setItem('color-theme', 'light');
                 }
