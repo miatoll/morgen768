@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя сборка</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        // Устанавливаем тему до рендеринга, чтобы избежать моргания.
+        // По умолчанию используется светлая тема, если в localStorage не выбрана тёмная.
+        if (localStorage.getItem('color-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <style>
+        :root {
+            /* Яркая светлая тема (Sunrise) */
+            --bg-grad-1: #ffecd2;
+            --bg-grad-2: #fcb69f;
+            --bg-grad-3: #ff9a9e;
+            --text-color: #3a2e2c;
+            --text-muted-color: #795c58;
+            --card-bg: rgba(255, 255, 255, 0.45);
+            --card-border: rgba(255, 255, 255, 0.9);
+            --glow-color: rgba(252, 182, 159, 0.5);
+            --gradient-text-start: #ff8c42;
+            --gradient-text-end: #ff3d77;
+        }
+
+        .dark {
+            /* Яркая тёмная тема (Aurora) */
+            --bg-grad-1: #0f0c29;
+            --bg-grad-2: #302b63;
+            --bg-grad-3: #24243e;
+            --text-color: #e0e6f1;
+            --text-muted-color: #a8b2d1;
+            --card-bg: rgba(48, 43, 99, 0.2);
+            --card-border: rgba(192, 132, 252, 0.2);
+            --glow-color: rgba(168, 85, 247, 0.2);
+            --gradient-text-start: #a8c0ff;
+            --gradient-text-end: #3f2b96;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            transition: color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3));
+            background-size: 400% 400%;
+            animation: gradient-flow 18s ease infinite;
+            z-index: -1;
+            transition: background 0.5s ease;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 40px 0 var(--glow-color);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--gradient-text-start), var(--gradient-text-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Стили для галереи-карусели */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .lightbox.active { opacity: 1; pointer-events: all; }
+        .lightbox img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 1rem; }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3rem; height: 3rem;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            user-select: none;
+        }
+        .lightbox-nav:hover { background-color: rgba(255,255,255,0.2); }
+        .lightbox-prev { left: 2%; }
+        .lightbox-next { right: 2%; }
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem; right: 2rem;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <button id="theme-toggle" type="button" class="fixed top-4 right-4 z-50 p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zm-4.95-2.121a1 1 0 00-1.414 1.414l.707.707a1 1 0 101.414-1.414l-.707-.707zM18 10a1 1 0 01-1-1h-1a1 1 0 110-2h1a1 1 0 011 1zM5 10a1 1 0 01-1-1H3a1 1 0 110-2h1a1 1 0 011 1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+    </button>
+
+    <main class="container mx-auto px-4 py-12 sm:py-20">
+
+        <section class="text-center mb-16">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 gradient-text">
+                Моя Сборка ПК
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-muted-color);">
+                Персональная станция для игр, работы и творчества, собранная с любовью.
+            </p>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🧠</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Процессор</h3> </div> <p class="text-xl font-semibold">AMD Ryzen 5 8400F</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚙️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Материнская плата</h3> </div> <p class="text-xl font-semibold">JGINYUE B650i Night Devil</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🚀</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Оперативная память</h3> </div> <p class="text-xl font-semibold">Kingbank DDR5 16GB 6000MHz</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🎮</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Видеокарта</h3> </div> <p class="text-xl font-semibold">ASUS RX 6600 Dual</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">❄️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Охлаждение</h3> </div> <p class="text-xl font-semibold">Thermalright Frozen Infinity 360</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🔋</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Блок питания</h3> </div> <p class="text-xl font-semibold">Chieftec Proton 500W</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">📦</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Корпус</h3> </div> <p class="text-xl font-semibold">Montech AIR 1000 Lite</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚡</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">NVMe SSD</h3> </div> <p class="text-xl font-semibold">Fanxiang S500 Pro 1TB + S500 1TB</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">💽</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">SATA HDD</h3> </div> <p class="text-xl font-semibold">HGST 500Gb (x2), WD Blue 500Gb</p> </div>
+        </section>
+
+        <section id="gallery" class="mt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 gradient-text">
+                Галерея
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                 <div class="gallery-item glass-card p-2 group cursor-pointer"> 
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean1.jpg" alt="Фотография сборки 1" class="rounded-2xl w-full h-auto aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';"> 
+                </div>
+                <div class="gallery-item glass-card p-2 group cursor-pointer"> 
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean2.jpg" alt="Фотография сборки 2" class="rounded-2xl w-full h-auto aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';"> 
+                </div>
+                <div class="gallery-item glass-card p-2 group cursor-pointer"> 
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/clean3.jpg" alt="Фотография сборки 3" class="rounded-2xl w-full h-auto aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';"> 
+                </div>
+                 </div>
+        </section>
+
+    </main>
+    
+    <div id="lightbox" class="lightbox">
+        <span id="lightbox-close" class="lightbox-close">&times;</span>
+        <div id="lightbox-prev" class="lightbox-nav lightbox-prev">&#10094;</div>
+        <img id="lightbox-img" src="" alt="увеличенное фото">
+        <div id="lightbox-next" class="lightbox-nav lightbox-next">&#10095;</div>
+    </div>
+
+    <footer class="py-8 mt-12 border-t border-white/10 dark:border-black/10">
+        <div class="container mx-auto px-6 text-center text-sm" style="color: var(--text-muted-color);">
+            <p> &copy; 2025 Собрано с любовью, энтузиазмом и… скидками на AliExpress!</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme switcher logic
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    themeToggleLightIcon.classList.remove('hidden');
+                    themeToggleDarkIcon.classList.add('hidden');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    themeToggleLightIcon.classList.add('hidden');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            }
+            // Устанавливаем светлую тему по умолчанию, если ничего не выбрано
+            const initialTheme = localStorage.getItem('color-theme') || 'light';
+            setTheme(initialTheme);
+            
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+
+            // Lightbox and Carousel Logic
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const galleryImageSources = Array.from(galleryItems).map(item => item.querySelector('img').src);
+            let currentIndex = 0;
+
+            function showImage(index) {
+                lightboxImg.src = galleryImageSources[index];
+                currentIndex = index;
+            }
+
+            function openLightbox(index) {
+                lightbox.classList.add('active');
+                showImage(index);
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+            }
+
+            function showNextImage() {
+                const nextIndex = (currentIndex + 1) % galleryImageSources.length;
+                showImage(nextIndex);
+            }
+
+            function showPrevImage() {
+                const prevIndex = (currentIndex - 1 + galleryImageSources.length) % galleryImageSources.length;
+                showImage(prevIndex);
+            }
+
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', () => openLightbox(index));
+            });
+
+            document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+            document.getElementById('lightbox-next').addEventListener('click', showNextImage);
+            document.getElementById('lightbox-prev').addEventListener('click', showPrevImage);
+            
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // Keyboard navigation for carousel
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.classList.contains('active')) {
+                    if (e.key === 'ArrowRight') {
+                        showNextImage();
+                    } else if (e.key === 'ArrowLeft') {
+                        showPrevImage();
+                    } else if (e.key === 'Escape') {
+                        closeLightbox();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
