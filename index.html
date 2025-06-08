@@ -176,7 +176,6 @@
                 <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #1 (2.5")</h2>
                 <p class="text-lg font-semibold text-gray-100">HGST 500 Gb</p>
             </div>
-
             
              <!-- Card: HDD 2 -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 450ms;">
@@ -216,31 +215,32 @@
                         </div>
 
                         <!-- Motherboard Area (ITX 170x170mm) -->
-                        <div class="motherboard-container" style="top: 1%; left: 1%; width: 40.8%; height: 34.3%; z-index: 1;" title="МП: JGINYUE B650 Night Devil (170x170 мм)">
+                        <div class="motherboard-container" style="top: 1%; left: 1%; width: 40.8%; height: 34.3%; z-index: 1;" title="МП: JGINYUE B650i Night Devil (170x170 мм)">
                            <div class="relative w-full h-full">
                                 <span class="absolute top-1 left-0 right-0 text-center text-[0.6rem] font-bold text-violet-300/80 pointer-events-none">JGINYUE B650</span>
-
-                                <!-- CPU -->
-                                <div class="schematic-box" style="top: 26.2%; left: 34.8%; width: 23.5%; height: 23.3%; border-style: dotted; background: transparent; z-index: 2;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
-                                <div class="absolute text-center text-[0.6rem] text-gray-400 pointer-events-none" style="top: 51%; left: 34.8%; width: 23.5%; z-index: 2;">Ryzen 5 8400F</div>
-
-                                <!-- Pump -->
-                                <div class="schematic-box aio-component" style="top: 19.5%; left: 28.2%; width: 37%; height: 37%; z-index: 3;" title="Помпа: Thermalright Frozen Infinity 360 (63x63 мм)">Помпа</div>
-
-                                <!-- RAM -->
-                                <div class="schematic-box" style="top: 5.8%; left: 76%; width: 6.1%; height: 78.4%; z-index: 3;" title="ОЗУ: Kingbank DDR5 16GB 6000MHz">
-                                    <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter">DDR5 16GB 6000MHz</span>
-                                </div>
-                                <div class="schematic-box" style="top: 5.8%; left: 84.6%; width: 6.1%; height: 78.4%; border-style: dotted; background-color: rgba(75, 85, 99, 0.5); z-index: 3;" title="ОЗУ: Слот #2">
-                                    <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter opacity-50">DDR5 16GB 6000MHz</span>
-                                </div>
-
+                                
                                 <!-- SSD -->
-                                <div class="schematic-box flex-col !justify-center p-1" style="bottom: 8.8%; left: 20.6%; width: 47%; height: 18.6%; z-index: 2;" title="SSD #1: Fanxiang S500 Pro 1TB&#10;SSD #2: Fanxiang S500 1TB">
+                                <div class="schematic-box flex-col !justify-center p-1" style="bottom: 6%; left: 21.5%; width: 47%; height: 18.6%; z-index: 2;" title="SSD #1: Fanxiang S500 Pro 1TB&#10;SSD #2: Fanxiang S500 1TB">
                                     <div class="text-[0.4rem] leading-tight">Fanxiang S500 Pro 1TB</div>
                                     <div class="text-[0.4rem] leading-tight mt-0.5">Fanxiang S500 1TB</div>
                                 </div>
                            </div>
+                        </div>
+
+                        <!-- Components on MB -->
+                        <!-- CPU -->
+                        <div class="schematic-box" style="top: 8.8%; left: 15.2%; width: 9.6%; height: 8%; border-style: dotted; background: transparent; z-index: 2;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
+                        <div class="absolute text-center text-[0.6rem] text-gray-400 pointer-events-none" style="top: 17.3%; left: 15.2%; width: 9.6%; z-index: 2;">Ryzen 5 8400F</div>
+
+                        <!-- Pump -->
+                        <div class="schematic-box aio-component" style="top: 6.1%; left: 12.5%; width: 15.1%; height: 12.7%; z-index: 3;" title="Помпа: Thermalright Frozen Infinity 360 (63x63 мм)">Помпа</div>
+
+                        <!-- RAM -->
+                        <div class="schematic-box" style="top: 2.8%; left: 32.7%; width: 2.5%; height: 26.9%; z-index: 3;" title="ОЗУ: Kingbank DDR5 16GB 6000MHz">
+                            <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter">DDR5 16GB 6000MHz</span>
+                        </div>
+                        <div class="schematic-box" style="top: 2.8%; left: 36.2%; width: 2.5%; height: 26.9%; border-style: dotted; background-color: rgba(75, 85, 99, 0.5); z-index: 3;" title="ОЗУ: Слот #2">
+                            <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter opacity-50">DDR5 16GB 6000MHz</span>
                         </div>
 
                         <!-- GPU (243x49mm) -->
@@ -265,6 +265,27 @@
                         <!-- Case text -->
                         <span class="absolute top-1 right-1 text-xs text-gray-500 font-mono" title="Корпус: Montech AIR 1000 Lite (416x220x495 мм)">Montech AIR 1000 Lite</span>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Gallery Section -->
+        <section id="gallery" class="mt-20 reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 tracking-tighter">
+                Фото <span class="gradient-text">Галерея</span>
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <!-- Photo 1 -->
+                <div class="card p-2 transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean1.jpg?text=Фото+1" alt="Фотография сборки 1" class="rounded-xl w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
+                </div>
+                <!-- Photo 2 -->
+                <div class="card p-2 transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean2.jpg?text=Фото+2" alt="Фотография сборки 2" class="rounded-xl w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
+                </div>
+                <!-- Photo 3 -->
+                <div class="card p-2 transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/clean3.jpg?text=Фото+3" alt="Фотография сборки 3" class="rounded-xl w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
                 </div>
             </div>
         </section>
