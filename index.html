@@ -86,6 +86,18 @@
             border-color: rgba(196, 181, 253, 1);
             z-index: 10;
         }
+        /* Стили для мобильных устройств для улучшения читаемости схемы */
+        @media (max-width: 640px) {
+            .schematic-box {
+                font-size: 3px;
+                border-width: 1px;
+                border-radius: 0.125rem;
+            }
+             .schematic-box span, .absolute.text-center, .schematic-box div {
+                transform: scale(0.6);
+                white-space: nowrap;
+             }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -95,10 +107,10 @@
 
         <!-- Hero Section -->
         <section class="text-center mb-16">
-            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 reveal">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tighter mb-4 reveal">
                 Мой <span class="gradient-text">Сетап</span>
             </h1>
-            <p class="text-lg md:text-xl max-w-2xl mx-auto text-gray-400 reveal" style="transition-delay: 200ms;">
+            <p class="text-base sm:text-lg md:text-xl max-w-2xl mx-auto text-gray-400 reveal" style="transition-delay: 200ms;">
                 Персональная сборка для игр, работы и творчества.
             </p>
         </section>
@@ -207,40 +219,39 @@
                         <div class="schematic-box p-0" style="bottom: 1%; left: 1%; width: 33.6%; height: 17.3%; z-index: 5;" title="БП: Chieftec Proton 500W (140x150x86 мм)">
                             <div class="relative w-full h-full flex items-center justify-center">
                                <div class="flex flex-col items-center leading-tight">
-                                    <span class="uppercase font-bold text-xs">Chieftec</span>
-                                    <span class="text-[0.6rem]">Proton</span>
+                                    <span class="uppercase font-bold">Chieftec</span>
+                                    <span>Proton</span>
                                 </div>
-                                <span class="absolute top-1 right-1.5 text-[0.6rem] font-bold">500W</span>
+                                <span class="absolute top-1 right-1.5 font-bold">500W</span>
                             </div>
                         </div>
 
                         <!-- Motherboard Area (ITX 170x170mm) -->
                         <div class="motherboard-container" style="top: 1%; left: 1%; width: 40.8%; height: 34.3%; z-index: 1;" title="МП: JGINYUE B650i Night Devil (170x170 мм)">
                            <div class="relative w-full h-full">
-                                <span class="absolute top-1 left-0 right-0 text-center text-[0.6rem] font-bold text-violet-300/80 pointer-events-none">JGINYUE B650</span>
-                                
+                                <span class="absolute top-1 left-0 right-0 text-center font-bold text-violet-300/80 pointer-events-none">JGINYUE B650</span>
+
+                                <!-- CPU -->
+                                <div class="schematic-box" style="top: 26.2%; left: 34.8%; width: 23.5%; height: 23.3%; border-style: dotted; background: transparent; z-index: 2;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
+                                <div class="absolute text-center text-gray-400 pointer-events-none" style="top: 51%; left: 34.8%; width: 23.5%; z-index: 2;">Ryzen 5 8400F</div>
+
+                                <!-- Pump -->
+                                <div class="schematic-box aio-component" style="top: 19.5%; left: 28.2%; width: 37%; height: 37%; z-index: 3;" title="Помпа: Thermalright Frozen Infinity 360 (63x63 мм)">Помпа</div>
+
+                                <!-- RAM -->
+                                <div class="schematic-box" style="top: 5.8%; left: 76%; width: 6.1%; height: 78.4%; z-index: 3;" title="ОЗУ: Kingbank DDR5 16GB 6000MHz">
+                                    <span class="transform -rotate-90 whitespace-nowrap tracking-tighter">DDR5 16GB 6000MHz</span>
+                                </div>
+                                <div class="schematic-box" style="top: 5.8%; left: 84.6%; width: 6.1%; height: 78.4%; border-style: dotted; background-color: rgba(75, 85, 99, 0.5); z-index: 3;" title="ОЗУ: Слот #2">
+                                    <span class="transform -rotate-90 whitespace-nowrap opacity-50 tracking-tighter">DDR5 16GB 6000MHz</span>
+                                </div>
+
                                 <!-- SSD -->
-                                <div class="schematic-box flex-col !justify-center p-1" style="bottom: 6%; left: 21.5%; width: 47%; height: 18.6%; z-index: 2;" title="SSD #1: Fanxiang S500 Pro 1TB&#10;SSD #2: Fanxiang S500 1TB">
+                                <div class="schematic-box flex-col !justify-center p-1" style="bottom: 8.8%; left: 20.6%; width: 47%; height: 18.6%; z-index: 2;" title="SSD #1: Fanxiang S500 Pro 1TB&#10;SSD #2: Fanxiang S500 1TB">
                                     <div class="text-[0.4rem] leading-tight">Fanxiang S500 Pro 1TB</div>
                                     <div class="text-[0.4rem] leading-tight mt-0.5">Fanxiang S500 1TB</div>
                                 </div>
                            </div>
-                        </div>
-
-                        <!-- Components on MB -->
-                        <!-- CPU -->
-                        <div class="schematic-box" style="top: 8.8%; left: 15.2%; width: 9.6%; height: 8%; border-style: dotted; background: transparent; z-index: 2;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
-                        <div class="absolute text-center text-[0.6rem] text-gray-400 pointer-events-none" style="top: 17.3%; left: 15.2%; width: 9.6%; z-index: 2;">Ryzen 5 8400F</div>
-
-                        <!-- Pump -->
-                        <div class="schematic-box aio-component" style="top: 6.1%; left: 12.5%; width: 15.1%; height: 12.7%; z-index: 3;" title="Помпа: Thermalright Frozen Infinity 360 (63x63 мм)">Помпа</div>
-
-                        <!-- RAM -->
-                        <div class="schematic-box" style="top: 2.8%; left: 32.7%; width: 2.5%; height: 26.9%; z-index: 3;" title="ОЗУ: Kingbank DDR5 16GB 6000MHz">
-                            <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter">DDR5 16GB 6000MHz</span>
-                        </div>
-                        <div class="schematic-box" style="top: 2.8%; left: 36.2%; width: 2.5%; height: 26.9%; border-style: dotted; background-color: rgba(75, 85, 99, 0.5); z-index: 3;" title="ОЗУ: Слот #2">
-                            <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter opacity-50">DDR5 16GB 6000MHz</span>
                         </div>
 
                         <!-- GPU (243x49mm) -->
@@ -250,7 +261,7 @@
 
                         <!-- AIO Radiator (397x27mm side view) -->
                         <div class="schematic-box aio-component" style="top: 5%; right: 5%; width: 6.5%; height: 80.2%; z-index: 5;" title="Радиатор: Thermalright Frozen Infinity 360 (397x120x27 мм)">
-                            <span class="transform -rotate-90 whitespace-nowrap text-[0.6rem] tracking-tighter">Thermalright Frozen Infinity 360</span>
+                            <span class="transform -rotate-90 whitespace-nowrap tracking-tighter">Thermalright Frozen Infinity 360</span>
                         </div>
                         
                         <!-- Drives Area -->
@@ -274,18 +285,18 @@
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 tracking-tighter">
                 Фото <span class="gradient-text">Галерея</span>
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <!-- Photo 1 -->
                 <div class="card p-2 transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean1.jpg?text=Фото+1" alt="Фотография сборки 1" class="rounded-xl w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean1.jpg" alt="Фотография сборки 1" class="rounded-xl w-full h-auto aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
                 </div>
                 <!-- Photo 2 -->
                 <div class="card p-2 transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean2.jpg?text=Фото+2" alt="Фотография сборки 2" class="rounded-xl w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/Clean2.jpg" alt="Фотография сборки 2" class="rounded-xl w-full h-auto aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
                 </div>
                 <!-- Photo 3 -->
                 <div class="card p-2 transform hover:scale-105 transition-transform duration-300">
-                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/clean3.jpg?text=Фото+3" alt="Фотография сборки 3" class="rounded-xl w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
+                    <img src="https://raw.githubusercontent.com/miatoll/morgen768/refs/heads/main/clean3.jpg" alt="Фотография сборки 3" class="rounded-xl w-full h-auto aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/111118/FFFFFF?text=Error';">
                 </div>
             </div>
         </section>
