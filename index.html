@@ -93,7 +93,7 @@
                 border-width: 1px;
                 border-radius: 0.125rem;
             }
-             .schematic-box span, .absolute.text-center, .schematic-box div {
+             .schematic-box span, .cpu-label, .schematic-box div {
                 transform: scale(0.6);
                 white-space: nowrap;
              }
@@ -231,9 +231,13 @@
                            <div class="relative w-full h-full">
                                 <span class="absolute top-1 left-0 right-0 text-center font-bold text-violet-300/80 pointer-events-none">JGINYUE B650</span>
 
-                                <!-- CPU -->
-                                <div class="schematic-box" style="top: 26.2%; left: 34.8%; width: 23.5%; height: 23.3%; border-style: dotted; background: transparent; z-index: 2;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
-                                <div class="absolute text-center text-gray-400 pointer-events-none" style="top: 51%; left: 34.8%; width: 23.5%; z-index: 2;">Ryzen 5 8400F</div>
+                                <!-- CPU with Label -->
+                                <div class="absolute" style="top: 26.2%; left: 34.8%; width: 23.5%; height: 23.3%; z-index: 2;">
+                                    <div class="schematic-box w-full h-full" style="border-style: dotted; background: transparent;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
+                                    <div class="cpu-label absolute -bottom-5 left-0 w-full text-center text-gray-300 pointer-events-none text-[0.6rem] md:text-xs">
+                                        <span>Ryzen 5 8400F</span>
+                                    </div>
+                                </div>
 
                                 <!-- Pump -->
                                 <div class="schematic-box aio-component" style="top: 19.5%; left: 28.2%; width: 37%; height: 37%; z-index: 3;" title="Помпа: Thermalright Frozen Infinity 360 (63x63 мм)">Помпа</div>
