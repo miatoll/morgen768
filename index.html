@@ -1,43 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Links</title>
+    <title>Конфигурация ПК</title>
+    <!-- Подключение Tailwind CSS для стилизации -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключение шрифта Cascadia Code -->
+    <link href="https://fonts.cdnfonts.com/css/cascadia-code" rel="stylesheet">
+    <!-- Подключение React и Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+        /* Применение шрифта ко всему приложению */
         body {
-            font-family: 'Cascadia Code', monospace;
-            background-color: #222;
-            color: #ccc;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px; 
-        }
-
-        a {
-            color: #00AAFF;
-            text-decoration: none;
-            margin-bottom: 10px;
-        }
-
-        a:hover {
-            text-decoration: underline;
+            font-family: 'Cascadia Code', 'Courier New', monospace;
+            background-color: #111827; /* Темный фон из Tailwind (gray-900) */
         }
     </style>
 </head>
 <body>
-    <h1>Links🔗</h1>
-    <a href="https://www.instagram.com/_che_chill_/">Instagram</a>
-    <a href="https://t.me/gugloeb">Telegram (personal)</a>
-    <a href="https://t.me/gear_demon">Telegram (sales only🛒)<3</a>
-    <a href="https://steamcommunity.com/id/morgeneger/">Steam</a>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Компонент для отображения информации о комплектующем
+        const ComponentCard = ({ emoji, category, name }) => {
+            return (
+                <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-cyan-500/20 hover:border-cyan-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+                    <div className="flex items-center space-x-4">
+                        <span className="text-4xl">{emoji}</span>
+                        <div>
+                            <p className="text-sm font-semibold text-cyan-400">{category}</p>
+                            <h3 className="text-lg font-bold text-gray-100">{name}</h3>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Основной компонент приложения
+        const App = () => {
+            // Список комплектующих вашего ПК
+            const pcComponents = [
+              { id: 1, category: 'Процессор (CPU)', name: 'AMD Ryzen 5 8400F', emoji: '💻' },
+              { id: 2, category: 'Материнская плата (MB)', name: 'JGINYUE B650 Night Devil', emoji: '🔌' },
+              { id: 3, category: 'Оперативная память (RAM)', name: 'Kingbank DDR5 32GB 6000 MHz EXPO', emoji: '🧠' },
+              { id: 4, category: 'Система водяного охлаждения (СВО)', name: 'Thermalright Frozen Infinity 360', emoji: '❄️' },
+              { id: 5, category: 'SSD Накопитель #1', name: 'Fangxiang S500 Pro 1TB', emoji: '💾' },
+              { id: 6, category: 'SSD Накопитель #2', name: 'Fangxiang S500 1TB', emoji: '💾' },
+              { id: 7, category: 'Жесткий диск (HDD) #1', name: 'Western Digital Blue 500GB', emoji: '💿' },
+              { id: 8, category: 'Жесткий диск (HDD) #2', name: 'HGST 500GB', emoji: '💿' },
+              { id: 9, category: 'Видеокарта (GPU)', name: 'ASUS AMD Radeon RX 6600 Dual', emoji: '🎮' },
+              { id: 10, category: 'Блок питания (PSU)', name: 'Chieftec Proton 500W', emoji: '⚡️' },
+              { id: 11, category: 'Корпус (Case)', name: 'Montech AIR 1000 Lite', emoji: '📦' },
+            ];
+
+            return (
+                <div className="min-h-screen text-white p-4 sm:p-8">
+                    <div className="max-w-3xl mx-auto">
+                        <header className="text-center mb-10">
+                            <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-wider">
+                                Моя Сборка ПК
+                            </h1>
+                            <p className="text-gray-400 mt-2">
+                                Полный список комплектующих
+                            </p>
+                        </header>
+                        
+                        <main className="space-y-4">
+                            {pcComponents.map((component) => (
+                                <ComponentCard 
+                                    key={component.id}
+                                    emoji={component.emoji}
+                                    category={component.category}
+                                    name={component.name}
+                                />
+                            ))}
+                        </main>
+
+                        <footer className="text-center mt-12 text-gray-500 text-sm">
+                            <p>morgeneger ❤️ 2025</p>
+                        </footer>
+                    </div>
+                </div>
+            );
+        };
+
+        // Рендеринг приложения в DOM
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+
+    </script>
+
 </body>
 </html>
