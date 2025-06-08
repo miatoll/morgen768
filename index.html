@@ -12,18 +12,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
-        // Устанавливаем тему до рендеринга, чтобы избежать моргания.
-        // По умолчанию используется светлая тема, если в localStorage не выбрана тёмная.
+        // Встановлюємо тему та кольорову схему до рендерингу
         if (localStorage.getItem('color-theme') === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
+        const savedColorScheme = localStorage.getItem('custom-color-scheme');
+        if (savedColorScheme) {
+            document.documentElement.dataset.colorScheme = savedColorScheme;
+        }
     </script>
 
     <style>
-        :root {
-            /* Яркая светлая тема (Sunrise) */
+        :root, html[data-color-scheme="default"] {
+            /* Яскрава світла тема (Sunrise) */
             --bg-grad-1: #ffecd2;
             --bg-grad-2: #fcb69f;
             --bg-grad-3: #ff9a9e;
@@ -36,8 +39,8 @@
             --gradient-text-end: #ff3d77;
         }
 
-        .dark {
-            /* Яркая тёмная тема (Aurora) */
+        .dark:root, html[data-color-scheme="default"].dark {
+            /* Яскрава темна тема (Aurora) */
             --bg-grad-1: #0f0c29;
             --bg-grad-2: #302b63;
             --bg-grad-3: #24243e;
@@ -49,6 +52,17 @@
             --gradient-text-start: #a8c0ff;
             --gradient-text-end: #3f2b96;
         }
+        
+        /* Ocean Theme */
+        html[data-color-scheme="ocean"] { --bg-grad-1: #a1c4fd; --bg-grad-2: #c2e9fb; --bg-grad-3: #a1c4fd; --text-color: #0b2d48; --text-muted-color: #3e6586; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(161, 196, 253, 0.5); --gradient-text-start: #0052d4; --gradient-text-end: #65c7f7; }
+        html[data-color-scheme="ocean"].dark { --bg-grad-1: #0f2027; --bg-grad-2: #203a43; --bg-grad-3: #2c5364; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(32, 58, 67, 0.3); --card-border: rgba(158, 224, 255, 0.2); --glow-color: rgba(44, 83, 100, 0.4); --gradient-text-start: #7aa2e8; --gradient-text-end: #b3e5fc; }
+
+        /* Forest Theme */
+        html[data-color-scheme="forest"] { --bg-grad-1: #d4ecb7; --bg-grad-2: #aacc8a; --bg-grad-3: #89a770; --text-color: #2a3a2a; --text-muted-color: #516d4e; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(170, 204, 138, 0.5); --gradient-text-start: #4b6733; --gradient-text-end: #8eb363; }
+        html[data-color-scheme="forest"].dark { --bg-grad-1: #1a2a22; --bg-grad-2: #2c4238; --bg-grad-3: #3f5b4d; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(44, 66, 56, 0.3); --card-border: rgba(142, 179, 99, 0.2); --glow-color: rgba(63, 91, 77, 0.4); --gradient-text-start: #a3d9a5; --gradient-text-end: #c5e1a5; }
+
+        /* Synthwave Theme */
+        html[data-color-scheme="synthwave"], html[data-color-scheme="synthwave"].dark { --bg-grad-1: #f72585; --bg-grad-2: #b5179e; --bg-grad-3: #7209b7; --text-color: #ffffff; --text-muted-color: #e0c4f8; --card-bg: rgba(0, 0, 0, 0.2); --card-border: rgba(255, 255, 255, 0.1); --glow-color: rgba(247, 37, 133, 0.4); --gradient-text-start: #4361ee; --gradient-text-end: #4cc9f0; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -136,8 +150,7 @@
             <span data-translate="theme_toggle_text"></span>
         </button>
 
-        <!-- Language Switcher Dropdown -->
-        <div class="relative" id="lang-switcher-container">
+        <div class="relative" id="controls-container">
             <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
                 <span class="text-xl">🌍</span>
             </button>
@@ -146,6 +159,17 @@
                     <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="en"><span>English</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
                     <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ua"><span>Українська</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
                     <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ru"><span>Русский</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                </div>
+            </div>
+             <button id="palette-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 ml-2">
+                <span class="text-xl">🎨</span>
+            </button>
+             <div id="palette-modal" class="hidden overflow-hidden absolute right-0 mt-2 p-2 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5">
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #ff9a9e" data-scheme="default"></button>
+                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #a1c4fd" data-scheme="ocean"></button>
+                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #aacc8a" data-scheme="forest"></button>
+                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #b5179e" data-scheme="synthwave"></button>
                 </div>
             </div>
         </div>
@@ -291,6 +315,9 @@
             const themeToggleBtn = document.getElementById('theme-toggle');
             const themeToggleText = themeToggleBtn.querySelector('[data-translate="theme_toggle_text"]');
             const themeEmojiIcon = document.getElementById('theme-emoji-icon');
+            const paletteButton = document.getElementById('palette-button');
+            const paletteModal = document.getElementById('palette-modal');
+            const paletteSwatches = paletteModal.querySelectorAll('button[data-scheme]');
             
             function updateAllText(lang) {
                 if (!translations[lang]) return;
@@ -320,9 +347,8 @@
                 });
             }
             
-            function setTheme(theme) {
-                const lang = localStorage.getItem('language') || 'en';
-                if (theme === 'dark') {
+            function setTheme(theme, lang = localStorage.getItem('language') || 'en') {
+                 if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
                     themeEmojiIcon.textContent = '☀️';
                     themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
@@ -335,10 +361,16 @@
                 }
             }
 
+            function setColorScheme(scheme) {
+                document.documentElement.dataset.colorScheme = scheme;
+                localStorage.setItem('custom-color-scheme', scheme);
+            }
+
             // --- Language Dropdown Logic ---
             langSwitcherButton.addEventListener('click', (e) => {
                 e.stopPropagation();
                 langDropdown.classList.toggle('hidden');
+                paletteModal.classList.add('hidden');
             });
             
             langLinks.forEach(link => {
@@ -349,9 +381,26 @@
                 });
             });
 
+            // --- Palette Logic ---
+            paletteButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                paletteModal.classList.toggle('hidden');
+                langDropdown.classList.add('hidden');
+            });
+
+            paletteSwatches.forEach(swatch => {
+                swatch.addEventListener('click', (e) => {
+                    setColorScheme(e.currentTarget.dataset.scheme);
+                    paletteModal.classList.add('hidden');
+                });
+            });
+
+
+            // --- Close modals on outside click ---
             window.addEventListener('click', (e) => {
-                if (!langDropdown.classList.contains('hidden') && !e.target.closest('#lang-switcher-container')) {
+                if (!e.target.closest('#controls-container')) {
                     langDropdown.classList.add('hidden');
+                    paletteModal.classList.add('hidden');
                 }
             });
             
@@ -362,11 +411,13 @@
                 setTheme(newTheme);
             });
             
-            // --- Init Language and Theme ---
+            // --- Init Language, Theme, and Color Scheme ---
             const initialLang = localStorage.getItem('language') || 'en';
             setLanguage(initialLang);
             const initialTheme = localStorage.getItem('color-theme') || 'light';
-            setTheme(initialTheme);
+            setTheme(initialTheme, initialLang);
+            const initialColorScheme = localStorage.getItem('custom-color-scheme') || 'default';
+            setColorScheme(initialColorScheme);
 
 
             // Lightbox and Carousel Logic
