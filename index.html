@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моя сборка</title>
+    <title>My PC Build</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -130,36 +130,54 @@
 </head>
 <body class="antialiased">
     
-    <button id="theme-toggle" type="button" class="fixed top-4 right-4 z-50 p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
-        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zm-4.95-2.121a1 1 0 00-1.414 1.414l.707.707a1 1 0 101.414-1.414l-.707-.707zM18 10a1 1 0 01-1-1h-1a1 1 0 110-2h1a1 1 0 011 1zM5 10a1 1 0 01-1-1H3a1 1 0 110-2h1a1 1 0 011 1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-    </button>
+    <div class="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
+        <button id="theme-toggle" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zm-4.95-2.121a1 1 0 00-1.414 1.414l.707.707a1 1 0 101.414-1.414l-.707-.707zM18 10a1 1 0 01-1-1h-1a1 1 0 110-2h1a1 1 0 011 1zM5 10a1 1 0 01-1-1H3a1 1 0 110-2h1a1 1 0 011 1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+
+        <!-- Language Switcher Dropdown -->
+        <div class="relative" id="lang-switcher-container">
+            <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.12 8 15 8s1.82-.939 2.666-1.636m-5.332 0c.667-.562 1.334-1.125 2-1.687m-2 1.687a48.449 48.449 0 01-2 1.687m2-1.687c-.667.562-1.334 1.125-2 1.687m0 0a48.449 48.449 0 01-2-1.687m2 1.687c.667-.562 1.334-1.125 2-1.687m-2 1.687L5.25 5.25m5.25 11.25l-5.25-11.25m0 0a3.007 3.007 0 013-3h1.5a3.007 3.007 0 013 3m-3.75 0v1.5m-3.75-1.5h1.5m-1.5 0h-1.5m1.5 0v1.5m3.75 0v-1.5m0 0h1.5m-1.5 0h-1.5m0 0v1.5m0 0h1.5m-1.5 0h-1.5" />
+                </svg>
+            </button>
+            <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-2xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="en"><span>English</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ru"><span>Русский</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ua"><span>Українська</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="container mx-auto px-4 py-12 sm:py-20">
 
         <section class="text-center mb-16">
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 gradient-text">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 gradient-text" data-translate="title">
                 Моя Сборка ПК
             </h1>
-            <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-muted-color);">
+            <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-muted-color);" data-translate="subtitle">
                  Эта машина собрана не по советам, а по велению души.
             </p>
         </section>
 
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🧠</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Процессор</h3> </div> <p class="text-xl font-semibold">AMD Ryzen 5 8400F</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚙️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Материнская плата</h3> </div> <p class="text-xl font-semibold">JGINYUE B650i Night Devil</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🚀</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Оперативная память</h3> </div> <p class="text-xl font-semibold">Kingbank DDR5 16GB 6000MHz</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🎮</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Видеокарта</h3> </div> <p class="text-xl font-semibold">Asus Dual Radeon RX 6600</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">❄️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Охлаждение</h3> </div> <p class="text-xl font-semibold">Thermalright Frozen Infinity 360</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🔌</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Блок питания</h3> </div> <p class="text-xl font-semibold">Chieftec Proton 500W</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">📦</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">Корпус</h3> </div> <p class="text-xl font-semibold">Montech Air 1000 Lite</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚡</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">NVMe SSD</h3> </div> <p class="text-xl font-semibold">Fanxiang S500 Pro 1TB + S500 1TB</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">💽</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);">SATA HDD</h3> </div> <p class="text-xl font-semibold">HGST 500Gb (x2), WD Blue 500Gb</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🧠</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="cpu_title">Процессор</h3> </div> <p class="text-xl font-semibold">AMD Ryzen 5 8400F</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚙️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="mb_title">Материнская плата</h3> </div> <p class="text-xl font-semibold">JGINYUE B650i Night Devil</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🚀</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="ram_title">Оперативная память</h3> </div> <p class="text-xl font-semibold">Kingbank DDR5 16GB 6000MHz</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🎮</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="gpu_title">Видеокарта</h3> </div> <p class="text-xl font-semibold">Asus Dual Radeon RX 6600</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">❄️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="cooler_title">Охлаждение</h3> </div> <p class="text-xl font-semibold">Thermalright Frozen Infinity 360</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🔌</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="psu_title">Блок питания</h3> </div> <p class="text-xl font-semibold">Chieftec Proton 500W</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">📦</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="case_title">Корпус</h3> </div> <p class="text-xl font-semibold">Montech Air 1000 Lite</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚡</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="ssd_title">NVMe SSD</h3> </div> <p class="text-xl font-semibold">Fanxiang S500 Pro 1TB + S500 1TB</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">💽</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="hdd_title">SATA HDD</h3> </div> <p class="text-xl font-semibold">HGST 500Gb (x2), WD Blue 500Gb</p> </div>
         </section>
 
         <section id="gallery" class="mt-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 gradient-text">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 gradient-text" data-translate="gallery_title">
                 Галерея
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -186,8 +204,8 @@
 
     <footer class="py-8 mt-12 border-t border-white/10 dark:border-black/10">
         <div class="container mx-auto px-6 text-center text-sm" style="color: var(--text-muted-color);">
-            <p class="mb-4">  &copy; 2025 Собрано с любовью, энтузиазмом и… благодаря скидкам на AliExpress! </p>
-            <a href="https://miatoll.github.io/morgen768/ebanat.html" target="_blank" rel="noopener noreferrer" class="inline-block bg-white/20 dark:bg-black/20 backdrop-blur-sm text-sm font-semibold px-5 py-2 rounded-full hover:bg-white/30 dark:hover:bg-black/30 transition-colors duration-300">
+            <p class="mb-4" data-translate="footer_copy">  &copy; 2025 Собрано с любовью, энтузиазмом и… благодаря скидкам на AliExpress! </p>
+            <a href="https://miatoll.github.io/morgen768/ebanat.html" target="_blank" rel="noopener noreferrer" class="inline-block bg-white/20 dark:bg-black/20 backdrop-blur-sm text-sm font-semibold px-5 py-2 rounded-full hover:bg-white/30 dark:hover:bg-black/30 transition-colors duration-300" data-translate="footer_link">
                 Перейти на расширенную старую версию
             </a>
         </div>
@@ -195,6 +213,113 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                ru: {
+                    doc_title: "Моя сборка",
+                    title: "Моя Сборка ПК",
+                    subtitle: "Эта машина собрана не по советам, а по велению души.",
+                    cpu_title: "Процессор",
+                    mb_title: "Материнская плата",
+                    ram_title: "Оперативная память",
+                    gpu_title: "Видеокарта",
+                    cooler_title: "Охлаждение",
+                    psu_title: "Блок питания",
+                    case_title: "Корпус",
+                    ssd_title: "NVMe SSD",
+                    hdd_title: "SATA HDD",
+                    gallery_title: "Галерея",
+                    footer_copy: "© 2025 Собрано с любовью, энтузиазмом и… благодаря скидкам на AliExpress!",
+                    footer_link: "Перейти на расширенную старую версию",
+                },
+                en: {
+                    doc_title: "My PC Build",
+                    title: "My PC Build",
+                    subtitle: "This machine was built not by advice, but by the call of the soul.",
+                    cpu_title: "Processor",
+                    mb_title: "Motherboard",
+                    ram_title: "RAM",
+                    gpu_title: "Graphics Card",
+                    cooler_title: "Cooling",
+                    psu_title: "Power Supply",
+                    case_title: "Case",
+                    ssd_title: "NVMe SSD",
+                    hdd_title: "SATA HDD",
+                    gallery_title: "Gallery",
+                    footer_copy: "© 2025 Assembled with love, enthusiasm, and... thanks to discounts on AliExpress!",
+                    footer_link: "Go to the extended old version",
+                },
+                ua: {
+                    doc_title: "Моя збірка",
+                    title: "Моя Збірка ПК",
+                    subtitle: "Ця машина зібрана не за порадами, а за велінням душі.",
+                    cpu_title: "Процесор",
+                    mb_title: "Материнська плата",
+                    ram_title: "Оперативна пам'ять",
+                    gpu_title: "Відеокарта",
+                    cooler_title: "Охолодження",
+                    psu_title: "Блок живлення",
+                    case_title: "Корпус",
+                    ssd_title: "NVMe SSD",
+                    hdd_title: "SATA HDD",
+                    gallery_title: "Галерея",
+                    footer_copy: "© 2025 Зібрано з любов'ю, ентузіазмом і... завдяки знижкам на AliExpress!",
+                    footer_link: "Перейти на розширену стару версію",
+                }
+            };
+
+            const langSwitcherButton = document.getElementById('lang-switcher-button');
+            const langDropdown = document.getElementById('lang-dropdown');
+            const langLinks = langDropdown.querySelectorAll('a[data-lang]');
+            
+            function setLanguage(lang) {
+                if (!translations[lang]) return;
+                
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.dataset.translate;
+                    if (translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+                
+                document.title = translations[lang].doc_title || 'Моя збірка';
+
+                localStorage.setItem('language', lang);
+                document.documentElement.lang = lang;
+
+                langLinks.forEach(link => {
+                    const checkmark = link.querySelector('.checkmark');
+                    checkmark.classList.toggle('hidden', link.dataset.lang !== lang);
+                });
+            }
+
+            // --- Language Dropdown Logic ---
+            langSwitcherButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                langDropdown.classList.toggle('hidden');
+            });
+            
+            langLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setLanguage(e.currentTarget.dataset.lang);
+                    langDropdown.classList.add('hidden');
+                });
+            });
+
+            window.addEventListener('click', (e) => {
+                if (!langDropdown.classList.contains('hidden') && !e.target.closest('#lang-switcher-container')) {
+                    langDropdown.classList.add('hidden');
+                }
+            });
+            
+            // --- Init Language ---
+            const savedLang = localStorage.getItem('language');
+            const browserLang = navigator.language.slice(0, 2);
+            // Default to English if no valid language is saved
+            const initialLang = translations[savedLang] ? savedLang : 'en';
+            setLanguage(initialLang);
+
+
             // Theme switcher logic
             const themeToggleBtn = document.getElementById('theme-toggle');
             const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -212,7 +337,6 @@
                     localStorage.setItem('color-theme', 'light');
                 }
             }
-            // Устанавливаем светлую тему по умолчанию, если ничего не выбрано
             const initialTheme = localStorage.getItem('color-theme') || 'light';
             setTheme(initialTheme);
             
@@ -267,16 +391,11 @@
                 }
             });
             
-            // Keyboard navigation for carousel
             document.addEventListener('keydown', (e) => {
                 if (lightbox.classList.contains('active')) {
-                    if (e.key === 'ArrowRight') {
-                        showNextImage();
-                    } else if (e.key === 'ArrowLeft') {
-                        showPrevImage();
-                    } else if (e.key === 'Escape') {
-                        closeLightbox();
-                    }
+                    if (e.key === 'ArrowRight') showNextImage();
+                    else if (e.key === 'ArrowLeft') showPrevImage();
+                    else if (e.key === 'Escape') closeLightbox();
                 }
             });
         });
