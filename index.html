@@ -13,28 +13,66 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <script>
+        // Устанавливаем тему до рендеринга, чтобы избежать моргания
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <style>
-        /* Пользовательский стиль для градиента и анимации */
+        /* CSS переменные для управления темами */
+        :root {
+            --bg-color: #f9fafb;
+            --text-color: #1f2937;
+            --text-muted-color: #4b5563;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --schematic-bg: rgba(237, 233, 254, 0.7);
+            --schematic-border: rgba(167, 139, 250, 0.8);
+            --schematic-text: #5b21b6;
+            --highlight-border: #8b5cf6;
+            --gradient-start: #8b5cf6;
+            --gradient-end: #a78bfa;
+        }
+
+        .dark {
+            --bg-color: #111118;
+            --text-color: #E0E0E0;
+            --text-muted-color: #9ca3af;
+            --card-bg: rgba(30, 30, 40, 0.5);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --schematic-bg: rgba(30, 30, 40, 0.7);
+            --schematic-border: rgba(167, 139, 250, 0.4);
+            --schematic-text: #c4b5fd;
+            --highlight-border: #a78bfa;
+            --gradient-start: #a78bfa;
+            --gradient-end: #c4b5fd;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111118; /* Глубокий темный фон */
-            color: #E0E0E0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .gradient-text {
-            background: linear-gradient(90deg, #a78bfa, #c4b5fd); /* Фиолетовый градиент в стиле M3 */
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .card {
-            background: rgba(30, 30, 40, 0.5);
+            background-color: var(--card-bg);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--card-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
         }
         .card:hover {
             transform: translateY(-8px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-color: rgba(167, 139, 250, 0.3);
+            border-color: var(--highlight-border);
         }
         /* Анимация появления */
         .reveal {
@@ -52,9 +90,10 @@
         }
         /* Стили для схемы */
         .schematic-box {
-            border: 2px solid rgba(167, 139, 250, 0.4);
-            background-color: rgba(30, 30, 40, 0.7);
-            border-radius: 0.25rem; /* менее скругленные углы для вида компонентов */
+            border: 2px solid var(--schematic-border);
+            background-color: var(--schematic-bg);
+            color: var(--schematic-text);
+            border-radius: 0.25rem;
             position: absolute;
             display: flex;
             align-items: center;
@@ -62,29 +101,31 @@
             padding: 0.25rem;
             font-size: 0.75rem;
             text-align: center;
-            color: #c4b5fd;
             font-weight: 600;
-            cursor: help; /* Курсор-подсказка */
-            transition: all 0.2s ease-in-out;
+            cursor: help;
+            transition: all 0.3s ease-in-out;
             overflow: hidden;
         }
         .schematic-box:hover, .schematic-box.highlighted {
             background-color: rgba(167, 139, 250, 0.2);
-            border-color: rgba(196, 181, 253, 1);
+            border-color: var(--highlight-border);
             z-index: 10;
         }
         .motherboard-container {
             position: absolute;
-            background-color: rgba(30, 30, 40, 0.2);
-            border: 2px solid rgba(167, 139, 250, 0.4);
+            background-color: var(--card-bg);
+            border: 2px solid var(--schematic-border);
             border-radius: 0.25rem;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
             cursor: help;
         }
         .motherboard-container:hover {
              background-color: rgba(167, 139, 250, 0.2);
-            border-color: rgba(196, 181, 253, 1);
+            border-color: var(--highlight-border);
             z-index: 10;
+        }
+        .text-muted {
+            color: var(--text-muted-color);
         }
         /* Стили для мобильных устройств для улучшения читаемости схемы */
         @media (max-width: 640px) {
@@ -101,6 +142,12 @@
     </style>
 </head>
 <body class="antialiased">
+    
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" type="button" class="fixed top-4 right-4 z-50 p-2.5 rounded-lg text-sm text-gray-500 bg-gray-100/50 dark:bg-gray-800/50 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700">
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zm-4.95-2.121a1 1 0 00-1.414 1.414l.707.707a1 1 0 101.414-1.414l-.707-.707zM18 10a1 1 0 01-1-1h-1a1 1 0 110-2h1a1 1 0 011 1zM5 10a1 1 0 01-1-1H3a1 1 0 110-2h1a1 1 0 011 1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+    </button>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-12 sm:py-20">
@@ -110,7 +157,7 @@
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tighter mb-4 reveal">
                 Мой <span class="gradient-text">Сетап</span>
             </h1>
-            <p class="text-base sm:text-lg md:text-xl max-w-2xl mx-auto text-gray-400 reveal" style="transition-delay: 200ms;">
+            <p class="text-base sm:text-lg md:text-xl max-w-2xl mx-auto text-muted reveal" style="transition-delay: 200ms;">
                 Персональная сборка для игр, работы и творчества.
             </p>
         </section>
@@ -121,85 +168,85 @@
             <!-- Card: CPU -->
             <div class="card p-6 rounded-3xl reveal">
                 <p class="emoji-icon mb-4">🧠</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Процессор</h2>
-                <p class="text-lg font-semibold text-gray-100">AMD Ryzen 5 8400F</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Процессор</h2>
+                <p class="text-lg font-semibold">AMD Ryzen 5 8400F</p>
             </div>
             
             <!-- Card: Motherboard -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 50ms;">
                 <p class="emoji-icon mb-4">⚙️</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Материнская плата</h2>
-                <p class="text-lg font-semibold text-gray-100">JGINYUE B650i Night Devil</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Материнская плата</h2>
+                <p class="text-lg font-semibold">JGINYUE B650i Night Devil</p>
             </div>
 
             <!-- Card: RAM -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 100ms;">
                 <p class="emoji-icon mb-4">🚀</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Оперативная память</h2>
-                <p class="text-lg font-semibold text-gray-100">Kingbank DDR5 16GB</p>
-                <p class="text-md text-gray-400">6000 MHz, AMD EXPO</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Оперативная память</h2>
+                <p class="text-lg font-semibold">Kingbank DDR5 16GB</p>
+                <p class="text-md text-muted">6000 MHz, AMD EXPO</p>
             </div>
 
             <!-- Card: Watercooling -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 150ms;">
                 <p class="emoji-icon mb-4">❄️</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Охлаждение</h2>
-                <p class="text-lg font-semibold text-gray-100">Thermalright Frozen Infinity 360</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Охлаждение</h2>
+                <p class="text-lg font-semibold">Thermalright Frozen Infinity 360</p>
             </div>
 
             <!-- Card: GPU -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 200ms;">
                 <p class="emoji-icon mb-4">🎮</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Видеокарта</h2>
-                <p class="text-lg font-semibold text-gray-100">ASUS AMD Radeon RX 6600 Dual</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Видеокарта</h2>
+                <p class="text-lg font-semibold">ASUS AMD Radeon RX 6600 Dual</p>
             </div>
 
             <!-- Card: PSU -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 250ms;">
                 <p class="emoji-icon mb-4">🔋</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Блок питания</h2>
-                <p class="text-lg font-semibold text-gray-100">Chieftec Proton 500W</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Блок питания</h2>
+                <p class="text-lg font-semibold">Chieftec Proton 500W</p>
             </div>
 
             <!-- Card: Case -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 300ms;">
                 <p class="emoji-icon mb-4">📦</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">Корпус</h2>
-                <p class="text-lg font-semibold text-gray-100">Montech AIR 1000 Lite</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">Корпус</h2>
+                <p class="text-lg font-semibold">Montech AIR 1000 Lite</p>
             </div>
             
              <!-- Card: SSD 1 -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 350ms;">
                 <p class="emoji-icon mb-4">⚡</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">SSD #1 (NVMe)</h2>
-                <p class="text-lg font-semibold text-gray-100">Fanxiang S500 Pro 1TB</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">SSD #1 (NVMe)</h2>
+                <p class="text-lg font-semibold">Fanxiang S500 Pro 1TB</p>
             </div>
 
             <!-- Card: SSD 2 -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 400ms;">
                 <p class="emoji-icon mb-4">⚡</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">SSD #2 (NVMe)</h2>
-                <p class="text-lg font-semibold text-gray-100">Fanxiang S500 1TB</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">SSD #2 (NVMe)</h2>
+                <p class="text-lg font-semibold">Fanxiang S500 1TB</p>
             </div>
 
             <!-- Card: HDD 1 -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 450ms;">
                 <p class="emoji-icon mb-4">💽</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #1 (2.5")</h2>
-                <p class="text-lg font-semibold text-gray-100">HGST 500 Gb</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">HDD #1 (2.5")</h2>
+                <p class="text-lg font-semibold">HGST 500 Gb</p>
             </div>
             
              <!-- Card: HDD 2 -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 450ms;">
                 <p class="emoji-icon mb-4">💽</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #2 (2.5")</h2>
-                <p class="text-lg font-semibold text-gray-100">HGST 500 Gb</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">HDD #2 (2.5")</h2>
+                <p class="text-lg font-semibold">HGST 500 Gb</p>
             </div>
             <!-- Card: HDD 3 -->
             <div class="card p-6 rounded-3xl reveal" style="transition-delay: 500ms;">
                 <p class="emoji-icon mb-4">💽</p>
-                <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #3 (3.5")</h2>
-                <p class="text-lg font-semibold text-gray-100">WD Blue 500 GB</p>
+                <h2 class="text-xl font-bold text-violet-500 dark:text-violet-400 mb-1">HDD #3 (3.5")</h2>
+                <p class="text-lg font-semibold">WD Blue 500 GB</p>
             </div>
 
 
@@ -229,12 +276,12 @@
                         <!-- Motherboard Area (ITX 170x170mm) -->
                         <div class="motherboard-container" style="top: 1%; left: 1%; width: 40.8%; height: 34.3%; z-index: 1;" title="МП: JGINYUE B650i Night Devil (170x170 мм)">
                            <div class="relative w-full h-full">
-                                <span class="absolute top-1 left-0 right-0 text-center font-bold text-violet-300/80 pointer-events-none">JGINYUE B650</span>
+                                <span class="absolute top-1 left-0 right-0 text-center font-bold text-violet-500 dark:text-violet-400 pointer-events-none">JGINYUE B650</span>
 
                                 <!-- CPU with Label -->
                                 <div class="absolute" style="top: 26.2%; left: 34.8%; width: 23.5%; height: 23.3%; z-index: 2;">
                                     <div class="schematic-box w-full h-full" style="border-style: dotted; background: transparent;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
-                                    <div class="cpu-label absolute -bottom-5 left-0 w-full text-center text-gray-300 pointer-events-none text-[0.6rem] md:text-xs">
+                                    <div class="cpu-label absolute -bottom-5 left-0 w-full text-center text-muted pointer-events-none text-[0.6rem] md:text-xs">
                                         <span>Ryzen 5 8400F</span>
                                     </div>
                                 </div>
@@ -278,7 +325,7 @@
                         <div class="schematic-box" style="bottom: 11.2%; right: 24.8%; width: 24%; height: 2.1%; z-index: 5;" title="HDD 2.5”: HGST 500 Gb (100x70x9.5 мм)">2.5" HGST</div>
 
                         <!-- Case text -->
-                        <span class="absolute top-1 right-1 text-xs text-gray-500 font-mono" title="Корпус: Montech AIR 1000 Lite (416x220x495 мм)">Montech AIR 1000 Lite</span>
+                        <span class="absolute top-1 right-1 text-xs text-gray-500 dark:text-gray-400 font-mono" title="Корпус: Montech AIR 1000 Lite (416x220x495 мм)">Montech AIR 1000 Lite</span>
                     </div>
                 </div>
             </div>
@@ -308,17 +355,48 @@
     </main>
     
     <!-- Footer -->
-    <footer class="py-8 mt-12 border-t border-gray-800/50">
-        <div class="container mx-auto px-6 text-center text-gray-500">
+    <footer class="py-8 mt-12 border-t border-gray-200 dark:border-gray-800">
+        <div class="container mx-auto px-6 text-center text-muted">
             <p> Собрано с любовью, энтузиазмом и… скидками на AliExpress!</p>
         </div>
     </footer>
 
     <script>
-        // JavaScript для анимации появления элементов при прокрутке
+        // Theme switcher logic
         document.addEventListener('DOMContentLoaded', () => {
-            const revealElements = document.querySelectorAll('.reveal');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
+            // Function to set the theme
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    themeToggleLightIcon.classList.remove('hidden');
+                    themeToggleDarkIcon.classList.add('hidden');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    themeToggleLightIcon.classList.add('hidden');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            }
+
+            // Set initial theme on page load
+            const initialTheme = localStorage.getItem('color-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            setTheme(initialTheme);
+
+            // Add click listener
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+
+
+            // Reveal on scroll logic
+            const revealElements = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -329,15 +407,11 @@
             }, {
                 threshold: 0.1
             });
+            revealElements.forEach(el => observer.observe(el));
 
-            revealElements.forEach(el => {
-                observer.observe(el);
-            });
-
-            // Подсветка компонентов СЖО (AIO)
+            // AIO highlight logic
             const aio_components = document.querySelectorAll('.aio-component');
             const highlight_class = 'highlighted';
-
             aio_components.forEach(component => {
                 component.addEventListener('mouseover', () => {
                     aio_components.forEach(el => el.classList.add(highlight_class));
