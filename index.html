@@ -131,9 +131,10 @@
 <body class="antialiased">
     
     <div class="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
-        <button id="theme-toggle" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
             <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zm-4.95-2.121a1 1 0 00-1.414 1.414l.707.707a1 1 0 101.414-1.414l-.707-.707zM18 10a1 1 0 01-1-1h-1a1 1 0 110-2h1a1 1 0 011 1zM5 10a1 1 0 01-1-1H3a1 1 0 110-2h1a1 1 0 011 1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            <span data-translate="theme_toggle_text"></span>
         </button>
 
         <!-- Language Switcher Dropdown -->
@@ -156,7 +157,7 @@
     <main class="container mx-auto px-4 py-12 sm:py-20">
 
         <section class="text-center mb-16">
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 gradient-text" data-translate="title">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 gradient-text" data-translate="title">
                 Моя Сборка ПК
             </h1>
             <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-muted-color);" data-translate="subtitle">
@@ -204,10 +205,21 @@
 
     <footer class="py-8 mt-12 border-t border-white/10 dark:border-black/10">
         <div class="container mx-auto px-6 text-center text-sm" style="color: var(--text-muted-color);">
-            <p class="mb-4" data-translate="footer_copy">  &copy; 2025 Собрано с любовью, энтузиазмом и… благодаря скидкам на AliExpress! </p>
-            <a href="https://miatoll.github.io/morgen768/ebanat.html" target="_blank" rel="noopener noreferrer" class="inline-block bg-white/20 dark:bg-black/20 backdrop-blur-sm text-sm font-semibold px-5 py-2 rounded-full hover:bg-white/30 dark:hover:bg-black/30 transition-colors duration-300" data-translate="footer_link">
-                Перейти на расширенную старую версию
-            </a>
+            <p class="mb-6" data-translate="footer_copy">  &copy; 2025 Собрано с любовью, энтузиазмом и… благодаря скидкам на AliExpress! </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://miatoll.github.io/morgen768/ebanat.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-white/20 dark:bg-black/20 backdrop-blur-sm text-sm font-semibold px-5 py-2 rounded-full hover:bg-white/30 dark:hover:bg-black/30 transition-colors duration-300">
+                    <span data-translate="footer_link"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5" />
+                    </svg>
+                </a>
+                <a href="https://discord.gg/VAMWmQBaNX" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-white/20 dark:bg-black/20 backdrop-blur-sm text-sm font-semibold px-5 py-2 rounded-full hover:bg-white/30 dark:hover:bg-black/30 transition-colors duration-300">
+                    <span data-translate="footer_discord_link"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -230,6 +242,9 @@
                     gallery_title: "Галерея",
                     footer_copy: "© 2025 Собрано с любовью, энтузиазмом и… благодаря скидкам на AliExpress!",
                     footer_link: "Перейти на расширенную старую версию",
+                    footer_discord_link: "Присоединиться к Discord",
+                    theme_toggle_text_light: "Ночной режим",
+                    theme_toggle_text_dark: "Дневной режим",
                 },
                 en: {
                     doc_title: "My PC Build",
@@ -247,6 +262,9 @@
                     gallery_title: "Gallery",
                     footer_copy: "© 2025 Assembled with love, enthusiasm, and... thanks to discounts on AliExpress!",
                     footer_link: "Go to the extended old version",
+                    footer_discord_link: "Join Discord",
+                    theme_toggle_text_light: "Night mode",
+                    theme_toggle_text_dark: "Light mode",
                 },
                 ua: {
                     doc_title: "Моя збірка",
@@ -264,25 +282,39 @@
                     gallery_title: "Галерея",
                     footer_copy: "© 2025 Зібрано з любов'ю, ентузіазмом і... завдяки знижкам на AliExpress!",
                     footer_link: "Перейти на розширену стару версію",
+                    footer_discord_link: "Приєднатися до Discord",
+                    theme_toggle_text_light: "Нічний режим",
+                    theme_toggle_text_dark: "Денний режим",
                 }
             };
 
             const langSwitcherButton = document.getElementById('lang-switcher-button');
             const langDropdown = document.getElementById('lang-dropdown');
             const langLinks = langDropdown.querySelectorAll('a[data-lang]');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleText = document.querySelector('[data-translate="theme_toggle_text"]');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
             
-            function setLanguage(lang) {
+            function updateAllText(lang) {
                 if (!translations[lang]) return;
-                
+
                 document.querySelectorAll('[data-translate]').forEach(el => {
                     const key = el.dataset.translate;
-                    if (translations[lang][key]) {
+                    if (key === 'theme_toggle_text') {
+                        const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                        const themeKey = currentTheme === 'dark' ? 'theme_toggle_text_dark' : 'theme_toggle_text_light';
+                        el.textContent = translations[lang][themeKey];
+                    } else if (translations[lang][key]) {
                         el.textContent = translations[lang][key];
                     }
                 });
-                
-                document.title = translations[lang].doc_title || 'Моя збірка';
 
+                document.title = translations[lang].doc_title || 'My PC Build';
+            }
+            
+            function setLanguage(lang) {
+                updateAllText(lang);
                 localStorage.setItem('language', lang);
                 document.documentElement.lang = lang;
 
@@ -290,6 +322,23 @@
                     const checkmark = link.querySelector('.checkmark');
                     checkmark.classList.toggle('hidden', link.dataset.lang !== lang);
                 });
+            }
+            
+            function setTheme(theme) {
+                const lang = localStorage.getItem('language') || 'en';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    themeToggleLightIcon.classList.remove('hidden');
+                    themeToggleDarkIcon.classList.add('hidden');
+                    themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    themeToggleLightIcon.classList.add('hidden');
+                    themeToggleText.textContent = translations[lang].theme_toggle_text_light;
+                    localStorage.setItem('color-theme', 'light');
+                }
             }
 
             // --- Language Dropdown Logic ---
@@ -312,39 +361,19 @@
                 }
             });
             
-            // --- Init Language ---
-            const savedLang = localStorage.getItem('language');
-            const browserLang = navigator.language.slice(0, 2);
-            // Default to English if no valid language is saved
-            const initialLang = translations[savedLang] ? savedLang : 'en';
-            setLanguage(initialLang);
-
-
-            // Theme switcher logic
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-            function setTheme(theme) {
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                    themeToggleLightIcon.classList.remove('hidden');
-                    themeToggleDarkIcon.classList.add('hidden');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    themeToggleDarkIcon.classList.remove('hidden');
-                    themeToggleLightIcon.classList.add('hidden');
-                    localStorage.setItem('color-theme', 'light');
-                }
-            }
-            const initialTheme = localStorage.getItem('color-theme') || 'light';
-            setTheme(initialTheme);
-            
+            // --- Theme switcher logic ---
             themeToggleBtn.addEventListener('click', () => {
                 const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 setTheme(newTheme);
             });
+            
+            // --- Init Language and Theme ---
+            const initialLang = localStorage.getItem('language') || 'en';
+            setLanguage(initialLang);
+            const initialTheme = localStorage.getItem('color-theme') || 'light';
+            setTheme(initialTheme);
+
 
             // Lightbox and Carousel Logic
             const lightbox = document.getElementById('lightbox');
