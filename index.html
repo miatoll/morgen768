@@ -252,8 +252,15 @@
 
         </section>
 
+        <!-- Schematic Toggle Button -->
+         <div class="text-center mt-20 reveal">
+            <button id="toggle-schematic-btn" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                Показать схему
+            </button>
+        </div>
+
         <!-- Schematic Section -->
-        <section class="mt-20 reveal">
+        <section id="schematic-section" class="mt-8 reveal hidden">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 tracking-tighter">
                 Схема <span class="gradient-text">Сборки</span>
             </h2>
@@ -420,6 +427,16 @@
                     aio_components.forEach(el => el.classList.remove(highlight_class));
                 });
             });
+
+            // Schematic toggle logic
+            const toggleBtn = document.getElementById('toggle-schematic-btn');
+            const schematicSection = document.getElementById('schematic-section');
+            if (toggleBtn && schematicSection) {
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = schematicSection.classList.toggle('hidden');
+                    toggleBtn.textContent = isHidden ? 'Показать схему' : 'Скрыть схему';
+                });
+            }
         });
     </script>
 </body>
