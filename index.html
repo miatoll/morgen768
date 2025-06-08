@@ -141,13 +141,13 @@
 </head>
 <body class="antialiased">
     
-    <div class="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
+    <div id="top-right-controls" class="fixed top-4 right-4 z-50 flex items-center gap-2">
         <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
             <span id="theme-emoji-icon" class="text-lg"></span>
             <span data-translate="theme_toggle_text"></span>
         </button>
 
-        <div class="relative" id="controls-container">
+        <div class="relative">
             <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
                 <span class="text-xl">🌍</span>
             </button>
@@ -158,14 +158,26 @@
                     <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ru"><span>Русский</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
                 </div>
             </div>
-             <button id="palette-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 ml-2">
+        </div>
+        
+        <div class="relative">
+             <button id="palette-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
                 <span class="text-xl">🎨</span>
             </button>
-             <div id="palette-modal" class="hidden overflow-hidden absolute right-0 mt-2 p-2 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5">
-                <div class="grid grid-cols-3 gap-2">
-                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #ff9a9e" data-scheme="default"></button>
-                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #a1c4fd" data-scheme="ocean"></button>
-                    <button class="w-9 h-9 rounded-full border-2 border-white/50" style="background-color: #aacc8a" data-scheme="forest"></button>
+             <div id="palette-modal" class="hidden overflow-hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="default">
+                        <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #ff9a9e;"></span>
+                        <span data-translate="theme_default"></span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="ocean">
+                        <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #a1c4fd;"></span>
+                        <span data-translate="theme_ocean"></span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="forest">
+                         <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #aacc8a;"></span>
+                        <span data-translate="theme_forest"></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -262,6 +274,9 @@
                     footer_discord_link: "Присоединиться к Discord",
                     theme_toggle_text_light: "Ночной режим",
                     theme_toggle_text_dark: "Дневной режим",
+                    theme_default: "Стандарт",
+                    theme_ocean: "Океан",
+                    theme_forest: "Лес",
                 },
                 en: {
                     doc_title: "My PC Build",
@@ -282,6 +297,9 @@
                     footer_discord_link: "Join Discord",
                     theme_toggle_text_light: "Night mode",
                     theme_toggle_text_dark: "Light mode",
+                    theme_default: "Default",
+                    theme_ocean: "Ocean",
+                    theme_forest: "Forest",
                 },
                 ua: {
                     doc_title: "Моя збірка",
@@ -302,6 +320,9 @@
                     footer_discord_link: "Приєднатися до Discord",
                     theme_toggle_text_light: "Нічний режим",
                     theme_toggle_text_dark: "Денний режим",
+                    theme_default: "Типова",
+                    theme_ocean: "Океан",
+                    theme_forest: "Ліс",
                 }
             };
 
@@ -313,7 +334,7 @@
             const themeEmojiIcon = document.getElementById('theme-emoji-icon');
             const paletteButton = document.getElementById('palette-button');
             const paletteModal = document.getElementById('palette-modal');
-            const paletteSwatches = paletteModal.querySelectorAll('button[data-scheme]');
+            const paletteLinks = paletteModal.querySelectorAll('a[data-scheme]');
             
             function updateAllText(lang) {
                 if (!translations[lang]) return;
@@ -384,8 +405,9 @@
                 langDropdown.classList.add('hidden');
             });
 
-            paletteSwatches.forEach(swatch => {
-                swatch.addEventListener('click', (e) => {
+            paletteLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
                     setColorScheme(e.currentTarget.dataset.scheme);
                     paletteModal.classList.add('hidden');
                 });
@@ -394,7 +416,7 @@
 
             // --- Close modals on outside click ---
             window.addEventListener('click', (e) => {
-                if (!e.target.closest('#controls-container')) {
+                if (!e.target.closest('#top-right-controls')) {
                     langDropdown.classList.add('hidden');
                     paletteModal.classList.add('hidden');
                 }
