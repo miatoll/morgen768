@@ -1,113 +1,316 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конфигурация ПК</title>
-    
+    <title>Моя сборка ПК</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-   
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-       
+        /* Пользовательский стиль для градиента и анимации */
         body {
-            
-            font-family: 'Consolas', 'Courier New', monospace;
-            background-color: #111827; 
+            font-family: 'Inter', sans-serif;
+            background-color: #111118; /* Глубокий темный фон */
+            color: #E0E0E0;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #a78bfa, #c4b5fd); /* Фиолетовый градиент в стиле M3 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background: rgba(30, 30, 40, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(167, 139, 250, 0.3);
+        }
+        /* Анимация появления */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .emoji-icon {
+            font-size: 2.5rem; /* Размер эмодзи */
+            line-height: 1;
+        }
+        /* Стили для схемы */
+        .schematic-box {
+            border: 2px solid rgba(167, 139, 250, 0.4);
+            background-color: rgba(30, 30, 40, 0.7);
+            border-radius: 0.25rem; /* менее скругленные углы для вида компонентов */
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem;
+            font-size: 0.75rem;
+            text-align: center;
+            color: #c4b5fd;
+            font-weight: 600;
+            cursor: help; /* Курсор-подсказка */
+            transition: all 0.2s ease-in-out;
+            overflow: hidden;
+        }
+        .schematic-box:hover, .schematic-box.highlighted {
+            background-color: rgba(167, 139, 250, 0.2);
+            border-color: rgba(196, 181, 253, 1);
+            z-index: 10;
+        }
+        .motherboard-container {
+            position: absolute;
+            background-color: rgba(30, 30, 40, 0.2);
+            border: 2px solid rgba(167, 139, 250, 0.4);
+            border-radius: 0.25rem;
+            transition: all 0.2s ease-in-out;
+            cursor: help;
+        }
+        .motherboard-container:hover {
+             background-color: rgba(167, 139, 250, 0.2);
+            border-color: rgba(196, 181, 253, 1);
+            z-index: 10;
         }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <div id="root"></div>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12 sm:py-20">
 
-    <script type="text/babel">
-       
-        const ComponentCard = ({ emoji, category, name }) => {
-            return (
-                <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-cyan-500/20 hover:border-cyan-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
-                    <div className="flex items-center space-x-4">
-                        <span className="text-4xl">{emoji}</span>
-                        <div>
-                            <p className="text-sm font-semibold text-cyan-400">{category}</p>
-                            <h3 className="text-lg font-bold text-gray-100">{name}</h3>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 reveal">
+                Мой <span class="gradient-text">Сетап</span>
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto text-gray-400 reveal" style="transition-delay: 200ms;">
+                Персональная сборка для игр, работы и творчества.
+            </p>
+        </section>
 
-       
-        const App = () => {
+        <!-- Components Grid -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+            <!-- Card: CPU -->
+            <div class="card p-6 rounded-3xl reveal">
+                <p class="emoji-icon mb-4">🧠</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Процессор</h2>
+                <p class="text-lg font-semibold text-gray-100">AMD Ryzen 5 8400F</p>
+            </div>
             
-            const pcComponents = [
-              { id: 1, category: 'Процессор', name: 'AMD Ryzen 5 8400F', emoji: '🧠' },
-              { id: 2, category: 'Материнская плата', name: 'JGINYUE B650 Night Devil', emoji: '🎲' },
-              { id: 3, category: 'Оперативная память', name: 'Kingbank DDR5 32GB 6000 MHz EXPO', emoji: '💎' },
-              { id: 4, category: 'Видеокарта ', name: 'ASUS AMD Radeon RX 6600 Dual', emoji: '🎮' },
-              { id: 5, category: 'Система водяного охлаждения', name: 'Thermalright Frozen Infinity 360', emoji: '❄️' },
-              { id: 6, category: 'SSD Накопитель #1', name: 'Fangxiang S500 Pro 1TB', emoji: '💾' },
-              { id: 7, category: 'SSD Накопитель #2', name: 'Fangxiang S500 1TB', emoji: '💾' },
-              { id: 8, category: 'Жесткий диск #1', name: 'Western Digital Blue 500GB', emoji: '💿' },
-              { id: 9, category: 'Жесткий диск #2', name: 'HGST 500GB', emoji: '💿' },
-              { id: 10, category: 'Жесткий диск #3', name: 'HGST 500GB', emoji: '💿' },
-              { id: 11, category: 'Блок питания ', name: 'Chieftec Proton 500W', emoji: '⚡️' },
-              { id: 12, category: 'Корпус ', name: 'Montech AIR 1000 Lite', emoji: '📦' },
-            ];
+            <!-- Card: Motherboard -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 50ms;">
+                <p class="emoji-icon mb-4">⚙️</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Материнская плата</h2>
+                <p class="text-lg font-semibold text-gray-100">JGINYUE B650i Night Devil</p>
+            </div>
 
-            return (
-                <div className="min-h-screen text-white p-4 sm:p-8">
-                    <div className="max-w-3xl mx-auto">
-                        <header className="text-center mb-10">
-                            <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-wider">
-                                Моя Сборка ПК
-                            </h1>
-                            <p className="text-gray-400 mt-2">
-                                Список комплектующих
-                            </p>
-                        </header>
+            <!-- Card: RAM -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 100ms;">
+                <p class="emoji-icon mb-4">🚀</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Оперативная память</h2>
+                <p class="text-lg font-semibold text-gray-100">Kingbank DDR5 16GB</p>
+                <p class="text-md text-gray-400">6000 MHz, AMD EXPO</p>
+            </div>
+
+            <!-- Card: Watercooling -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 150ms;">
+                <p class="emoji-icon mb-4">❄️</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Охлаждение</h2>
+                <p class="text-lg font-semibold text-gray-100">hermalright Frozen Infinity 360</p>
+            </div>
+
+            <!-- Card: GPU -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 200ms;">
+                <p class="emoji-icon mb-4">🎮</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Видеокарта</h2>
+                <p class="text-lg font-semibold text-gray-100">ASUS AMD Radeon RX 6600 Dual</p>
+            </div>
+
+            <!-- Card: PSU -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 250ms;">
+                <p class="emoji-icon mb-4">🔋</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Блок питания</h2>
+                <p class="text-lg font-semibold text-gray-100">Chieftec Proton 500W</p>
+            </div>
+
+            <!-- Card: Case -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 300ms;">
+                <p class="emoji-icon mb-4">📦</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">Корпус</h2>
+                <p class="text-lg font-semibold text-gray-100">Montech AIR 1000 Lite</p>
+            </div>
+            
+             <!-- Card: SSD 1 -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 350ms;">
+                <p class="emoji-icon mb-4">⚡</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">SSD #1 (NVMe)</h2>
+                <p class="text-lg font-semibold text-gray-100">Fangxiang S500 Pro 1TB</p>
+            </div>
+
+            <!-- Card: SSD 2 -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 400ms;">
+                <p class="emoji-icon mb-4">⚡</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">SSD #2 (NVMe)</h2>
+                <p class="text-lg font-semibold text-gray-100">Fangxiang S500 1TB</p>
+            </div>
+
+            <!-- Card: HDD 1 -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 450ms;">
+                <p class="emoji-icon mb-4">💽</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #1 (2.5")</h2>
+                <p class="text-lg font-semibold text-gray-100">HGST 500 Gb</p>
+            </div>
+
+            
+             <!-- Card: HDD 2 -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 450ms;">
+                <p class="emoji-icon mb-4">💽</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #2 (2.5")</h2>
+                <p class="text-lg font-semibold text-gray-100">HGST 500 Gb</p>
+            </div>
+            <!-- Card: HDD 3 -->
+            <div class="card p-6 rounded-3xl reveal" style="transition-delay: 500ms;">
+                <p class="emoji-icon mb-4">💽</p>
+                <h2 class="text-xl font-bold text-violet-300 mb-1">HDD #3 (3.5")</h2>
+                <p class="text-lg font-semibold text-gray-100">WD Blue 500 GB</p>
+            </div>
+
+
+        </section>
+
+        <!-- Schematic Section -->
+        <section class="mt-20 reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 tracking-tighter">
+                Схема <span class="gradient-text">Сборки</span>
+            </h2>
+            <div class="card max-w-5xl mx-auto rounded-3xl p-4 sm:p-8">
+                <!-- Case Container aspect-[416/495] -->
+                <div class="relative w-full aspect-[416/495] bg-black/20 rounded-2xl border-2 border-dashed border-gray-700 p-2 sm:p-4">
+                    <div class="w-full h-full relative" aria-label="Визуальная схема расположения компонентов ПК">
                         
-                        <main className="space-y-4">
-                            {pcComponents.map((component) => (
-                                <ComponentCard 
-                                    key={component.id}
-                                    emoji={component.emoji}
-                                    category={component.category}
-                                    name={component.name}
-                                />
-                            ))}
-                        </main>
-
-                        {/* Новая секция для фотографии */}
-                        <section className="mt-12 text-center">
-                            <h2 className="text-3xl font-bold text-white mb-6 tracking-wide">
-                                Фотография сборки 📸
-                            </h2>
-                            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 shadow-lg inline-block">
-                                <img 
-                                    src="https://media.discordapp.net/attachments/899710036161470564/1377267998368202793/PXL_20250528_125012995.MP.jpg?ex=68463007&is=6844de87&hm=12009f05e2dd9de6d193f2aa0993301a48048b68165457e4fbc34f18f17a4df0&=&format=webp"
-                                    alt="Фотография сборки ПК"
-                                    className="rounded-lg max-w-full h-auto"
-                                    onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/600x400/111827/ffffff?text=Ошибка+загрузки'; }}
-                                />
+                        <!-- PSU (140x86mm) -->
+                        <div class="schematic-box p-0" style="bottom: 1%; left: 1%; width: 33.6%; height: 17.3%; z-index: 5;" title="БП: Chieftec Proton 500W (140x150x86 мм)">
+                            <div class="relative w-full h-full flex items-center justify-center">
+                               <div class="flex flex-col items-center leading-tight">
+                                    <span class="uppercase font-bold text-xs">Chieftec</span>
+                                    <span class="text-[0.6rem]">Proton</span>
+                                </div>
+                                <span class="absolute top-1 right-1.5 text-[0.6rem] font-bold">500W</span>
                             </div>
-                        </section>
+                        </div>
 
-                        <footer className="text-center mt-12 text-gray-500 text-sm">
-                            <p>2025</p>
-                        </footer>
+                        <!-- Motherboard Area (ITX 170x170mm) -->
+                        <div class="motherboard-container" style="top: 1%; left: 1%; width: 40.8%; height: 34.3%; z-index: 1;" title="МП: JGINYUE B650 Night Devil (170x170 мм)">
+                           <div class="relative w-full h-full">
+                                <span class="absolute top-1 left-0 right-0 text-center text-[0.6rem] font-bold text-violet-300/80 pointer-events-none">JGINYUE B650</span>
+
+                                <!-- CPU -->
+                                <div class="schematic-box" style="top: 26.2%; left: 34.8%; width: 23.5%; height: 23.3%; border-style: dotted; background: transparent; z-index: 2;" title="ЦПУ: AMD Ryzen 5 8400F (40x40 мм)"></div>
+                                <div class="absolute text-center text-[0.6rem] text-gray-400 pointer-events-none" style="top: 51%; left: 34.8%; width: 23.5%; z-index: 2;">Ryzen 5 8400F</div>
+
+                                <!-- Pump -->
+                                <div class="schematic-box aio-component" style="top: 19.5%; left: 28.2%; width: 37%; height: 37%; z-index: 3;" title="Помпа: Thermalright Frozen Infinity 360 (63x63 мм)">Помпа</div>
+
+                                <!-- RAM -->
+                                <div class="schematic-box" style="top: 5.8%; left: 76%; width: 6.1%; height: 78.4%; z-index: 3;" title="ОЗУ: Kingbank DDR5 16GB 6000MHz">
+                                    <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter">DDR5 16GB 6000MHz</span>
+                                </div>
+                                <div class="schematic-box" style="top: 5.8%; left: 84.6%; width: 6.1%; height: 78.4%; border-style: dotted; background-color: rgba(75, 85, 99, 0.5); z-index: 3;" title="ОЗУ: Слот #2">
+                                    <span class="transform -rotate-90 whitespace-nowrap text-[0.5rem] tracking-tighter opacity-50">DDR5 16GB 6000MHz</span>
+                                </div>
+
+                                <!-- SSD -->
+                                <div class="schematic-box flex-col !justify-center p-1" style="bottom: 8.8%; left: 20.6%; width: 47%; height: 18.6%; z-index: 2;" title="SSD #1: Fangxiang S500 Pro 1TB&#10;SSD #2: Fangxiang S500 1TB">
+                                    <div class="text-[0.4rem] leading-tight">Fangxiang S500 Pro 1TB</div>
+                                    <div class="text-[0.4rem] leading-tight mt-0.5">Fangxiang S500 1TB</div>
+                                </div>
+                           </div>
+                        </div>
+
+                        <!-- GPU (243x49mm) -->
+                        <div class="schematic-box" style="top: 37%; left: 1%; width: 58.4%; height: 9.9%; z-index: 4;" title="ГП: ASUS RX 6600 Dual (243x134x49 мм)">
+                            ASUS RX 6600
+                        </div>
+
+                        <!-- AIO Radiator (397x27mm side view) -->
+                        <div class="schematic-box aio-component" style="top: 5%; right: 5%; width: 6.5%; height: 80.2%; z-index: 5;" title="Радиатор: Thermalright Frozen Infinity 360 (397x120x27 мм)">
+                            <span class="transform -rotate-90 whitespace-nowrap text-[0.6rem] tracking-tighter">Thermalright Frozen Infinity 360</span>
+                        </div>
+                        
+                        <!-- Drives Area -->
+                        <!-- 3.5" HDD -->
+                        <div class="schematic-box" style="bottom: 2%; right: 13.5%; width: 35.3%; height: 5.1%; z-index: 5;" title="HDD 3.5”: WD Blue 500 GB (147x101.6x25.4 мм)">3.5" WD Blue</div>
+
+                        <!-- 2.5" HDD 1 -->
+                        <div class="schematic-box" style="bottom: 8.1%; right: 24.8%; width: 24%; height: 2.1%; z-index: 5;" title="HDD 2.5”: HGST 500 Gb (100x70x9.5 мм)">2.5" HGST</div>
+                        <!-- 2.5" HDD 2 -->
+                        <div class="schematic-box" style="bottom: 11.2%; right: 24.8%; width: 24%; height: 2.1%; z-index: 5;" title="HDD 2.5”: HGST 500 Gb (100x70x9.5 мм)">2.5" HGST</div>
+
+                        <!-- Case text -->
+                        <span class="absolute top-1 right-1 text-xs text-gray-500 font-mono" title="Корпус: Montech AIR 1000 Lite (416x220x495 мм)">CASE</span>
                     </div>
                 </div>
-            );
-        };
+            </div>
+        </section>
 
-        const container = document.getElementById('root');
-        const root = ReactDOM.createRoot(container);
-        root.render(<App />);
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800/50">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>Собрано с любовью и энтузиазмом.</p>
+        </div>
+    </footer>
 
+    <script>
+        // JavaScript для анимации появления элементов при прокрутке
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // Подсветка компонентов СЖО (AIO)
+            const aio_components = document.querySelectorAll('.aio-component');
+            const highlight_class = 'highlighted';
+
+            aio_components.forEach(component => {
+                component.addEventListener('mouseover', () => {
+                    aio_components.forEach(el => el.classList.add(highlight_class));
+                });
+                component.addEventListener('mouseout', () => {
+                    aio_components.forEach(el => el.classList.remove(highlight_class));
+                });
+            });
+        });
     </script>
-
 </body>
 </html>
