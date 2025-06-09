@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useful Software</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        // Встановлюємо тему та кольорову схему до рендерингу
+        if (localStorage.getItem('color-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        const savedColorScheme = localStorage.getItem('custom-color-scheme');
+        if (savedColorScheme) {
+            document.documentElement.dataset.colorScheme = savedColorScheme;
+        }
+    </script>
+
+    <style>
+        :root, html[data-color-scheme="default"] {
+            /* Яскрава світла тема (Sunrise) */
+            --bg-grad-1: #ffecd2;
+            --bg-grad-2: #fcb69f;
+            --bg-grad-3: #ff9a9e;
+            --text-color: #3a2e2c;
+            --text-muted-color: #795c58;
+            --card-bg: rgba(255, 255, 255, 0.45);
+            --card-border: rgba(255, 255, 255, 0.9);
+            --glow-color: rgba(252, 182, 159, 0.5);
+            --gradient-text-start: #ff8c42;
+            --gradient-text-end: #ff3d77;
+        }
+
+        .dark:root, html[data-color-scheme="default"].dark {
+            /* Яскрава темна тема (Aurora) */
+            --bg-grad-1: #0f0c29;
+            --bg-grad-2: #302b63;
+            --bg-grad-3: #24243e;
+            --text-color: #e0e6f1;
+            --text-muted-color: #a8b2d1;
+            --card-bg: rgba(48, 43, 99, 0.2);
+            --card-border: rgba(192, 132, 252, 0.2);
+            --glow-color: rgba(168, 85, 247, 0.2);
+            --gradient-text-start: #a8c0ff;
+            --gradient-text-end: #3f2b96;
+        }
+        
+        /* Ocean Theme */
+        html[data-color-scheme="ocean"] { --bg-grad-1: #a1c4fd; --bg-grad-2: #c2e9fb; --bg-grad-3: #a1c4fd; --text-color: #0b2d48; --text-muted-color: #3e6586; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(161, 196, 253, 0.5); --gradient-text-start: #0052d4; --gradient-text-end: #65c7f7; }
+        html[data-color-scheme="ocean"].dark { --bg-grad-1: #0f2027; --bg-grad-2: #203a43; --bg-grad-3: #2c5364; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(32, 58, 67, 0.3); --card-border: rgba(158, 224, 255, 0.2); --glow-color: rgba(44, 83, 100, 0.4); --gradient-text-start: #7aa2e8; --gradient-text-end: #b3e5fc; }
+
+        /* Forest Theme */
+        html[data-color-scheme="forest"] { --bg-grad-1: #d4ecb7; --bg-grad-2: #aacc8a; --bg-grad-3: #89a770; --text-color: #2a3a2a; --text-muted-color: #516d4e; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(170, 204, 138, 0.5); --gradient-text-start: #4b6733; --gradient-text-end: #8eb363; }
+        html[data-color-scheme="forest"].dark { --bg-grad-1: #1a2a22; --bg-grad-2: #2c4238; --bg-grad-3: #3f5b4d; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(44, 66, 56, 0.3); --card-border: rgba(142, 179, 99, 0.2); --glow-color: rgba(63, 91, 77, 0.4); --gradient-text-start: #a3d9a5; --gradient-text-end: #c5e1a5; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            transition: color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3));
+            background-size: 400% 400%;
+            animation: gradient-flow 18s ease infinite;
+            z-index: -1;
+            transition: background 0.5s ease;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 40px 0 var(--glow-color);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--gradient-text-start), var(--gradient-text-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <div id="top-right-controls" class="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
+            <span id="theme-emoji-icon" class="text-lg"></span>
+            <span data-translate="theme_toggle_text"></span>
+        </button>
+
+        <div class="relative">
+            <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+                <span class="text-xl">🌍</span>
+            </button>
+            <div id="lang-dropdown" class="hidden overflow-hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="en"><span>English</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ua"><span>Українська</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ru"><span>Русский</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="relative">
+             <button id="palette-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+                <span class="text-xl">🎨</span>
+            </button>
+             <div id="palette-modal" class="hidden overflow-hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="default">
+                        <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #ff9a9e;"></span>
+                        <span data-translate="theme_default"></span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="ocean">
+                        <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #a1c4fd;"></span>
+                        <span data-translate="theme_ocean"></span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="forest">
+                         <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #aacc8a;"></span>
+                        <span data-translate="theme_forest"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 pt-24 pb-12 sm:pt-28 sm:pb-20">
+
+        <section class="text-center mb-16">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 gradient-text" data-translate="title">
+                Useful Software
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-muted-color);" data-translate="subtitle">
+                 A selection of free programs to make your life easier.
+            </p>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <a href="https://www.7-zip.org/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🗜️</p> <h3 class="text-xl font-semibold" data-translate="soft_7zip_name">7-Zip</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_7zip_desc">Archive tool</p> </a>
+            <a href="https://gitlab.com/CalcProgrammer1/OpenRGB" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🌈</p> <h3 class="text-xl font-semibold" data-translate="soft_openrgb_name">OpenRGB</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_openrgb_desc">The only RGB software you will ever need</p> </a>
+            <a href="https://www.hwinfo.com/download/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">📈</p> <h3 class="text-xl font-semibold" data-translate="soft_hwinfo_name">HWiNFO</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_hwinfo_desc">The best pc monitoring software</p> </a>
+            <a href="https://github.com/microsoft/PowerToys" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🛠️</p> <h3 class="text-xl font-semibold" data-translate="soft_powertoys_name">PowerToys</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_powertoys_desc">Nobody should use Windows without this</p> </a>
+            <a href="https://github.com/mifi/lossless-cut" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">✂️</p> <h3 class="text-xl font-semibold" data-translate="soft_losslesscut_name">LosslessCut</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_losslesscut_desc">Lossless editing of video and audio</p> </a>
+            <a href="https://obsproject.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🔴</p> <h3 class="text-xl font-semibold" data-translate="soft_obs_name">OBS Studio</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_obs_desc">Video recording and live streaming</p> </a>
+            <a href="https://github.com/Rem0o/FanControl.Releases" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">💨</p> <h3 class="text-xl font-semibold" data-translate="soft_fancontrol_name">FanControl</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_fancontrol_desc">Lightweight FAN control software</p> </a>
+            <a href="https://github.com/mpv-player/mpv" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">▶️</p> <h3 class="text-xl font-semibold" data-translate="soft_mpv_name">mpv</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_mpv_desc">The best FOSS media player</p> </a>
+            <a href="https://github.com/Klocman/Bulk-Crap-Uninstaller" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🗑️</p> <h3 class="text-xl font-semibold" data-translate="soft_bcu_name">Bulk Crap Uninstaller</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_bcu_desc">Free program uninstaller</p> </a>
+            <a href="https://www.qbittorrent.org/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🧲</p> <h3 class="text-xl font-semibold" data-translate="soft_qbit_name">qBittorrent</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_qbit_desc">The best Bittorrent client</p> </a>
+            <a href="https://github.com/VueTorrent/VueTorrent" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🎨</p> <h3 class="text-xl font-semibold" data-translate="soft_vuetorrent_name">VueTorrent</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_vuetorrent_desc">Cool WebUI for qBittorrent</p> </a>
+            <a href="https://github.com/KurtBestor/Hitomi-Downloader" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">📥</p> <h3 class="text-xl font-semibold" data-translate="soft_hitomi_name">Hitomi Downloader</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_hitomi_desc">The downloader for everything</p> </a>
+            <a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">⬇️</p> <h3 class="text-xl font-semibold" data-translate="soft_ytdlp_name">yt-dlp</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_ytdlp_desc">Another downloader for almost everything</p> </a>
+            <a href="https://modrinth.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🧱</p> <h3 class="text-xl font-semibold" data-translate="soft_modrinth_name">Modrinth</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_modrinth_desc">Best Minecraft launcher</p> </a>
+            <a href="https://massgrave.dev/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🔑</p> <h3 class="text-xl font-semibold" data-translate="soft_massgrave_name">MAS</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_massgrave_desc">Windows / Office activation</p> </a>
+            <a href="https://www.ventoy.net/en/index.html" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">💾</p> <h3 class="text-xl font-semibold" data-translate="soft_ventoy_name">Ventoy</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_ventoy_desc">Bootable USB for multiple ISOs</p> </a>
+            <a href="https://github.com/romkatv/powerlevel10k" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">⚡</p> <h3 class="text-xl font-semibold" data-translate="soft_p10k_name">Powerlevel10k</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_p10k_desc">Cool ZSH theme</p> </a>
+            <a href="https://diskanalyzer.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🔎</p> <h3 class="text-xl font-semibold" data-translate="soft_wiztree_name">WizTree</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_wiztree_desc">Visual disk space analyzer</p> </a>
+            <a href="https://github.com/HandBrake/HandBrake" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🍹</p> <h3 class="text-xl font-semibold" data-translate="soft_handbrake_name">HandBrake</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_handbrake_desc">Free video transcoder</p> </a>
+            <a href="https://gravitymark.tellusim.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🌌</p> <h3 class="text-xl font-semibold" data-translate="soft_gravitymark_name">GravityMark</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_gravitymark_desc">Free GPU benchmark / stress test</p> </a>
+             <a href="https://github.com/YerongAI/Office-Tool" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🏢</p> <h3 class="text-xl font-semibold" data-translate="soft_officetool_name">Office Tool Plus</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_officetool_desc">A powerful and useful tool for Office deployments.</p> </a>
+            <a href="https://equalizerapo.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🎚️</p> <h3 class="text-xl font-semibold" data-translate="soft_eqapo_name">EqualizerAPO</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_eqapo_desc">Free equalizer software</p> </a>
+        </section>
+
+    </main>
+    
+    <footer class="py-8 mt-12 border-t border-white/10 dark:border-black/10">
+        <div class="container mx-auto px-6 text-center text-sm" style="color: var(--text-muted-color);">
+            <p class="mb-6" data-translate="footer_copy">© 2025 Created with love and enthusiasm!</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://discord.gg/VAMWmQBaNX" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-white/20 dark:bg-black/20 backdrop-blur-sm text-sm font-semibold px-5 py-2 rounded-full hover:bg-white/30 dark:hover:bg-black/30 transition-colors duration-300">
+                    <span data-translate="footer_discord_link"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                ru: {
+                    doc_title: "Полезный Софт",
+                    title: "Полезный Софт",
+                    subtitle: "Подборка бесплатных программ, которые сделают вашу жизнь проще.",
+                    footer_copy: "© 2025 Создано с любовью и энтузиазмом!",
+                    footer_discord_link: "Присоединиться к Discord",
+                    theme_toggle_text_light: "Ночной режим",
+                    theme_toggle_text_dark: "Дневной режим",
+                    theme_default: "Стандарт",
+                    theme_ocean: "Океан",
+                    theme_forest: "Лес",
+                    soft_7zip_name: "7-Zip",
+                    soft_7zip_desc: "Архиватор",
+                    soft_openrgb_name: "OpenRGB",
+                    soft_openrgb_desc: "Единственная программа для RGB, которая вам понадобится",
+                    soft_hwinfo_name: "HWiNFO",
+                    soft_hwinfo_desc: "Лучшее ПО для мониторинга ПК",
+                    soft_powertoys_name: "PowerToys",
+                    soft_powertoys_desc: "Никто не должен использовать Windows без этого",
+                    soft_losslesscut_name: "LosslessCut",
+                    soft_losslesscut_desc: "Редактирование видео и аудио без потерь",
+                    soft_obs_name: "OBS Studio",
+                    soft_obs_desc: "Лучшее ПО для записи видео и стриминга",
+                    soft_fancontrol_name: "FanControl",
+                    soft_fancontrol_desc: "Легковесное ПО для управления вентиляторами",
+                    soft_mpv_name: "mpv",
+                    soft_mpv_desc: "Лучший медиаплеер с открытым кодом",
+                    soft_bcu_name: "Bulk Crap Uninstaller",
+                    soft_bcu_desc: "Бесплатный деинсталлятор программ",
+                    soft_qbit_name: "qBittorrent",
+                    soft_qbit_desc: "Лучший Bittorrent клиент",
+                    soft_vuetorrent_name: "VueTorrent",
+                    soft_vuetorrent_desc: "Крутой WebUI для qBittorrent",
+                    soft_hitomi_name: "Hitomi Downloader",
+                    soft_hitomi_desc: "Загрузчик для всего в интернете",
+                    soft_ytdlp_name: "yt-dlp",
+                    soft_ytdlp_desc: "Еще один загрузчик почти для всего",
+                    soft_modrinth_name: "Modrinth",
+                    soft_modrinth_desc: "Лучший лаунчер для Minecraft",
+                    soft_massgrave_name: "MAS",
+                    soft_massgrave_desc: "Активация Windows / Office",
+                    soft_ventoy_name: "Ventoy",
+                    soft_ventoy_desc: "Загрузочный USB для нескольких ISO",
+                    soft_p10k_name: "Powerlevel10k",
+                    soft_p10k_desc: "Крутая тема для ZSH",
+                    soft_wiztree_name: "WizTree",
+                    soft_wiztree_desc: "Визуальный анализатор дискового пространства",
+                    soft_handbrake_name: "HandBrake",
+                    soft_handbrake_desc: "Бесплатный видео транскодер",
+                    soft_gravitymark_name: "GravityMark",
+                    soft_gravitymark_desc: "Бесплатный бенчмарк / стресс-тест GPU",
+                    soft_eqapo_name: "EqualizerAPO",
+                    soft_eqapo_desc: "Бесплатный эквалайзер",
+                    soft_officetool_name: "Office Tool Plus",
+                    soft_officetool_desc: "Мощный инструмент для развертывания Office"
+                },
+                en: {
+                    doc_title: "Useful Software",
+                    title: "Useful Software",
+                    subtitle: "A selection of free programs to make your life easier.",
+                    footer_copy: "© 2025 Created with love and enthusiasm!",
+                    footer_discord_link: "Join Discord",
+                    theme_toggle_text_light: "Night mode",
+                    theme_toggle_text_dark: "Light mode",
+                    theme_default: "Default",
+                    theme_ocean: "Ocean",
+                    theme_forest: "Forest",
+                    soft_7zip_name: "7-Zip",
+                    soft_7zip_desc: "Archive tool",
+                    soft_openrgb_name: "OpenRGB",
+                    soft_openrgb_desc: "The only RGB software you will ever need",
+                    soft_hwinfo_name: "HWiNFO",
+                    soft_hwinfo_desc: "The best pc monitoring software",
+                    soft_powertoys_name: "PowerToys",
+                    soft_powertoys_desc: "Nobody should use Windows without this",
+                    soft_losslesscut_name: "LosslessCut",
+                    soft_losslesscut_desc: "Lossless editing of video and audio",
+                    soft_obs_name: "OBS Studio",
+                    soft_obs_desc: "Video recording and live streaming",
+                    soft_fancontrol_name: "FanControl",
+                    soft_fancontrol_desc: "Lightweight FAN control software",
+                    soft_mpv_name: "mpv",
+                    soft_mpv_desc: "The best FOSS media player",
+                    soft_bcu_name: "Bulk Crap Uninstaller",
+                    soft_bcu_desc: "Free program uninstaller",
+                    soft_qbit_name: "qBittorrent",
+                    soft_qbit_desc: "The best Bittorrent client",
+                    soft_vuetorrent_name: "VueTorrent",
+                    soft_vuetorrent_desc: "Cool WebUI for qBittorrent",
+                    soft_hitomi_name: "Hitomi Downloader",
+                    soft_hitomi_desc: "The downloader for everything",
+                    soft_ytdlp_name: "yt-dlp",
+                    soft_ytdlp_desc: "Another downloader for almost everything",
+                    soft_modrinth_name: "Modrinth",
+                    soft_modrinth_desc: "Best Minecraft launcher",
+                    soft_massgrave_name: "MAS",
+                    soft_massgrave_desc: "Windows / Office activation",
+                    soft_ventoy_name: "Ventoy",
+                    soft_ventoy_desc: "Bootable USB for multiple ISOs",
+                    soft_p10k_name: "Powerlevel10k",
+                    soft_p10k_desc: "Cool ZSH theme",
+                    soft_wiztree_name: "WizTree",
+                    soft_wiztree_desc: "Visual disk space analyzer",
+                    soft_handbrake_name: "HandBrake",
+                    soft_handbrake_desc: "Free video transcoder",
+                    soft_gravitymark_name: "GravityMark",
+                    soft_gravitymark_desc: "Free GPU benchmark / stress test",
+                    soft_eqapo_name: "EqualizerAPO",
+                    soft_eqapo_desc: "Free equalizer software",
+                    soft_officetool_name: "Office Tool Plus",
+                    soft_officetool_desc: "A powerful and useful tool for Office deployments."
+                },
+                ua: {
+                    doc_title: "Корисний Софт",
+                    title: "Корисний Софт",
+                    subtitle: "Добірка безкоштовних програм, які зроблять ваше життя простішим.",
+                    footer_copy: "© 2025 Створено з любов'ю та ентузіазмом!",
+                    footer_discord_link: "Приєднатися до Discord",
+                    theme_toggle_text_light: "Нічний режим",
+                    theme_toggle_text_dark: "Денний режим",
+                    theme_default: "Типова",
+                    theme_ocean: "Океан",
+                    theme_forest: "Ліс",
+                    soft_7zip_name: "7-Zip",
+                    soft_7zip_desc: "Архіватор",
+                    soft_openrgb_name: "OpenRGB",
+                    soft_openrgb_desc: "Єдине ПЗ для RGB, яке вам знадобиться",
+                    soft_hwinfo_name: "HWiNFO",
+                    soft_hwinfo_desc: "Найкраще ПЗ для моніторингу ПК",
+                    soft_powertoys_name: "PowerToys",
+                    soft_powertoys_desc: "Ніхто не повинен користуватися Windows без цього",
+                    soft_losslesscut_name: "LosslessCut",
+                    soft_losslesscut_desc: "Редагування відео та аудіо без втрат",
+                    soft_obs_name: "OBS Studio",
+                    soft_obs_desc: "Найкраще ПЗ для запису відео та стрімінгу",
+                    soft_fancontrol_name: "FanControl",
+                    soft_fancontrol_desc: "Легке ПЗ для керування вентиляторами",
+                    soft_mpv_name: "mpv",
+                    soft_mpv_desc: "Найкращий медіаплеєр з відкритим кодом",
+                    soft_bcu_name: "Bulk Crap Uninstaller",
+                    soft_bcu_desc: "Безкоштовний деінсталятор програм",
+                    soft_qbit_name: "qBittorrent",
+                    soft_qbit_desc: "Найкращий Bittorrent клієнт",
+                    soft_vuetorrent_name: "VueTorrent",
+                    soft_vuetorrent_desc: "Класний WebUI для qBittorrent",
+                    soft_hitomi_name: "Hitomi Downloader",
+                    soft_hitomi_desc: "Завантажувач для всього в інтернеті",
+                    soft_ytdlp_name: "yt-dlp",
+                    soft_ytdlp_desc: "Ще один завантажувач майже для всього",
+                    soft_modrinth_name: "Modrinth",
+                    soft_modrinth_desc: "Найкращий лаунчер для Minecraft",
+                    soft_massgrave_name: "MAS",
+                    soft_massgrave_desc: "Активація Windows / Office",
+                    soft_ventoy_name: "Ventoy",
+                    soft_ventoy_desc: "Завантажувальний USB для кількох ISO",
+                    soft_p10k_name: "Powerlevel10k",
+                    soft_p10k_desc: "Класна тема для ZSH",
+                    soft_wiztree_name: "WizTree",
+                    soft_wiztree_desc: "Візуальний аналізатор дискового простору",
+                    soft_handbrake_name: "HandBrake",
+                    soft_handbrake_desc: "Безкоштовний відео транскодер",
+                    soft_gravitymark_name: "GravityMark",
+                    soft_gravitymark_desc: "Безкоштовний бенчмарк / стрес-тест GPU",
+                    soft_eqapo_name: "EqualizerAPO",
+                    soft_eqapo_desc: "Безкоштовний еквалайзер",
+                    soft_officetool_name: "Office Tool Plus",
+                    soft_officetool_desc: "Потужний інструмент для розгортання Office."
+                }
+            };
+
+            const langSwitcherButton = document.getElementById('lang-switcher-button');
+            const langDropdown = document.getElementById('lang-dropdown');
+            const langLinks = langDropdown.querySelectorAll('a[data-lang]');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleText = themeToggleBtn.querySelector('[data-translate="theme_toggle_text"]');
+            const themeEmojiIcon = document.getElementById('theme-emoji-icon');
+            const paletteButton = document.getElementById('palette-button');
+            const paletteModal = document.getElementById('palette-modal');
+            const paletteLinks = paletteModal.querySelectorAll('a[data-scheme]');
+            
+            function updateAllText(lang) {
+                if (!translations[lang]) return;
+
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.dataset.translate;
+                    if (key === 'theme_toggle_text') {
+                        const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                        const themeKey = currentTheme === 'dark' ? 'theme_toggle_text_dark' : 'theme_toggle_text_light';
+                        el.textContent = translations[lang][themeKey];
+                    } else if (translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+
+                document.title = translations[lang].doc_title || 'My PC Build';
+            }
+            
+            function setLanguage(lang) {
+                updateAllText(lang);
+                localStorage.setItem('language', lang);
+                document.documentElement.lang = lang;
+
+                langLinks.forEach(link => {
+                    const checkmark = link.querySelector('.checkmark');
+                    checkmark.classList.toggle('hidden', link.dataset.lang !== lang);
+                });
+            }
+            
+            function setTheme(theme, lang = localStorage.getItem('language') || 'en') {
+                 if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    themeEmojiIcon.textContent = '☀️';
+                    themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeEmojiIcon.textContent = '🌙';
+                    themeToggleText.textContent = translations[lang].theme_toggle_text_light;
+                    localStorage.setItem('color-theme', 'light');
+                }
+            }
+
+            function setColorScheme(scheme) {
+                document.documentElement.dataset.colorScheme = scheme;
+                localStorage.setItem('custom-color-scheme', scheme);
+            }
+
+            // --- Language Dropdown Logic ---
+            langSwitcherButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                langDropdown.classList.toggle('hidden');
+                paletteModal.classList.add('hidden');
+            });
+            
+            langLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setLanguage(e.currentTarget.dataset.lang);
+                    langDropdown.classList.add('hidden');
+                });
+            });
+
+            // --- Palette Logic ---
+            paletteButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                paletteModal.classList.toggle('hidden');
+                langDropdown.classList.add('hidden');
+            });
+
+            paletteLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    setColorScheme(e.currentTarget.dataset.scheme);
+                    paletteModal.classList.add('hidden');
+                });
+            });
+
+
+            // --- Close modals on outside click ---
+            window.addEventListener('click', (e) => {
+                if (!e.target.closest('#top-right-controls')) {
+                    langDropdown.classList.add('hidden');
+                    paletteModal.classList.add('hidden');
+                }
+            });
+            
+            // --- Theme switcher logic ---
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+            
+            // --- Init Language, Theme, and Color Scheme ---
+            const initialLang = localStorage.getItem('language') || 'en';
+            setLanguage(initialLang);
+            const initialTheme = localStorage.getItem('color-theme') || 'light';
+            setTheme(initialTheme, initialLang);
+            const initialColorScheme = localStorage.getItem('custom-color-scheme') || 'default';
+            setColorScheme(initialColorScheme);
+
+        });
+    </script>
+</body>
+</html>
