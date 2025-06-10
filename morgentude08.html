@@ -3,36 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренажер на Пошук Відповідностей</title>
+    <title>Тренажер на Пошук Відповідностей з Gemini AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Fallback */
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         .progress-bar-item {
-            transition: background-color 0.3s ease-in-out;
+            transition: background-color 0.4s ease-in-out;
         }
         .btn {
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
         .btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .answer-btn {
+            background-color: #fff;
+            border: 2px solid #e2e8f0;
+        }
+        .answer-btn:hover {
+            border-color: #4f46e5; /* Indigo */
+            color: #4f46e5;
         }
         .btn.correct {
-            animation: pulse-green 0.5s;
+            animation: pulse-green 0.6s forwards;
+            background-color: #22c55e !important;
+            border-color: #16a34a !important;
+            color: white !important;
         }
         .btn.incorrect {
             animation: shake 0.5s;
+            background-color: #ef4444 !important;
+            border-color: #dc2626 !important;
+            color: white !important;
         }
         @keyframes pulse-green {
             0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            70% { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0); }
             100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
         @keyframes shake {
@@ -41,132 +57,245 @@
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
+        /* Dark mode overrides */
+        .dark body {
+             background-image: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        .dark .answer-btn {
+            background-color: #374151; /* gray-700 */
+            border: 2px solid #4b5563; /* gray-600 */
+        }
+        .dark .answer-btn:hover {
+             border-color: #818cf8; /* indigo-400 */
+             color: #818cf8;
+        }
+        /* Modal styles */
+        .modal { transition: opacity 0.25s ease; }
+        .modal-content { transition: transform 0.25s ease; }
+        /* Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Toggle Switch */
+        #mode-switch:checked ~ .dot {
+            transform: translateX(1.5rem);
+        }
+        #mode-switch:checked ~ .switch-bg {
+            background-color: #4f46e5;
+        }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
-    <div id="quiz-container" class="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
-        <!-- Заголовок та прогрес -->
-        <div class="text-center mb-6">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Тренажер: Будова Обладнання</h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-1">Знайдіть відповідність для кожної позиції</p>
+<body class="dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
+    <div id="main-container" class="w-full max-w-3xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-2xl shadow-2xl p-6 md:p-8 border border-white/30">
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">Тренажер: Будова Обладнання</h1>
+            <p class="text-gray-600 dark:text-gray-300 mt-2 mb-8">Оберіть режим та почніть тестування</p>
+            
+            <div id="settings-area" class="my-8 p-6 bg-gray-100 dark:bg-gray-700/50 rounded-lg max-w-md mx-auto">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Режим тестування</h3>
+                <label for="mode-switch" class="flex items-center justify-center cursor-pointer">
+                    <span class="mr-3 font-medium text-gray-700 dark:text-gray-300">Номер → Назва</span>
+                    <div class="relative">
+                        <input type="checkbox" id="mode-switch" class="sr-only">
+                        <div class="switch-bg block bg-gray-300 dark:bg-gray-600 w-14 h-8 rounded-full transition"></div>
+                        <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                    </div>
+                    <span class="ml-3 font-medium text-gray-700 dark:text-gray-300">Назва → Номер</span>
+                </label>
+            </div>
+            <button id="start-button" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl">
+                Почати
+            </button>
         </div>
         
-        <!-- Прогрес-бар -->
-        <div id="progress-bar-container" class="mb-6">
-            <div class="flex justify-between items-center mb-2">
-                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Прогрес</span>
-                 <span id="progress-text" class="text-sm font-medium text-gray-700 dark:text-gray-300">Етап 1 з 19</span>
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="hidden">
+             <!-- Header for Progress and Timer -->
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Прогрес:</span>
+                    <span id="progress-text" class="ml-1 text-sm font-semibold text-gray-700 dark:text-gray-300">Етап 1 з 19</span>
+                </div>
+                <div id="timer-container" class="text-right">
+                    <div id="timer" class="text-3xl font-bold text-indigo-600 dark:text-indigo-400" style="font-variant-numeric: tabular-nums;"></div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 -mt-1">секунд</div>
+                </div>
             </div>
-            <div id="progress-bar" class="flex w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden space-x-1">
-                <!-- Елементи прогресу будуть вставлені сюди -->
+            
+            <!-- Progress Bar -->
+            <div id="progress-bar" class="flex w-full h-2.5 gap-1 mb-8"></div>
+            
+            <!-- Game Area -->
+            <div id="game-area" class="text-center">
+                <div id="question-box" class="mb-6 p-8 bg-indigo-50 dark:bg-indigo-900/30 border-2 border-indigo-200 dark:border-indigo-500/50 rounded-xl min-h-[180px] flex flex-col justify-center">
+                    <p id="question-label" class="text-lg text-indigo-800 dark:text-indigo-200 mb-2 font-medium">Позиція №</p>
+                    <h2 id="question" class="font-bold text-indigo-600 dark:text-indigo-400 tracking-tighter"></h2>
+                </div>
+                
+                <div id="hint-display" class="min-h-[3rem] my-5 p-3 bg-amber-100 dark:bg-amber-900/40 border border-amber-300 dark:border-amber-500/50 rounded-lg hidden">
+                    <p class="text-sm text-amber-800 dark:text-amber-200 font-semibold">
+                        <span class="font-bold">Підказка (Позначення):</span> <span id="hint-text"></span>
+                    </p>
+                </div>
+
+                <div id="answer-options" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <div id="ai-actions" class="mt-6 min-h-[50px]">
+                     <button id="tell-me-more-button" class="btn hidden bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                        ✨ Розкажи мені про це
+                    </button>
+                </div>
+
+                <div class="mt-4 flex justify-center">
+                    <button id="hint-button" class="btn bg-amber-400 hover:bg-amber-500 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                        Показати позначення
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Ігрова зона -->
-        <div id="game-area" class="text-center">
-            <div class="mb-6 p-8 bg-blue-50 dark:bg-blue-900/20 border-2 border-dashed border-blue-200 dark:border-blue-700 rounded-xl">
-                <p class="text-lg text-gray-600 dark:text-gray-400 mb-2">Позиція №</p>
-                <h2 id="question" class="text-5xl md:text-7xl font-bold text-blue-600 dark:text-blue-400"></h2>
-            </div>
-            
-            <div id="hint-display" class="min-h-[3rem] my-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg hidden">
-                <p class="text-sm text-yellow-800 dark:text-yellow-300 font-semibold">
-                    <span class="font-bold">Підказка (Позначення):</span> <span id="hint-text"></span>
-                </p>
-            </div>
-
-            <div id="answer-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Кнопки з варіантами відповідей -->
-            </div>
-            
-            <div class="mt-8 flex justify-center">
-                <button id="hint-button" class="btn bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-6 rounded-lg shadow-md">
-                    Показати позначення
-                </button>
-            </div>
-        </div>
-
-        <!-- Результати -->
+        <!-- Results Area -->
         <div id="results-area" class="hidden text-center py-10">
-            <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Тест завершено!</h2>
-            <div class="flex justify-center space-x-4 md:space-x-8 text-xl my-6">
-                <div class="bg-green-100 dark:bg-green-900/30 p-4 rounded-lg">
-                    <span class="font-bold text-green-600 dark:text-green-400">Правильно:</span>
-                    <span id="correct-count" class="font-bold">0</span>
+            <h2 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Тест завершено!</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-xl my-8">
+                <div class="w-full md:w-auto bg-green-100 dark:bg-green-900/30 p-5 rounded-lg text-center">
+                    <span id="correct-count" class="block text-2xl font-bold text-green-600 dark:text-green-400">0</span>
+                    <span class="text-sm font-semibold text-green-800 dark:text-green-300">Правильно</span>
                 </div>
-                <div class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg">
-                    <span class="font-bold text-red-600 dark:text-red-400">Неправильно:</span>
-                    <span id="incorrect-count" class="font-bold">0</span>
+                <div class="w-full md:w-auto bg-red-100 dark:bg-red-900/30 p-5 rounded-lg text-center">
+                    <span id="incorrect-count" class="block text-2xl font-bold text-red-600 dark:text-red-400">0</span>
+                    <span class="text-sm font-semibold text-red-800 dark:text-red-300">Неправильно</span>
                 </div>
-                 <div class="bg-yellow-100 dark:bg-yellow-900/30 p-4 rounded-lg">
-                    <span class="font-bold text-yellow-600 dark:text-yellow-400">З підказкою:</span>
-                    <span id="hint-used-count" class="font-bold">0</span>
+                 <div class="w-full md:w-auto bg-yellow-100 dark:bg-yellow-900/30 p-5 rounded-lg text-center">
+                    <span id="hint-used-count" class="block text-2xl font-bold text-yellow-500 dark:text-yellow-400">0</span>
+                    <span class="text-sm font-semibold text-yellow-800 dark:text-yellow-300">З підказкою</span>
                 </div>
             </div>
-            <button id="retry-button" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg">
+            <div id="ai-tips-container" class="my-8 text-left">
+                <div class="flex justify-center">
+                    <button id="get-learning-tips-button" class="btn bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                        ✨ Отримати поради
+                    </button>
+                </div>
+                <div id="learning-tips-content" class="mt-4 p-4 bg-gray-100 dark:bg-gray-700/50 rounded-lg hidden"></div>
+            </div>
+            <button id="retry-button" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl">
                 Спробувати ще раз
             </button>
+        </div>
+    </div>
+    
+    <!-- AI Modal -->
+    <div id="ai-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="modal-content transform -translate-y-10 w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white">✨ Довідка від Gemini</h3>
+                <button id="close-modal-button" class="text-gray-500 hover:text-gray-800 dark:hover:text-white">&times;</button>
+            </div>
+            <div id="modal-body" class="text-gray-700 dark:text-gray-300">
+                <div class="flex justify-center items-center h-24"><div class="loader"></div></div>
+            </div>
         </div>
     </div>
 
     <script>
         const quizData = [
-            { pos: 1, designation: '2239-П', name: 'Машина мийна' },
-            { pos: 2, designation: '-', name: "Скриня для ганчір'я" },
-            { pos: 3, designation: '-', name: 'Верстак для розбирання і збирання вузлів паливної апаратури' },
-            { pos: 4, designation: '-', name: 'Скриня для збирання кольорових металів' },
-            { pos: 5, designation: '-', name: 'Підставка під обладнання' },
-            { pos: 6, designation: 'НС-12', name: 'Настільно-свердлильний верстат' },
-            { pos: 7, designation: 'SPF 1108', name: 'Стенд для перевірки і регулювання ПНВТ' },
-            { pos: 8, designation: '-', name: 'Шафа для приладів і матеріалів' },
-            { pos: 9, designation: '-', name: 'Стелаж поличковий для продукції і ремонтного фонду' },
-            { pos: 10, designation: '-', name: 'Стілець підйомно-поворотний' },
-            { pos: 11, designation: '-', name: 'Стіл конторський' },
-            { pos: 12, designation: '-', name: "Прилад для перевірки електромагнітних і п'єзо-форсунок" },
-            { pos: 13, designation: '-', name: 'Витяжний зонд' },
-            { pos: 14, designation: '-', name: 'Камера для обдуву деталей' },
-            { pos: 15, designation: '-', name: 'Пристрій для випробування бензонасосів' },
-            { pos: 16, designation: 'И-138А', name: 'Верстат точильний двосторонній' },
-            { pos: 17, designation: 'Launch CNC-602A', name: 'Установка для перевірки і ультразвукової очистки форсунок' },
-            { pos: 18, designation: 'WYNNS 68409', name: 'Установка для промивки паливної системи' },
-            { pos: 19, designation: '-', name: 'Лещата' }
+            { pos: 1, designation: '2239-П', name: 'Машина мийна' }, { pos: 2, designation: '-', name: "Скриня для ганчір'я" }, { pos: 3, designation: '-', name: 'Верстак для розбирання і збирання вузлів паливної апаратури' }, { pos: 4, designation: '-', name: 'Скриня для збирання кольорових металів' }, { pos: 5, designation: '-', name: 'Підставка під обладнання' }, { pos: 6, designation: 'НС-12', name: 'Настільно-свердлильний верстат' }, { pos: 7, designation: 'SPF 1108', name: 'Стенд для перевірки і регулювання ПНВТ' }, { pos: 8, designation: '-', name: 'Шафа для приладів і матеріалів' }, { pos: 9, designation: '-', name: 'Стелаж поличковий для продукції і ремонтного фонду' }, { pos: 10, designation: '-', name: 'Стілець підйомно-поворотний' }, { pos: 11, designation: '-', name: 'Стіл конторський' }, { pos: 12, designation: '-', name: "Прилад для перевірки електромагнітних і п'єзо-форсунок" }, { pos: 13, designation: '-', name: 'Витяжний зонд' }, { pos: 14, designation: '-', name: 'Камера для обдуву деталей' }, { pos: 15, designation: '-', name: 'Пристрій для випробування бензонасосів' }, { pos: 16, designation: 'И-138А', name: 'Верстат точильний двосторонній' }, { pos: 17, designation: 'Launch CNC-602A', name: 'Установка для перевірки і ультразвукової очистки форсунок' }, { pos: 18, designation: 'WYNNS 68409', name: 'Установка для промивки паливної системи' }, { pos: 19, designation: '-', name: 'Лещата' }
         ];
 
-        // Елементи DOM
+        // --- DOM Elements ---
+        const startScreen = document.getElementById('start-screen');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsArea = document.getElementById('results-area');
+        const modeSwitch = document.getElementById('mode-switch');
+        const startButton = document.getElementById('start-button');
+        const retryButton = document.getElementById('retry-button');
+        const timerEl = document.getElementById('timer');
+        const questionEl = document.getElementById('question');
+        const questionLabel = document.getElementById('question-label');
+        const answerOptionsEl = document.getElementById('answer-options');
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
-        const questionEl = document.getElementById('question');
-        const answerOptionsEl = document.getElementById('answer-options');
         const hintButton = document.getElementById('hint-button');
         const hintDisplay = document.getElementById('hint-display');
         const hintText = document.getElementById('hint-text');
-        const gameArea = document.getElementById('game-area');
-        const resultsArea = document.getElementById('results-area');
         const correctCountEl = document.getElementById('correct-count');
         const incorrectCountEl = document.getElementById('incorrect-count');
         const hintUsedCountEl = document.getElementById('hint-used-count');
-        const retryButton = document.getElementById('retry-button');
+        
+        // AI Elements
+        const tellMeMoreButton = document.getElementById('tell-me-more-button');
+        const aiModal = document.getElementById('ai-modal');
+        const modalBody = document.getElementById('modal-body');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const getLearningTipsButton = document.getElementById('get-learning-tips-button');
+        const learningTipsContent = document.getElementById('learning-tips-content');
 
-        // Стан гри
+        // --- Game State ---
         let shuffledQuestions, currentQuestionIndex;
-        let progressStatus; // 'unanswered', 'correct', 'incorrect', 'hint'
+        let progressStatus;
         let questionAlreadyWrong;
+        let isReverseMode = false;
+        let timerInterval;
+        let timeLeft;
+        const TIME_LIMIT = 15;
+        
+        // --- Gemini API ---
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        
+        async function callGemini(prompt) {
+             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, topP: 0.95 } };
+             try {
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`Помилка API: ${response.statusText}`);
+                const result = await response.json();
+                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    if (result.promptFeedback && result.promptFeedback.blockReason) return `Запит заблоковано: ${result.promptFeedback.blockReason}.`;
+                    return "Не вдалося отримати відповідь від AI.";
+                }
+            } catch (error) {
+                console.error("Помилка виклику Gemini API:", error);
+                return `Виникла помилка: ${error.message}`;
+            }
+        }
 
-        // Ініціалізація гри
+        // --- Game Flow ---
+        function showStartScreen() {
+            quizContainer.classList.add('hidden');
+            resultsArea.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
         function startGame() {
+            isReverseMode = modeSwitch.checked;
+            startScreen.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            
             shuffledQuestions = [...quizData].sort(() => Math.random() - 0.5);
             currentQuestionIndex = 0;
             questionAlreadyWrong = false;
             progressStatus = Array(quizData.length).fill('unanswered');
             
-            gameArea.classList.remove('hidden');
-            resultsArea.classList.add('hidden');
+            learningTipsContent.classList.add('hidden');
+            getLearningTipsButton.disabled = false;
             
             renderProgressBar();
             loadNextQuestion();
         }
 
-        // Завантаження наступного питання
         function loadNextQuestion() {
             resetQuestionState();
             if (currentQuestionIndex >= shuffledQuestions.length) {
@@ -176,28 +305,36 @@
 
             progressText.textContent = `Етап ${currentQuestionIndex + 1} з ${quizData.length}`;
             const currentQuestion = shuffledQuestions[currentQuestionIndex];
-            questionEl.textContent = currentQuestion.pos;
             
-            // Генерація варіантів відповіді
+            // Adjust UI for mode
+            if (isReverseMode) {
+                questionLabel.textContent = "Назва приладу";
+                questionEl.textContent = currentQuestion.name;
+                questionEl.classList.add('text-3xl', 'md:text-4xl');
+                questionEl.classList.remove('text-6xl', 'md:text-8xl');
+            } else {
+                questionLabel.textContent = "Позиція №";
+                questionEl.textContent = currentQuestion.pos;
+                questionEl.classList.remove('text-3xl', 'md:text-4xl');
+                questionEl.classList.add('text-6xl', 'md:text-8xl');
+            }
+            
+            // Generate options
             const options = getOptions(currentQuestion);
             answerOptionsEl.innerHTML = '';
             options.forEach(option => {
                 const button = document.createElement('button');
-                button.innerHTML = option.name;
-                button.classList.add('btn', 'w-full', 'p-4', 'rounded-lg', 'bg-white', 'dark:bg-gray-700', 'border', 'border-gray-300', 'dark:border-gray-600', 'text-left', 'hover:bg-gray-100', 'dark:hover:bg-gray-600');
-                button.onclick = () => checkAnswer(option.name, button);
+                const optionValue = isReverseMode ? option.pos : option.name;
+                button.innerHTML = optionValue;
+                button.classList.add('btn', 'answer-btn', 'w-full', 'p-4', 'rounded-lg', 'font-medium', 'text-left', 'dark:text-gray-200');
+                if (isReverseMode) button.classList.add('text-center', 'text-2xl');
+                button.onclick = () => checkAnswer(optionValue, button);
                 answerOptionsEl.appendChild(button);
             });
+            
+            startTimer();
         }
         
-        function resetQuestionState() {
-            questionAlreadyWrong = false;
-            hintButton.disabled = false;
-            hintDisplay.classList.add('hidden');
-            hintText.textContent = '';
-        }
-
-        // Генерація варіантів відповідей (1 правильна + 3 неправильних)
         function getOptions(currentQuestion) {
             const correctOption = currentQuestion;
             const wrongOptions = quizData
@@ -205,96 +342,159 @@
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 3);
             
-            const options = [correctOption, ...wrongOptions];
-            return options.sort(() => Math.random() - 0.5);
+            return [correctOption, ...wrongOptions].sort(() => Math.random() - 0.5);
         }
 
-        // Перевірка відповіді
-        function checkAnswer(selectedName, button) {
-            const isHintUsed = progressStatus[currentQuestionIndex] === 'hint';
-            const correctName = shuffledQuestions[currentQuestionIndex].name;
-            const isCorrect = selectedName === correctName;
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = TIME_LIMIT;
+            timerEl.textContent = timeLeft;
+            timerEl.classList.remove('text-red-500');
 
-            // Блокуємо всі кнопки
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                if (timeLeft < 6) {
+                    timerEl.classList.add('text-red-500');
+                }
+                if (timeLeft === 0) {
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+        
+        function handleTimeout() {
+            clearInterval(timerInterval);
+            if (progressStatus[currentQuestionIndex] === 'unanswered') {
+                progressStatus[currentQuestionIndex] = 'incorrect';
+            }
+            renderProgressBar();
+            Array.from(answerOptionsEl.children).forEach(btn => btn.disabled = true);
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadNextQuestion();
+            }, 1000);
+        }
+
+        function checkAnswer(selectedValue, button) {
+            clearInterval(timerInterval);
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            const correctValue = isReverseMode ? currentQuestion.pos : currentQuestion.name;
+            const isCorrect = selectedValue == correctValue; // Use == for type flexibility
+
             Array.from(answerOptionsEl.children).forEach(btn => btn.disabled = true);
             hintButton.disabled = true;
 
             if (isCorrect) {
-                button.classList.add('correct', 'bg-green-500', 'dark:bg-green-600', 'text-white', 'border-green-500');
-                if (!questionAlreadyWrong) {
-                     progressStatus[currentQuestionIndex] = isHintUsed ? 'hint' : 'correct';
-                }
+                button.classList.add('correct');
+                if (!isReverseMode) tellMeMoreButton.classList.remove('hidden'); // Show button only in default mode
                 
-                renderProgressBar();
-                setTimeout(() => {
-                    currentQuestionIndex++;
-                    loadNextQuestion();
-                }, 1000);
+                if (!questionAlreadyWrong) {
+                     progressStatus[currentQuestionIndex] = progressStatus[currentQuestionIndex] === 'hint' ? 'hint' : 'correct';
+                }
             } else {
-                button.classList.add('incorrect', 'bg-red-500', 'dark:bg-red-600', 'text-white', 'border-red-500');
+                button.classList.add('incorrect');
                 if (!questionAlreadyWrong) {
                     questionAlreadyWrong = true;
                     progressStatus[currentQuestionIndex] = 'incorrect';
-                    renderProgressBar();
                 }
-                // Розблоковуємо інші кнопки
-                 Array.from(answerOptionsEl.children).forEach(btn => {
-                    if (btn !== button) {
-                        btn.disabled = false;
-                    }
-                });
+                Array.from(answerOptionsEl.children).forEach(btn => { if (btn !== button) btn.disabled = false; });
+                hintButton.disabled = false; 
+                startTimer(); // Restart timer for another attempt
+                return; // Do not proceed to next question
             }
+            
+            renderProgressBar();
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadNextQuestion();
+            }, 1200);
         }
         
-        // Показ підказки
-        hintButton.addEventListener('click', () => {
-             if (progressStatus[currentQuestionIndex] === 'unanswered') {
-                progressStatus[currentQuestionIndex] = 'hint';
-                renderProgressBar();
-             }
-            hintText.textContent = shuffledQuestions[currentQuestionIndex].designation;
-            hintDisplay.classList.remove('hidden');
-            hintButton.disabled = true;
-        });
-
-        // Рендеринг прогрес-бару
+        function resetQuestionState() {
+            questionAlreadyWrong = false;
+            hintButton.disabled = false;
+            hintDisplay.classList.add('hidden');
+            hintText.textContent = '';
+            tellMeMoreButton.classList.add('hidden');
+        }
+        
         function renderProgressBar() {
             progressBar.innerHTML = '';
             progressStatus.forEach(status => {
                 const item = document.createElement('div');
-                item.classList.add('progress-bar-item', 'w-full', 'h-full');
+                item.classList.add('progress-bar-item', 'w-full', 'h-full', 'rounded-full');
                 switch(status) {
-                    case 'correct':
-                        item.classList.add('bg-green-500');
-                        break;
-                    case 'incorrect':
-                        item.classList.add('bg-red-500');
-                        break;
-                    case 'hint':
-                        item.classList.add('bg-yellow-400');
-                        break;
-                    default: // unanswered
-                        item.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                    case 'correct': item.classList.add('bg-green-500'); break;
+                    case 'incorrect': item.classList.add('bg-red-500'); break;
+                    case 'hint': item.classList.add('bg-yellow-400'); break;
+                    default: item.classList.add('bg-gray-300', 'dark:bg-gray-600');
                 }
                 progressBar.appendChild(item);
             });
         }
         
-        // Завершення гри
         function endGame() {
-            gameArea.classList.add('hidden');
+            clearInterval(timerInterval);
+            quizContainer.classList.add('hidden');
             resultsArea.classList.remove('hidden');
-            
             correctCountEl.textContent = progressStatus.filter(s => s === 'correct').length;
             incorrectCountEl.textContent = progressStatus.filter(s => s === 'incorrect').length;
             hintUsedCountEl.textContent = progressStatus.filter(s => s === 'hint').length;
         }
 
-        // Перезапуск
-        retryButton.addEventListener('click', startGame);
+        // --- Event Listeners ---
+        startButton.addEventListener('click', startGame);
+        retryButton.addEventListener('click', showStartScreen);
+        
+        hintButton.addEventListener('click', () => {
+             if (progressStatus[currentQuestionIndex] === 'unanswered') progressStatus[currentQuestionIndex] = 'hint';
+             renderProgressBar();
+             hintText.textContent = shuffledQuestions[currentQuestionIndex].designation;
+             hintDisplay.classList.remove('hidden');
+             hintButton.disabled = true;
+        });
 
-        // Перший запуск
-        startGame();
+        function showModal() {
+            modalBody.innerHTML = `<div class="flex justify-center items-center h-24"><div class="loader"></div></div>`;
+            aiModal.classList.remove('opacity-0', 'pointer-events-none');
+            aiModal.querySelector('.modal-content').classList.remove('-translate-y-10');
+        }
+        
+        function hideModal() {
+            aiModal.classList.add('opacity-0', 'pointer-events-none');
+            aiModal.querySelector('.modal-content').classList.add('-translate-y-10');
+        }
+        
+        tellMeMoreButton.addEventListener('click', async () => {
+            showModal();
+            const currentItem = shuffledQuestions[currentQuestionIndex];
+            if (!currentItem) return;
+            const prompt = `Розкажи коротко (2-3 речення) про '${currentItem.name}'. Поясни простими словами, для чого це використовується. Відповідь надай українською мовою.`;
+            const info = await callGemini(prompt);
+            modalBody.innerHTML = info.replace(/\n/g, '<br>');
+        });
+
+        getLearningTipsButton.addEventListener('click', async (event) => {
+            event.currentTarget.disabled = true;
+            learningTipsContent.classList.remove('hidden');
+            learningTipsContent.innerHTML = `<div class="flex justify-center items-center"><div class="loader"></div></div>`;
+            const correctItems = shuffledQuestions.filter((_, i) => progressStatus[i] === 'correct' || progressStatus[i] === 'hint').map(q => q.name);
+            const incorrectItems = shuffledQuestions.filter((_, i) => progressStatus[i] === 'incorrect').map(q => q.name);
+            if (incorrectItems.length === 0) {
+                 learningTipsContent.innerHTML = "<p class='text-center'><strong>Чудовий результат!</strong> У вас немає помилок.</p>";
+                 return;
+            }
+            const prompt = `Я проходив тест на знання обладнання. Мої помилки: ${incorrectItems.join(', ')}. Дай мені 2-3 корисні поради для запам'ятовування саме цих позицій. Відповідь надай українською мовою у форматі маркованого списку.`;
+            const tips = await callGemini(prompt);
+            learningTipsContent.innerHTML = tips.replace(/\n/g, '<br>').replace(/\* /g, '• ');
+        });
+
+        closeModalButton.addEventListener('click', hideModal);
+        aiModal.addEventListener('click', (e) => { if (e.target === aiModal) hideModal(); });
+
+        // Initial setup
+        showStartScreen();
     </script>
 </body>
 </html>
