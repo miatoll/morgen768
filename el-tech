@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест з Основ Електротехніки</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for selected answers */
+        .correct-answer {
+            background-color: #166534 !important; /* green-800 */
+            border-color: #22c55e !important; /* green-500 */
+            color: #f0fdf4; /* green-50 */
+        }
+        .incorrect-answer {
+            background-color: #991b1b !important; /* red-800 */
+            border-color: #ef4444 !important; /* red-500 */
+            color: #fef2f2; /* red-50 */
+        }
+        /* Style for radio buttons */
+        input[type="radio"]:checked + label {
+            border-color: #4f46e5; /* indigo-600 */
+            background-color: #3730a3; /* indigo-800 */
+        }
+        .gemini-btn {
+            background-color: #ca8a04; /* yellow-600 */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .gemini-btn:hover {
+            background-color: #a16207; /* yellow-700 */
+        }
+        .gemini-btn:disabled {
+            background-color: #78716c; /* stone-500 */
+            cursor: not-allowed;
+        }
+        .explanation-box {
+            background-color: #1e293b; /* slate-800 */
+            border-left: 4px solid #ca8a04;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            color: #cbd5e1; /* slate-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen p-4">
+
+    <main class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-2xl">
+        
+        <header class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-white">Тест з Основ Електротехніки</h1>
+            <p class="text-gray-400 mt-2">Оберіть правильну відповідь для кожного запитання.</p>
+        </header>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container">
+            <!-- Questions will be injected here by JavaScript -->
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-8 text-center">
+            <button id="submit-btn" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 transition-all duration-300 ease-in-out">
+                Перевірити відповіді
+            </button>
+            <button id="retry-btn" class="hidden bg-gray-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-500/50 transition-all duration-300 ease-in-out">
+                Спробувати ще раз
+            </button>
+        </div>
+
+        <!-- Results Display -->
+        <div id="results-container" class="hidden mt-6 text-center text-2xl font-semibold p-4 rounded-lg">
+            <!-- Result message will be injected here -->
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA ---
+        const allQuestions = [
+             {
+                id: 'formula-ohm-section',
+                lawName: 'Закон Ома для ділянки кола',
+                questionText: 'Оберіть формулу для закону Ома для ділянки кола:',
+                options: ['I = U / R', 'I = U * R', 'R = U / I'],
+                correctAnswer: 'I = U / R'
+            },
+            {
+                id: 'formula-ohm-full',
+                lawName: 'Закон Ома для повного кола',
+                questionText: 'Оберіть формулу для закону Ома для повного кола:',
+                options: ['I = ε / (R - r)', 'I = U / (R + r)', 'I = ε / (R + r)'],
+                correctAnswer: 'I = ε / (R + r)'
+            },
+            {
+                id: 'formula-kirchhoff-first',
+                lawName: 'Перший закон Кірхгофа',
+                questionText: 'Оберіть формулу для першого закону Кірхгофа (закону вузлів):',
+                options: ['ΣU = 0', 'ΣI = 0', 'Σε = ΣR'],
+                correctAnswer: 'ΣI = 0'
+            },
+            {
+                id: 'formula-kirchhoff-second',
+                lawName: 'Другий закон Кірхгофа',
+                questionText: 'Оберіть формулу для другого закону Кірхгофа (закону контурів):',
+                options: ['Σ(IR) = Σε', 'ΣI = Σε', 'ΣR = ΣU'],
+                correctAnswer: 'Σ(IR) = Σε'
+            },
+            {
+                id: 'formula-joule-lenz',
+                lawName: 'Закон Джоуля-Ленца',
+                questionText: 'Оберіть формулу для закону Джоуля-Ленца:',
+                options: ['Q = I * R² * t', 'Q = I² * R * t', 'P = U * R * t'],
+                correctAnswer: 'Q = I² * R * t'
+            },
+            {
+                id: 'def-kirchhoff-first',
+                lawName: 'Перший закон Кірхгофа',
+                questionText: 'Визначте закон: "Скільки струму втікає у вузол, стільки ж із нього і витікає."',
+                options: ['Перший закон Кірхгофа', 'Закон Ома для повного кола', 'Другий закон Кірхгофа'],
+                correctAnswer: 'Перший закон Кірхгофа'
+            },
+            {
+                id: 'def-ohm-section',
+                lawName: 'Закон Ома для ділянки кола',
+                questionText: 'Визначте закон: "Сила струму на ділянці кола — це напруга, поділена на опір цієї ділянки."',
+                options: ['Закон Джоуля-Ленца', 'Закон Ома для ділянки кола', 'Закон Ома для повного кола'],
+                correctAnswer: 'Закон Ома для ділянки кола'
+            },
+            {
+                id: 'def-joule-lenz',
+                lawName: 'Закон Джоуля-Ленца',
+                questionText: 'Визначте закон: "Теплота, що виділяється струмом, залежить від сили струму в квадраті, опору і часу."',
+                options: ['Закон Джоуля-Ленца', 'Перший закон Кірхгофа', 'Закон Ома для ділянки кола'],
+                correctAnswer: 'Закон Джоуля-Ленца'
+            },
+            {
+                id: 'def-kirchhoff-second',
+                lawName: 'Другий закон Кірхгофа',
+                questionText: 'Визначте закон: "У замкненому контурі сума напруг дорівнює сумі ЕРС у цьому ж контурі."',
+                options: ['Закон Ома для повного кола', 'Другий закон Кірхгофа', 'Перший закон Кірхгофа'],
+                correctAnswer: 'Другий закон Кірхгофа'
+            },
+            {
+                id: 'def-ohm-full',
+                lawName: 'Закон Ома для повного кола',
+                questionText: 'Визначте закон: "Струм у повному колі — це ЕРС, поділена на весь опір (зовнішній і внутрішній)."',
+                options: ['Закон Ома для ділянки кола', 'Закон Джоуля-Ленца', 'Закон Ома для повного кола'],
+                correctAnswer: 'Закон Ома для повного кола'
+            }
+        ];
+        
+        let questions = [];
+
+        // --- DOM Elements ---
+        const quizContainer = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('submit-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const resultsContainer = document.getElementById('results-container');
+
+        // --- FUNCTIONS ---
+        const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        };
+
+        function displayQuiz() {
+            questions = [...allQuestions];
+            shuffleArray(questions);
+            
+            quizContainer.innerHTML = ''; 
+            questions.forEach((q, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'mb-8 p-5 bg-gray-700/50 rounded-lg';
+                questionBlock.id = `question-block-${q.id}`;
+                
+                const questionTitle = document.createElement('h3');
+                questionTitle.className = 'text-xl font-semibold mb-4 text-indigo-300';
+                questionTitle.textContent = `${index + 1}. ${q.questionText}`;
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'space-y-3';
+
+                q.options.forEach(option => {
+                    const optionId = `q${index}-${option.replace(/\s|\(|\)|\/|=/g, '')}`;
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = optionId;
+                    radioInput.name = `question-${q.id}`;
+                    radioInput.value = option;
+                    radioInput.className = 'hidden';
+
+                    const label = document.createElement('label');
+                    label.htmlFor = optionId;
+                    label.textContent = option;
+                    label.className = 'block w-full text-left p-4 rounded-md border-2 border-transparent bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors duration-200';
+                    
+                    optionsContainer.appendChild(radioInput);
+                    optionsContainer.appendChild(label);
+                });
+
+                questionBlock.appendChild(questionTitle);
+                questionBlock.appendChild(optionsContainer);
+                quizContainer.appendChild(questionBlock);
+            });
+        }
+
+        async function getGeminiResponse(prompt, buttonElement, displayElement) {
+             buttonElement.disabled = true;
+             displayElement.innerHTML = '<p class="text-yellow-400">Генеруємо відповідь... ✨</p>';
+             displayElement.classList.remove('hidden');
+
+            try {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Помилка API: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    displayElement.innerHTML = text.replace(/\n/g, '<br>'); // Format response
+                } else {
+                    throw new Error("Не вдалося отримати відповідь від Gemini.");
+                }
+
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                displayElement.innerHTML = `<p class="text-red-400">Не вдалося завантажити пояснення. Спробуйте пізніше.</p>`;
+                buttonElement.disabled = false; // Allow retry on error
+            }
+        }
+
+        function checkAnswers() {
+            let score = 0;
+
+            questions.forEach((q) => {
+                const selectedOption = document.querySelector(`input[name="question-${q.id}"]:checked`);
+                const allLabels = document.querySelectorAll(`input[name="question-${q.id}"] + label`);
+                const questionBlock = document.getElementById(`question-block-${q.id}`);
+
+                document.querySelectorAll(`input[name="question-${q.id}"]`).forEach(rb => rb.disabled = true);
+                
+                if (selectedOption) {
+                    const selectedLabel = selectedOption.nextElementSibling;
+                    if (selectedOption.value === q.correctAnswer) {
+                        score++;
+                        selectedLabel.classList.add('correct-answer');
+                    } else {
+                        selectedLabel.classList.add('incorrect-answer');
+                        const correctLabel = Array.from(allLabels).find(label => label.textContent === q.correctAnswer);
+                        if(correctLabel) correctLabel.classList.add('correct-answer');
+                    }
+                } else {
+                     const correctLabel = Array.from(allLabels).find(label => label.textContent === q.correctAnswer);
+                     if(correctLabel) correctLabel.classList.add('correct-answer');
+                }
+
+                // Add Gemini features
+                const geminiContainer = document.createElement('div');
+                geminiContainer.className = 'mt-4 flex flex-wrap gap-2';
+
+                const explainBtn = document.createElement('button');
+                explainBtn.innerHTML = 'Пояснити закон ✨';
+                explainBtn.className = 'gemini-btn';
+
+                const exampleBtn = document.createElement('button');
+                exampleBtn.innerHTML = 'Навести приклад ✨';
+                exampleBtn.className = 'gemini-btn';
+
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation-box hidden w-full';
+                
+                explainBtn.onclick = (e) => getGeminiResponse(`Поясни ${q.lawName} простими словами для початківця в електротехніці.`, e.target, explanationBox);
+                exampleBtn.onclick = (e) => getGeminiResponse(`Наведи простий практичний приклад застосування ${q.lawName}.`, e.target, explanationBox);
+
+                geminiContainer.appendChild(explainBtn);
+                geminiContainer.appendChild(exampleBtn);
+                questionBlock.appendChild(geminiContainer);
+                questionBlock.appendChild(explanationBox);
+
+            });
+
+            // Display results
+            resultsContainer.textContent = `Ваш результат: ${score} з ${questions.length}`;
+            resultsContainer.className = 'mt-6 text-center text-2xl font-semibold p-4 rounded-lg';
+            if (score === questions.length) {
+                resultsContainer.classList.add('bg-green-500', 'text-white');
+            } else if (score >= questions.length / 2) {
+                resultsContainer.classList.add('bg-yellow-500', 'text-gray-900');
+            } else {
+                 resultsContainer.classList.add('bg-red-500', 'text-white');
+            }
+            resultsContainer.classList.remove('hidden');
+
+            submitBtn.classList.add('hidden');
+            retryBtn.classList.remove('hidden');
+        }
+
+        function retryQuiz() {
+            resultsContainer.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+            retryBtn.classList.add('hidden');
+            displayQuiz(); 
+        }
+
+        // --- EVENT LISTENERS ---
+        submitBtn.addEventListener('click', checkAnswers);
+        retryBtn.addEventListener('click', retryQuiz);
+
+        // --- INITIALIZATION ---
+        window.onload = displayQuiz;
+
+    </script>
+</body>
+</html>
