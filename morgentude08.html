@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренажер на Пошук Відповідностей з Gemini AI</title>
+    <title>Тренажер на Пошук Відповідностей</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -68,22 +68,6 @@
         .dark .answer-btn:hover {
              border-color: #818cf8; /* indigo-400 */
              color: #818cf8;
-        }
-        /* Modal styles */
-        .modal { transition: opacity 0.25s ease; }
-        .modal-content { transition: transform 0.25s ease; }
-        /* Spinner */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4f46e5;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         /* Toggle Switch */
         #mode-switch:checked ~ .dot {
@@ -150,13 +134,7 @@
 
                 <div id="answer-options" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 
-                <div id="ai-actions" class="mt-6 min-h-[50px]">
-                     <button id="tell-me-more-button" class="btn hidden bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold py-3 px-8 rounded-full shadow-lg">
-                        ✨ Розкажи мені про це
-                    </button>
-                </div>
-
-                <div class="mt-4 flex justify-center">
+                <div class="mt-8 flex justify-center">
                     <button id="hint-button" class="btn bg-amber-400 hover:bg-amber-500 text-white font-bold py-3 px-8 rounded-full shadow-lg">
                         Показати позначення
                     </button>
@@ -181,30 +159,9 @@
                     <span class="text-sm font-semibold text-yellow-800 dark:text-yellow-300">З підказкою</span>
                 </div>
             </div>
-            <div id="ai-tips-container" class="my-8 text-left">
-                <div class="flex justify-center">
-                    <button id="get-learning-tips-button" class="btn bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-full shadow-lg">
-                        ✨ Отримати поради
-                    </button>
-                </div>
-                <div id="learning-tips-content" class="mt-4 p-4 bg-gray-100 dark:bg-gray-700/50 rounded-lg hidden"></div>
-            </div>
             <button id="retry-button" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl">
                 Спробувати ще раз
             </button>
-        </div>
-    </div>
-    
-    <!-- AI Modal -->
-    <div id="ai-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
-        <div class="modal-content transform -translate-y-10 w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white">✨ Довідка від Gemini</h3>
-                <button id="close-modal-button" class="text-gray-500 hover:text-gray-800 dark:hover:text-white">&times;</button>
-            </div>
-            <div id="modal-body" class="text-gray-700 dark:text-gray-300">
-                <div class="flex justify-center items-center h-24"><div class="loader"></div></div>
-            </div>
         </div>
     </div>
 
@@ -233,14 +190,6 @@
         const incorrectCountEl = document.getElementById('incorrect-count');
         const hintUsedCountEl = document.getElementById('hint-used-count');
         
-        // AI Elements
-        const tellMeMoreButton = document.getElementById('tell-me-more-button');
-        const aiModal = document.getElementById('ai-modal');
-        const modalBody = document.getElementById('modal-body');
-        const closeModalButton = document.getElementById('close-modal-button');
-        const getLearningTipsButton = document.getElementById('get-learning-tips-button');
-        const learningTipsContent = document.getElementById('learning-tips-content');
-
         // --- Game State ---
         let shuffledQuestions, currentQuestionIndex;
         let progressStatus;
@@ -250,28 +199,6 @@
         let timeLeft;
         const TIME_LIMIT = 15;
         
-        // --- Gemini API ---
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-        
-        async function callGemini(prompt) {
-             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, topP: 0.95 } };
-             try {
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error(`Помилка API: ${response.statusText}`);
-                const result = await response.json();
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                    if (result.promptFeedback && result.promptFeedback.blockReason) return `Запит заблоковано: ${result.promptFeedback.blockReason}.`;
-                    return "Не вдалося отримати відповідь від AI.";
-                }
-            } catch (error) {
-                console.error("Помилка виклику Gemini API:", error);
-                return `Виникла помилка: ${error.message}`;
-            }
-        }
-
         // --- Game Flow ---
         function showStartScreen() {
             quizContainer.classList.add('hidden');
@@ -288,9 +215,6 @@
             currentQuestionIndex = 0;
             questionAlreadyWrong = false;
             progressStatus = Array(quizData.length).fill('unanswered');
-            
-            learningTipsContent.classList.add('hidden');
-            getLearningTipsButton.disabled = false;
             
             renderProgressBar();
             loadNextQuestion();
@@ -387,8 +311,6 @@
 
             if (isCorrect) {
                 button.classList.add('correct');
-                if (!isReverseMode) tellMeMoreButton.classList.remove('hidden'); // Show button only in default mode
-                
                 if (!questionAlreadyWrong) {
                      progressStatus[currentQuestionIndex] = progressStatus[currentQuestionIndex] === 'hint' ? 'hint' : 'correct';
                 }
@@ -416,7 +338,6 @@
             hintButton.disabled = false;
             hintDisplay.classList.add('hidden');
             hintText.textContent = '';
-            tellMeMoreButton.classList.add('hidden');
         }
         
         function renderProgressBar() {
@@ -454,44 +375,6 @@
              hintDisplay.classList.remove('hidden');
              hintButton.disabled = true;
         });
-
-        function showModal() {
-            modalBody.innerHTML = `<div class="flex justify-center items-center h-24"><div class="loader"></div></div>`;
-            aiModal.classList.remove('opacity-0', 'pointer-events-none');
-            aiModal.querySelector('.modal-content').classList.remove('-translate-y-10');
-        }
-        
-        function hideModal() {
-            aiModal.classList.add('opacity-0', 'pointer-events-none');
-            aiModal.querySelector('.modal-content').classList.add('-translate-y-10');
-        }
-        
-        tellMeMoreButton.addEventListener('click', async () => {
-            showModal();
-            const currentItem = shuffledQuestions[currentQuestionIndex];
-            if (!currentItem) return;
-            const prompt = `Розкажи коротко (2-3 речення) про '${currentItem.name}'. Поясни простими словами, для чого це використовується. Відповідь надай українською мовою.`;
-            const info = await callGemini(prompt);
-            modalBody.innerHTML = info.replace(/\n/g, '<br>');
-        });
-
-        getLearningTipsButton.addEventListener('click', async (event) => {
-            event.currentTarget.disabled = true;
-            learningTipsContent.classList.remove('hidden');
-            learningTipsContent.innerHTML = `<div class="flex justify-center items-center"><div class="loader"></div></div>`;
-            const correctItems = shuffledQuestions.filter((_, i) => progressStatus[i] === 'correct' || progressStatus[i] === 'hint').map(q => q.name);
-            const incorrectItems = shuffledQuestions.filter((_, i) => progressStatus[i] === 'incorrect').map(q => q.name);
-            if (incorrectItems.length === 0) {
-                 learningTipsContent.innerHTML = "<p class='text-center'><strong>Чудовий результат!</strong> У вас немає помилок.</p>";
-                 return;
-            }
-            const prompt = `Я проходив тест на знання обладнання. Мої помилки: ${incorrectItems.join(', ')}. Дай мені 2-3 корисні поради для запам'ятовування саме цих позицій. Відповідь надай українською мовою у форматі маркованого списку.`;
-            const tips = await callGemini(prompt);
-            learningTipsContent.innerHTML = tips.replace(/\n/g, '<br>').replace(/\* /g, '• ');
-        });
-
-        closeModalButton.addEventListener('click', hideModal);
-        aiModal.addEventListener('click', (e) => { if (e.target === aiModal) hideModal(); });
 
         // Initial setup
         showStartScreen();
