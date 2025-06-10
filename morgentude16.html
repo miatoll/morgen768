@@ -34,34 +34,76 @@
             border-color: #dc2626 !important; /* red-600 */
             color: white;
         }
+        /* Toggle Switch Styles */
+        .toggle-label {
+            transition: background-color .2s ease-in-out;
+        }
+        .toggle-checkbox {
+            transition: right .2s ease-in-out;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #4f46e5;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #6366f1; /* indigo-500 */
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
     <div id="app-container" class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 md:p-8">
         
-        <!-- Quiz View -->
-        <div id="quiz-view">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-2">Тренажер з обладнання</h1>
-            <p class="text-center text-gray-500 mb-6">Встановіть відповідність між номером та назвою</p>
+        <!-- Start View -->
+        <div id="start-view" class="text-center">
+             <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Тренажер з обладнання</h1>
+             <p class="text-gray-600 mb-8">Оберіть налаштування перед початком.</p>
+             
+             <div class="space-y-6 mb-10">
+                <!-- Mode Toggle -->
+                <div class="flex items-center justify-center space-x-3">
+                    <span id="label-id-to-name" class="font-semibold text-indigo-600 w-28 text-right">Номер → Назва</span>
+                    <div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="mode-toggle" id="mode-toggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                        <label for="mode-toggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer"></label>
+                    </div>
+                    <span id="label-name-to-id" class="font-semibold text-gray-400 w-28 text-left">Назва → Номер</span>
+                </div>
+                <!-- Timer Toggle -->
+                 <div class="flex items-center justify-center space-x-3">
+                    <span id="label-timer-off" class="font-semibold text-gray-400 w-28 text-right">Таймер Вимк.</span>
+                    <div class="relative inline-block w-14 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="timer-toggle" id="timer-toggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/>
+                        <label for="timer-toggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer"></label>
+                    </div>
+                    <span id="label-timer-on" class="font-semibold text-indigo-600 w-28 text-left">Таймер Увімк.</span>
+                 </div>
+             </div>
 
-            <!-- Progress Bar -->
+             <button id="start-btn" class="w-full max-w-xs mx-auto option-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-sm">
+                Почати тестування
+             </button>
+        </div>
+
+        <!-- Quiz View -->
+        <div id="quiz-view" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                 <h1 id="quiz-title" class="text-xl md:text-2xl font-bold text-gray-800"></h1>
+                 <div id="timer-display" class="text-lg font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-md hidden">00:00</div>
+            </div>
+
             <div id="progress-bar" class="flex gap-1 mb-6 h-3 rounded-full overflow-hidden"></div>
 
-            <!-- Question Area -->
-            <div id="question-area" class="text-center p-8 bg-gray-50 rounded-lg border border-gray-200 mb-6">
-                <p class="text-lg text-gray-600 mb-2">Якому обладнанню відповідає номер?</p>
-                <p id="question-number" class="text-6xl font-bold text-indigo-600"></p>
+            <div id="question-area" class="text-center p-6 md:p-8 bg-gray-50 rounded-lg border border-gray-200 mb-6">
+                <p id="question-description" class="text-lg text-gray-600 mb-2"></p>
+                <p id="question-main" class="text-3xl md:text-5xl font-bold text-indigo-600 break-words leading-tight"></p>
                 <div id="designation-container" class="mt-4 h-8">
                     <p id="designation-text" class="text-2xl font-semibold text-amber-600 opacity-0 transition-opacity duration-300"></p>
                 </div>
             </div>
 
-            <!-- Options -->
-            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            </div>
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
 
-            <!-- Controls -->
             <div id="controls-container" class="flex justify-center">
                 <button id="hint-btn" class="w-full sm:w-auto sm:min-w-[240px] option-btn bg-amber-400 hover:bg-amber-500 text-white font-bold py-3 px-4 rounded-lg shadow-sm">
                     Показати позначення
@@ -76,17 +118,18 @@
             <div class="mb-6">
                  <p class="text-xl text-gray-700">Ваш результат:</p>
                  <p id="score-text" class="text-4xl font-bold text-indigo-600 my-2"></p>
-                 <p id="stats-text" class="text-gray-500"></p>
+                 <p id="stats-text" class="text-gray-500 mb-4"></p>
+                 <p id="time-text" class="text-lg text-gray-600"></p>
             </div>
             <button id="restart-btn" class="w-full max-w-xs mx-auto option-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-sm">
-                Спробувати ще раз
+                На головну
             </button>
         </div>
 
     </div>
 
     <script>
-        // --- Data extracted from the image ---
+        // --- Data ---
         const equipmentData = [
             { id: 1, designation: 'СТШ', name: 'Трансформатор для дугового зварювання' },
             { id: 2, designation: 'ПСО-300', name: 'Перетворювач для дугової зварки' },
@@ -98,7 +141,7 @@
             { id: 8, designation: '', name: 'Розподільна шафа' },
             { id: 9, designation: '', name: 'Стелаж секційний' },
             { id: 10, designation: '', name: 'Точковий зварювальний апарат' },
-            { id: 11, designation: 'ВСГ-3А', name: 'Випрямляч силеновий' },
+            { id: 11, designation: 'ВСГ-3А', name: 'Випрямляч силовий' },
             { id: 12, designation: '', name: 'Обдирочно-шліфувальний верстат' },
             { id: 13, designation: 'П-45', name: 'Камерна електропіч' },
             { id: 14, designation: '', name: 'Щит керування піччю' },
@@ -106,32 +149,41 @@
         ];
 
         // --- DOM Elements ---
+        const startView = document.getElementById('start-view');
         const quizView = document.getElementById('quiz-view');
         const resultView = document.getElementById('result-view');
+        const modeToggle = document.getElementById('mode-toggle');
+        const timerToggle = document.getElementById('timer-toggle');
+        const startBtn = document.getElementById('start-btn');
         const progressBar = document.getElementById('progress-bar');
-        const finalProgressBar = document.getElementById('final-progress-bar');
-        const questionNumberEl = document.getElementById('question-number');
-        const designationContainer = document.getElementById('designation-container');
+        const quizTitle = document.getElementById('quiz-title');
+        const timerDisplay = document.getElementById('timer-display');
+        const questionDescription = document.getElementById('question-description');
+        const questionMain = document.getElementById('question-main');
         const designationTextEl = document.getElementById('designation-text');
         const optionsContainer = document.getElementById('options-container');
         const hintBtn = document.getElementById('hint-btn');
-        const restartBtn = document.getElementById('restart-btn');
+        const finalProgressBar = document.getElementById('final-progress-bar');
         const scoreTextEl = document.getElementById('score-text');
         const statsTextEl = document.getElementById('stats-text');
+        const timeText = document.getElementById('time-text');
+        const restartBtn = document.getElementById('restart-btn');
+        const labelIdToName = document.getElementById('label-id-to-name');
+        const labelNameToId = document.getElementById('label-name-to-id');
+        const labelTimerOn = document.getElementById('label-timer-on');
+        const labelTimerOff = document.getElementById('label-timer-off');
 
         // --- State ---
         let questions = [];
         let currentQuestionIndex = 0;
-        let progress = []; // 'unanswered', 'correct', 'incorrect', 'conditional'
-        let questionAttempted = false; // To track if the user has made an incorrect attempt on the current question
+        let progress = [];
+        let questionAttempted = false;
+        let quizMode = 'id-to-name'; // 'id-to-name' or 'name-to-id'
+        let timerEnabled = true;
+        let timerInterval;
+        let startTime;
 
         // --- Functions ---
-        
-        /**
-         * Shuffles an array in place.
-         * @param {Array} array The array to shuffle.
-         * @returns {Array} The shuffled array.
-         */
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -139,25 +191,40 @@
             }
             return array;
         }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+        
+        function updateTimer() {
+            const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            timerDisplay.textContent = formatTime(elapsedTime);
+        }
 
-        /**
-         * Initializes or restarts the game.
-         */
-        function startGame() {
+        function initializeQuiz() {
+            startView.style.display = 'none';
+            resultView.style.display = 'none';
+            quizView.style.display = 'block';
+
             questions = shuffleArray([...equipmentData]);
             currentQuestionIndex = 0;
             progress = new Array(questions.length).fill('unanswered');
             
-            quizView.style.display = 'block';
-            resultView.style.display = 'none';
+            if (timerEnabled) {
+                timerDisplay.style.display = 'block';
+                startTime = Date.now();
+                timerInterval = setInterval(updateTimer, 1000);
+                updateTimer();
+            } else {
+                timerDisplay.style.display = 'none';
+            }
 
             renderProgressBar();
             loadQuestion();
         }
 
-        /**
-         * Renders the progress bar segments.
-         */
         function renderProgressBar() {
             progressBar.innerHTML = '';
             progress.forEach(status => {
@@ -170,9 +237,6 @@
             });
         }
 
-        /**
-         * Loads the current question and its options.
-         */
         function loadQuestion() {
             if (currentQuestionIndex >= questions.length) {
                 showResults();
@@ -183,85 +247,74 @@
             const currentQuestion = questions[currentQuestionIndex];
 
             // Reset UI
-            questionNumberEl.textContent = currentQuestion.id;
             designationTextEl.textContent = currentQuestion.designation || '---';
             designationTextEl.classList.add('opacity-0');
             optionsContainer.innerHTML = '';
-            hintBtn.disabled = false;
-            
-            if (!currentQuestion.designation) {
-                hintBtn.disabled = true;
-                hintBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            hintBtn.disabled = !currentQuestion.designation;
+            hintBtn.style.cursor = currentQuestion.designation ? 'pointer' : 'not-allowed';
+            hintBtn.classList.toggle('opacity-50', !currentQuestion.designation);
+
+
+            let questionText, correctAnswer, options;
+            if (quizMode === 'id-to-name') {
+                quizTitle.textContent = "Номер → Назва";
+                questionDescription.textContent = "Якому обладнанню відповідає номер?";
+                questionText = currentQuestion.id;
+                correctAnswer = currentQuestion.name;
+                const incorrectAnswers = equipmentData.filter(item => item.id !== currentQuestion.id).map(item => item.name);
+                options = shuffleArray([correctAnswer, ...shuffleArray(incorrectAnswers).slice(0, 3)]);
+            } else { // name-to-id
+                quizTitle.textContent = "Назва → Номер";
+                questionDescription.textContent = "Який номер відповідає обладнанню?";
+                questionText = currentQuestion.name;
+                correctAnswer = currentQuestion.id;
+                const incorrectAnswers = equipmentData.filter(item => item.id !== currentQuestion.id).map(item => item.id);
+                options = shuffleArray([correctAnswer, ...shuffleArray(incorrectAnswers).slice(0, 3)]);
             }
-
-            // Prepare options
-            const correctAnswer = currentQuestion.name;
-            const incorrectAnswers = equipmentData
-                .filter(item => item.id !== currentQuestion.id)
-                .map(item => item.name);
             
-            shuffleArray(incorrectAnswers);
-            const options = shuffleArray([correctAnswer, ...incorrectAnswers.slice(0, 3)]);
+            questionMain.textContent = questionText;
 
-            // Render options
             options.forEach(option => {
                 const button = document.createElement('button');
-                button.className = 'option-btn w-full text-left p-4 bg-white border-2 border-gray-300 rounded-lg hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400';
+                button.className = 'option-btn w-full text-center p-4 bg-white border-2 border-gray-300 rounded-lg hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400';
                 button.textContent = option;
                 button.onclick = () => selectAnswer(option);
                 optionsContainer.appendChild(button);
             });
         }
 
-        /**
-         * Handles the user selecting an answer.
-         * @param {string} selectedName The name of the equipment the user selected.
-         */
-        function selectAnswer(selectedName) {
-            const correctAnswer = questions[currentQuestionIndex].name;
-            const isCorrect = selectedName === correctAnswer;
+        function selectAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const correctAnswer = quizMode === 'id-to-name' ? currentQuestion.name : currentQuestion.id;
+            const isCorrect = selectedOption == correctAnswer; // Use '==' for type flexibility (number vs string)
+            
             const optionButtons = optionsContainer.querySelectorAll('button');
-            const selectedButton = Array.from(optionButtons).find(btn => btn.textContent === selectedName);
+            const selectedButton = Array.from(optionButtons).find(btn => btn.textContent == selectedOption);
 
             if (isCorrect) {
-                // Correct answer: lock everything and auto-advance
                 optionButtons.forEach(btn => btn.disabled = true);
                 hintBtn.disabled = true;
                 selectedButton.classList.add('correct');
-
                 if (progress[currentQuestionIndex] === 'unanswered') {
                     progress[currentQuestionIndex] = 'correct';
                 }
-                
                 renderProgressBar();
-
-                // Auto-transition after a delay
                 setTimeout(() => {
                     currentQuestionIndex++;
                     loadQuestion();
                 }, 1200);
-
             } else {
-                // Incorrect answer: mark as wrong, disable only this option, allow another try
                 selectedButton.classList.add('incorrect');
                 selectedButton.disabled = true; 
-
                 if (!questionAttempted) {
                     progress[currentQuestionIndex] = 'incorrect';
                     questionAttempted = true;
                 }
-                
                 renderProgressBar();
             }
         }
 
-        /**
-         * Handles the hint button click.
-         */
         function showHint() {
-            // Mark as 'conditional' if it's the first action on this question
             if (progress[currentQuestionIndex] === 'unanswered') {
                 progress[currentQuestionIndex] = 'conditional';
             }
@@ -270,12 +323,10 @@
             renderProgressBar();
         }
         
-        /**
-         * Shows the final results screen.
-         */
         function showResults() {
             quizView.style.display = 'none';
             resultView.style.display = 'block';
+            clearInterval(timerInterval);
 
             const correctCount = progress.filter(p => p === 'correct').length;
             const conditionalCount = progress.filter(p => p === 'conditional').length;
@@ -286,18 +337,61 @@
             statsTextEl.innerHTML = `
                 <span class="text-green-500 font-semibold">Правильно: ${correctCount}</span> | 
                 <span class="text-amber-500 font-semibold">З підказкою: ${conditionalCount}</span> | 
-                <span class="text-red-500 font-semibold">Неправильно: ${incorrectCount}</span>
-            `;
+                <span class="text-red-500 font-semibold">Неправильно: ${incorrectCount}</span>`;
 
-            finalProgressBar.innerHTML = progressBar.innerHTML; // Copy final progress bar state
+            if (timerEnabled) {
+                const totalTime = Math.floor((Date.now() - startTime) / 1000);
+                timeText.textContent = `Загальний час: ${formatTime(totalTime)}`;
+                timeText.style.display = 'block';
+            } else {
+                 timeText.style.display = 'none';
+            }
+
+            finalProgressBar.innerHTML = progressBar.innerHTML;
         }
         
         // --- Event Listeners ---
-        hintBtn.addEventListener('click', showHint);
-        restartBtn.addEventListener('click', startGame);
+        startBtn.addEventListener('click', () => {
+            quizMode = modeToggle.checked ? 'name-to-id' : 'id-to-name';
+            timerEnabled = timerToggle.checked;
+            initializeQuiz();
+        });
 
-        // --- Initial Load ---
-        window.onload = startGame;
+        modeToggle.addEventListener('change', () => {
+            if (modeToggle.checked) {
+                labelIdToName.classList.remove('text-indigo-600');
+                labelIdToName.classList.add('text-gray-400');
+                labelNameToId.classList.add('text-indigo-600');
+                labelNameToId.classList.remove('text-gray-400');
+            } else {
+                labelIdToName.classList.add('text-indigo-600');
+                labelIdToName.classList.remove('text-gray-400');
+                labelNameToId.classList.remove('text-indigo-600');
+                labelNameToId.classList.add('text-gray-400');
+            }
+        });
+        
+        timerToggle.addEventListener('change', () => {
+             if (timerToggle.checked) {
+                labelTimerOff.classList.remove('text-indigo-600');
+                labelTimerOff.classList.add('text-gray-400');
+                labelTimerOn.classList.add('text-indigo-600');
+                labelTimerOn.classList.remove('text-gray-400');
+            } else {
+                labelTimerOff.classList.add('text-indigo-600');
+                labelTimerOff.classList.remove('text-gray-400');
+                labelTimerOn.classList.remove('text-indigo-600');
+                labelTimerOn.classList.add('text-gray-400');
+            }
+        });
+
+        hintBtn.addEventListener('click', showHint);
+        
+        restartBtn.addEventListener('click', () => {
+            resultView.style.display = 'none';
+            startView.style.display = 'block';
+        });
+
     </script>
 </body>
 </html>
