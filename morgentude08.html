@@ -9,8 +9,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Fallback */
-            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-image: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         }
         .progress-bar-item {
             transition: background-color 0.4s ease-in-out;
@@ -27,12 +26,12 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
         .answer-btn {
-            background-color: #fff;
-            border: 2px solid #e2e8f0;
+            background-color: #374151; /* gray-700 */
+            border: 2px solid #4b5563; /* gray-600 */
         }
         .answer-btn:hover {
-            border-color: #4f46e5; /* Indigo */
-            color: #4f46e5;
+             border-color: #818cf8; /* indigo-400 */
+             color: #818cf8;
         }
         .btn.correct {
             animation: pulse-green 0.6s forwards;
@@ -57,18 +56,6 @@
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
-        /* Dark mode overrides */
-        .dark body {
-             background-image: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        }
-        .dark .answer-btn {
-            background-color: #374151; /* gray-700 */
-            border: 2px solid #4b5563; /* gray-600 */
-        }
-        .dark .answer-btn:hover {
-             border-color: #818cf8; /* indigo-400 */
-             color: #818cf8;
-        }
         /* Toggle Switch */
         #mode-switch:checked ~ .dot {
             transform: translateX(1.5rem);
@@ -78,23 +65,23 @@
         }
     </style>
 </head>
-<body class="dark:text-gray-200 flex items-center justify-center min-h-screen p-4">
-    <div id="main-container" class="w-full max-w-3xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-2xl shadow-2xl p-6 md:p-8 border border-white/30">
+<body class="text-gray-200 flex items-center justify-center min-h-screen p-4">
+    <div id="main-container" class="w-full max-w-3xl bg-gray-800/70 backdrop-blur-xl rounded-2xl shadow-2xl p-6 md:p-8 border border-white/30">
         <!-- Start Screen -->
         <div id="start-screen" class="text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">Тренажер: Будова Обладнання</h1>
-            <p class="text-gray-600 dark:text-gray-300 mt-2 mb-8">Оберіть режим та почніть тестування</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-white">Тренажер: По специфікації</h1>
+            <p class="text-gray-300 mt-2 mb-8">Оберіть режим та почніть тестування</p>
             
-            <div id="settings-area" class="my-8 p-6 bg-gray-100 dark:bg-gray-700/50 rounded-lg max-w-md mx-auto">
-                <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Режим тестування</h3>
+            <div id="settings-area" class="my-8 p-6 bg-gray-700/50 rounded-lg max-w-md mx-auto">
+                <h3 class="text-lg font-semibold mb-4 text-white">Режим тестування</h3>
                 <label for="mode-switch" class="flex items-center justify-center cursor-pointer">
-                    <span class="mr-3 font-medium text-gray-700 dark:text-gray-300">Номер → Назва</span>
+                    <span class="mr-3 font-medium text-gray-300">Номер → Назва</span>
                     <div class="relative">
                         <input type="checkbox" id="mode-switch" class="sr-only">
-                        <div class="switch-bg block bg-gray-300 dark:bg-gray-600 w-14 h-8 rounded-full transition"></div>
+                        <div class="switch-bg block bg-gray-600 w-14 h-8 rounded-full transition"></div>
                         <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
                     </div>
-                    <span class="ml-3 font-medium text-gray-700 dark:text-gray-300">Назва → Номер</span>
+                    <span class="ml-3 font-medium text-gray-300">Назва → Номер</span>
                 </label>
             </div>
             <button id="start-button" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl">
@@ -107,12 +94,12 @@
              <!-- Header for Progress and Timer -->
             <div class="flex justify-between items-start mb-2">
                 <div>
-                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Прогрес:</span>
-                    <span id="progress-text" class="ml-1 text-sm font-semibold text-gray-700 dark:text-gray-300">Етап 1 з 19</span>
+                    <span class="text-sm font-semibold text-gray-300">Прогрес:</span>
+                    <span id="progress-text" class="ml-1 text-sm font-semibold text-gray-300">Етап 1 з 19</span>
                 </div>
                 <div id="timer-container" class="text-right">
-                    <div id="timer" class="text-3xl font-bold text-indigo-600 dark:text-indigo-400" style="font-variant-numeric: tabular-nums;"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 -mt-1">секунд</div>
+                    <div id="timer" class="text-3xl font-bold text-indigo-400" style="font-variant-numeric: tabular-nums;"></div>
+                    <div class="text-xs text-gray-400 -mt-1">секунд</div>
                 </div>
             </div>
             
@@ -121,13 +108,13 @@
             
             <!-- Game Area -->
             <div id="game-area" class="text-center">
-                <div id="question-box" class="mb-6 p-8 bg-indigo-50 dark:bg-indigo-900/30 border-2 border-indigo-200 dark:border-indigo-500/50 rounded-xl min-h-[180px] flex flex-col justify-center">
-                    <p id="question-label" class="text-lg text-indigo-800 dark:text-indigo-200 mb-2 font-medium">Позиція №</p>
-                    <h2 id="question" class="font-bold text-indigo-600 dark:text-indigo-400 tracking-tighter"></h2>
+                <div id="question-box" class="mb-6 p-8 bg-indigo-900/30 border-2 border-indigo-500/50 rounded-xl min-h-[180px] flex flex-col justify-center">
+                    <p id="question-label" class="text-lg text-indigo-200 mb-2 font-medium">Позиція №</p>
+                    <h2 id="question" class="font-bold text-indigo-400 tracking-tighter"></h2>
                 </div>
                 
-                <div id="hint-display" class="min-h-[3rem] my-5 p-3 bg-amber-100 dark:bg-amber-900/40 border border-amber-300 dark:border-amber-500/50 rounded-lg hidden">
-                    <p class="text-sm text-amber-800 dark:text-amber-200 font-semibold">
+                <div id="hint-display" class="min-h-[3rem] my-5 p-3 bg-amber-900/40 border border-amber-500/50 rounded-lg hidden">
+                    <p class="text-sm text-amber-200 font-semibold">
                         <span class="font-bold">Підказка (Позначення):</span> <span id="hint-text"></span>
                     </p>
                 </div>
@@ -144,19 +131,19 @@
 
         <!-- Results Area -->
         <div id="results-area" class="hidden text-center py-10">
-            <h2 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Тест завершено!</h2>
+            <h2 class="text-4xl font-bold mb-4 text-white">Тест завершено!</h2>
             <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-xl my-8">
-                <div class="w-full md:w-auto bg-green-100 dark:bg-green-900/30 p-5 rounded-lg text-center">
-                    <span id="correct-count" class="block text-2xl font-bold text-green-600 dark:text-green-400">0</span>
-                    <span class="text-sm font-semibold text-green-800 dark:text-green-300">Правильно</span>
+                <div class="w-full md:w-auto bg-green-900/30 p-5 rounded-lg text-center">
+                    <span id="correct-count" class="block text-2xl font-bold text-green-400">0</span>
+                    <span class="text-sm font-semibold text-green-300">Правильно</span>
                 </div>
-                <div class="w-full md:w-auto bg-red-100 dark:bg-red-900/30 p-5 rounded-lg text-center">
-                    <span id="incorrect-count" class="block text-2xl font-bold text-red-600 dark:text-red-400">0</span>
-                    <span class="text-sm font-semibold text-red-800 dark:text-red-300">Неправильно</span>
+                <div class="w-full md:w-auto bg-red-900/30 p-5 rounded-lg text-center">
+                    <span id="incorrect-count" class="block text-2xl font-bold text-red-400">0</span>
+                    <span class="text-sm font-semibold text-red-300">Неправильно</span>
                 </div>
-                 <div class="w-full md:w-auto bg-yellow-100 dark:bg-yellow-900/30 p-5 rounded-lg text-center">
-                    <span id="hint-used-count" class="block text-2xl font-bold text-yellow-500 dark:text-yellow-400">0</span>
-                    <span class="text-sm font-semibold text-yellow-800 dark:text-yellow-300">З підказкою</span>
+                 <div class="w-full md:w-auto bg-yellow-900/30 p-5 rounded-lg text-center">
+                    <span id="hint-used-count" class="block text-2xl font-bold text-yellow-400">0</span>
+                    <span class="text-sm font-semibold text-yellow-300">З підказкою</span>
                 </div>
             </div>
             <button id="retry-button" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl">
@@ -250,7 +237,7 @@
                 const button = document.createElement('button');
                 const optionValue = isReverseMode ? option.pos : option.name;
                 button.innerHTML = optionValue;
-                button.classList.add('btn', 'answer-btn', 'w-full', 'p-4', 'rounded-lg', 'font-medium', 'text-left', 'dark:text-gray-200');
+                button.classList.add('btn', 'answer-btn', 'w-full', 'p-4', 'rounded-lg', 'font-medium', 'text-left', 'text-gray-200');
                 if (isReverseMode) button.classList.add('text-center', 'text-2xl');
                 button.onclick = () => checkAnswer(optionValue, button);
                 answerOptionsEl.appendChild(button);
@@ -349,7 +336,7 @@
                     case 'correct': item.classList.add('bg-green-500'); break;
                     case 'incorrect': item.classList.add('bg-red-500'); break;
                     case 'hint': item.classList.add('bg-yellow-400'); break;
-                    default: item.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                    default: item.classList.add('bg-gray-600');
                 }
                 progressBar.appendChild(item);
             });
