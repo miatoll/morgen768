@@ -142,7 +142,7 @@
 <body class="antialiased">
     
     <div id="top-right-controls" class="fixed top-4 right-4 z-50 flex items-center gap-2">
-        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
+        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 justify-center px-4 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
             <span id="theme-emoji-icon" class="text-lg"></span>
             <span data-translate="theme_toggle_text"></span>
         </button>
@@ -186,7 +186,7 @@
     <main class="container mx-auto px-4 pt-28 pb-12 sm:pt-32 sm:pb-20">
 
         <section class="text-center mb-16">
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 gradient-text" data-translate="title">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-8 gradient-text" data-translate="title">
                 Моя Сборка ПК
             </h1>
             <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--text-muted-color);" data-translate="subtitle">
@@ -197,13 +197,27 @@
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🧠</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="cpu_title">Процессор</h3> </div> <p class="text-xl font-semibold">AMD Ryzen 5 8400F</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚙️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="mb_title">Материнская плата</h3> </div> <p class="text-xl font-semibold">JGINYUE B650i Night Devil</p> </div>
-            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🚀</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="ram_title">Оперативная память</h3> </div> <p class="text-xl font-semibold">Kingbank DDR5 16GB 6000MHz</p> </div>
+            <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🚀</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="ram_title">Оперативная память</h3> </div> <p class="text-xl font-semibold">Kingbank DDR5 32GB (2x16) 6000MHz</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🎮</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="gpu_title">Видеокарта</h3> </div> <p class="text-xl font-semibold">Asus Dual Radeon RX 6600</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">❄️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="cooler_title">Охлаждение</h3> </div> <p class="text-xl font-semibold">Thermalright Frozen Infinity 360</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🔌</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="psu_title">Блок питания</h3> </div> <p class="text-xl font-semibold">Chieftec Proton 500W</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">📦</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="case_title">Корпус</h3> </div> <p class="text-xl font-semibold">Montech Air 1000 Lite</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⚡</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="ssd_title">NVMe SSD</h3> </div> <p class="text-xl font-semibold">Fanxiang S500 Pro 1TB + S500 1TB</p> </div>
             <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">💽</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="hdd_title">SATA HDD</h3> </div> <p class="text-xl font-semibold">HGST 500Gb (x2), WD Blue 500Gb</p> </div>
+        </section>
+
+        <section id="peripherals" class="mt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 gradient-text" data-translate="peripherals_title">
+                Периферія
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🖥️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="monitor1_title">Основний монітор</h3> </div> <p class="text-xl font-semibold">Gigabyte GS25F2 24.5" 200 Hz</p> </div>
+                <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🖥️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="monitor2_title">Другий монітор</h3> </div> <p class="text-xl font-semibold">Samsung F22T35 21.5"</p> </div>
+                <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">⌨️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="keyboard_title">Клавіатура</h3> </div> <p class="text-xl font-semibold">GMK87</p> </div>
+                <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🖱️</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="mouse_title">Миша</h3> </div> <p class="text-xl font-semibold">VXE R1 SE</p> </div>
+                <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🎧</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="headphones_title">Навушники</h3> </div> <p class="text-xl font-semibold">Moondrop Chu 2</p> </div>
+                <div class="glass-card p-6"> <div class="flex items-center gap-4 mb-3"> <p class="text-3xl">🎤</p> <h3 class="text-lg font-bold" style="color: var(--text-muted-color);" data-translate="mic_title">Мікрофон</h3> </div> <p class="text-xl font-semibold">Fifine K688</p> </div>
+            </div>
         </section>
 
         <section id="useful-programs" class="mt-16 text-center">
@@ -285,6 +299,13 @@
                     case_title: "Корпус",
                     ssd_title: "NVMe SSD",
                     hdd_title: "SATA HDD",
+                    peripherals_title: "Периферия",
+                    monitor1_title: "Основной монитор",
+                    monitor2_title: "Второй монитор",
+                    keyboard_title: "Клавиатура",
+                    mouse_title: "Мышь",
+                    headphones_title: "Наушники",
+                    mic_title: "Микрофон",
                     gallery_title: "Галерея",
                     useful_programs_title: "Полезные программы",
                     useful_programs_desc: "Это подборка полезных программ и утилит, которые могут пригодиться каждому в повседневном использовании.",
@@ -311,6 +332,13 @@
                     case_title: "Case",
                     ssd_title: "NVMe SSD",
                     hdd_title: "SATA HDD",
+                    peripherals_title: "Peripherals",
+                    monitor1_title: "Main Monitor",
+                    monitor2_title: "Second Monitor",
+                    keyboard_title: "Keyboard",
+                    mouse_title: "Mouse",
+                    headphones_title: "Headphones",
+                    mic_title: "Microphone",
                     gallery_title: "Gallery",
                     useful_programs_title: "Useful Programs",
                     useful_programs_desc: "This is a selection of useful programs and utilities that can be handy for everyone in daily use.",
@@ -337,6 +365,13 @@
                     case_title: "Корпус",
                     ssd_title: "NVMe SSD",
                     hdd_title: "SATA HDD",
+                    peripherals_title: "Периферія",
+                    monitor1_title: "Основний монітор",
+                    monitor2_title: "Другий монітор",
+                    keyboard_title: "Клавіатура",
+                    mouse_title: "Миша",
+                    headphones_title: "Навушники",
+                    mic_title: "Мікрофон",
                     gallery_title: "Галерея",
                     useful_programs_title: "Корисні програми",
                     useful_programs_desc: "Це добірка корисних програм та утиліт, які можуть стати в нагоді кожному в повсякденному використанні.",
@@ -390,16 +425,16 @@
                 });
             }
             
-            function setTheme(theme, lang = localStorage.getItem('language') || 'en') {
+            function setTheme(theme, lang = localStorage.getItem('language') || 'ua') {
                  if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
                     themeEmojiIcon.textContent = '☀️';
-                    themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
+                    if(translations[lang]) themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
                     localStorage.setItem('color-theme', 'dark');
                 } else {
                     document.documentElement.classList.remove('dark');
                     themeEmojiIcon.textContent = '🌙';
-                    themeToggleText.textContent = translations[lang].theme_toggle_text_light;
+                    if(translations[lang]) themeToggleText.textContent = translations[lang].theme_toggle_text_light;
                     localStorage.setItem('color-theme', 'light');
                 }
             }
@@ -452,11 +487,12 @@
             themeToggleBtn.addEventListener('click', () => {
                 const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                setTheme(newTheme);
+                const currentLang = localStorage.getItem('language') || 'ua';
+                setTheme(newTheme, currentLang);
             });
             
             // --- Init Language, Theme, and Color Scheme ---
-            const initialLang = localStorage.getItem('language') || 'en';
+            const initialLang = localStorage.getItem('language') || 'ua';
             setLanguage(initialLang);
             const initialTheme = localStorage.getItem('color-theme') || 'light';
             setTheme(initialTheme, initialLang);
