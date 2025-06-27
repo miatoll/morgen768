@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
-        // Встановлюємо тему та кольорову схему до рендерингу
+        // Устанавливаем тему и цветовую схему до рендеринга, чтобы избежать мигания
         if (localStorage.getItem('color-theme') === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
@@ -26,7 +26,7 @@
 
     <style>
         :root, html[data-color-scheme="default"] {
-            /* Яскрава світла тема (Sunrise) */
+            /* Яркая светлая тема (Sunrise) */
             --bg-grad-1: #ffecd2;
             --bg-grad-2: #fcb69f;
             --bg-grad-3: #ff9a9e;
@@ -37,10 +37,13 @@
             --glow-color: rgba(252, 182, 159, 0.5);
             --gradient-text-start: #ff8c42;
             --gradient-text-end: #ff3d77;
+            --input-bg: rgba(255, 255, 255, 0.4);
+            --input-border: rgba(255, 255, 255, 0.8);
+            --input-focus-ring: rgba(255, 148, 158, 0.5);
         }
 
         .dark:root, html[data-color-scheme="default"].dark {
-            /* Яскрава темна тема (Aurora) */
+            /* Яркая темная тема (Aurora) */
             --bg-grad-1: #0f0c29;
             --bg-grad-2: #302b63;
             --bg-grad-3: #24243e;
@@ -51,15 +54,18 @@
             --glow-color: rgba(168, 85, 247, 0.2);
             --gradient-text-start: #a8c0ff;
             --gradient-text-end: #3f2b96;
+            --input-bg: rgba(36, 36, 62, 0.3);
+            --input-border: rgba(192, 132, 252, 0.2);
+            --input-focus-ring: rgba(168, 85, 247, 0.3);
         }
         
         /* Ocean Theme */
-        html[data-color-scheme="ocean"] { --bg-grad-1: #a1c4fd; --bg-grad-2: #c2e9fb; --bg-grad-3: #a1c4fd; --text-color: #0b2d48; --text-muted-color: #3e6586; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(161, 196, 253, 0.5); --gradient-text-start: #0052d4; --gradient-text-end: #65c7f7; }
-        html[data-color-scheme="ocean"].dark { --bg-grad-1: #0f2027; --bg-grad-2: #203a43; --bg-grad-3: #2c5364; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(32, 58, 67, 0.3); --card-border: rgba(158, 224, 255, 0.2); --glow-color: rgba(44, 83, 100, 0.4); --gradient-text-start: #7aa2e8; --gradient-text-end: #b3e5fc; }
+        html[data-color-scheme="ocean"] { --bg-grad-1: #a1c4fd; --bg-grad-2: #c2e9fb; --bg-grad-3: #a1c4fd; --text-color: #0b2d48; --text-muted-color: #3e6586; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(161, 196, 253, 0.5); --gradient-text-start: #0052d4; --gradient-text-end: #65c7f7; --input-bg: rgba(255, 255, 255, 0.4); --input-border: rgba(255, 255, 255, 0.8); --input-focus-ring: rgba(161, 196, 253, 0.5);}
+        html[data-color-scheme="ocean"].dark { --bg-grad-1: #0f2027; --bg-grad-2: #203a43; --bg-grad-3: #2c5364; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(32, 58, 67, 0.3); --card-border: rgba(158, 224, 255, 0.2); --glow-color: rgba(44, 83, 100, 0.4); --gradient-text-start: #7aa2e8; --gradient-text-end: #b3e5fc; --input-bg: rgba(32, 58, 67, 0.4); --input-border: rgba(158, 224, 255, 0.2); --input-focus-ring: rgba(44, 83, 100, 0.4);}
 
         /* Forest Theme */
-        html[data-color-scheme="forest"] { --bg-grad-1: #d4ecb7; --bg-grad-2: #aacc8a; --bg-grad-3: #89a770; --text-color: #2a3a2a; --text-muted-color: #516d4e; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(170, 204, 138, 0.5); --gradient-text-start: #4b6733; --gradient-text-end: #8eb363; }
-        html[data-color-scheme="forest"].dark { --bg-grad-1: #1a2a22; --bg-grad-2: #2c4238; --bg-grad-3: #3f5b4d; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(44, 66, 56, 0.3); --card-border: rgba(142, 179, 99, 0.2); --glow-color: rgba(63, 91, 77, 0.4); --gradient-text-start: #a3d9a5; --gradient-text-end: #c5e1a5; }
+        html[data-color-scheme="forest"] { --bg-grad-1: #d4ecb7; --bg-grad-2: #aacc8a; --bg-grad-3: #89a770; --text-color: #2a3a2a; --text-muted-color: #516d4e; --card-bg: rgba(255, 255, 255, 0.5); --card-border: rgba(255, 255, 255, 0.9); --glow-color: rgba(170, 204, 138, 0.5); --gradient-text-start: #4b6733; --gradient-text-end: #8eb363; --input-bg: rgba(255, 255, 255, 0.4); --input-border: rgba(255, 255, 255, 0.8); --input-focus-ring: rgba(170, 204, 138, 0.5); }
+        html[data-color-scheme="forest"].dark { --bg-grad-1: #1a2a22; --bg-grad-2: #2c4238; --bg-grad-3: #3f5b4d; --text-color: #e0e6f1; --text-muted-color: #a8b2d1; --card-bg: rgba(44, 66, 56, 0.3); --card-border: rgba(142, 179, 99, 0.2); --glow-color: rgba(63, 91, 77, 0.4); --gradient-text-start: #a3d9a5; --gradient-text-end: #c5e1a5; --input-bg: rgba(44, 66, 56, 0.4); --input-border: rgba(142, 179, 99, 0.2); --input-focus-ring: rgba(63, 91, 77, 0.4);}
 
         body {
             font-family: 'Inter', sans-serif;
@@ -104,49 +110,67 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
+        /* Стили для выпадающих меню */
+        .dropdown-menu {
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .checkmark {
+             color: var(--gradient-text-start);
+        }
     </style>
 </head>
 <body class="antialiased">
     
     <div id="top-right-controls" class="fixed top-4 right-4 z-50 flex items-center gap-2">
-        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
+        <button id="theme-toggle" type="button" class="inline-flex items-center gap-2 w-36 justify-center px-3 py-2 rounded-full text-sm font-semibold bg-white/30 dark:bg-black/20 backdrop-filter-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
             <span id="theme-emoji-icon" class="text-lg"></span>
             <span data-translate="theme_toggle_text"></span>
         </button>
 
         <div class="relative">
-            <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
+            <button id="lang-switcher-button" type="button" class="p-2.5 rounded-full bg-white/30 dark:bg-black/20 backdrop-filter-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
                 <span class="text-xl">🌍</span>
             </button>
-            <div id="lang-dropdown" class="hidden overflow-hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="en"><span>English</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
-                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ua"><span>Українська</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
-                    <a href="#" class="flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ru"><span>Русский</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></a>
+            <div id="lang-dropdown" class="dropdown-menu hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-right">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="lang-switcher-button">
+                    <button type="button" class="w-full flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="en"><span>English</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></button>
+                    <button type="button" class="w-full flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ua"><span>Українська</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></button>
+                    <button type="button" class="w-full flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-lang="ru"><span>Русский</span><svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></button>
                 </div>
             </div>
         </div>
         
         <div class="relative">
-             <button id="palette-button" type="button" class="p-2.5 rounded-full text-light-on-surface-variant dark:text-dark-on-surface-variant bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50">
-                <span class="text-xl">🎨</span>
-            </button>
-             <div id="palette-modal" class="hidden overflow-hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="default">
-                        <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #ff9a9e;"></span>
-                        <span data-translate="theme_default"></span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="ocean">
-                        <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #a1c4fd;"></span>
-                        <span data-translate="theme_ocean"></span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="forest">
-                         <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #aacc8a;"></span>
-                        <span data-translate="theme_forest"></span>
-                    </a>
-                </div>
-            </div>
+             <button id="palette-button" type="button" class="p-2.5 rounded-full bg-white/30 dark:bg-black/20 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-black/50 transition-colors">
+                 <span class="text-xl">🎨</span>
+             </button>
+             <div id="palette-modal" class="dropdown-menu hidden absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white/50 dark:bg-black/40 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-right">
+                 <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="palette-button">
+                     <button type="button" class="w-full flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="default">
+                        <div class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #ff9a9e;"></span>
+                            <span data-translate="theme_default"></span>
+                        </div>
+                        <svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                     </button>
+                     <button type="button" class="w-full flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="ocean">
+                        <div class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #a1c4fd;"></span>
+                            <span data-translate="theme_ocean"></span>
+                        </div>
+                        <svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                     </button>
+                     <button type="button" class="w-full flex justify-between items-center px-4 py-2 text-sm hover:bg-white/30 dark:hover:bg-black/30" role="menuitem" data-scheme="forest">
+                        <div class="flex items-center gap-3">
+                             <span class="w-5 h-5 rounded-full border border-black/10" style="background-color: #aacc8a;"></span>
+                             <span data-translate="theme_forest"></span>
+                        </div>
+                        <svg class="w-4 h-4 hidden checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                     </button>
+                 </div>
+             </div>
         </div>
     </div>
 
@@ -161,7 +185,8 @@
             </p>
         </section>
 
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <section id="software-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Software items will be populated by JS, but kept here for no-JS fallback -->
             <a href="https://www.7-zip.org/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🗜️</p> <h3 class="text-xl font-semibold" data-translate="soft_7zip_name">7-Zip</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_7zip_desc">Archive tool</p> </a>
             <a href="https://gitlab.com/CalcProgrammer1/OpenRGB" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🌈</p> <h3 class="text-xl font-semibold" data-translate="soft_openrgb_name">OpenRGB</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_openrgb_desc">The only RGB software you will ever need</p> </a>
             <a href="https://www.hwinfo.com/download/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">📈</p> <h3 class="text-xl font-semibold" data-translate="soft_hwinfo_name">HWiNFO</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_hwinfo_desc">The best pc monitoring software</p> </a>
@@ -178,12 +203,16 @@
             <a href="https://modrinth.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🧱</p> <h3 class="text-xl font-semibold" data-translate="soft_modrinth_name">Modrinth</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_modrinth_desc">Best Minecraft launcher</p> </a>
             <a href="https://massgrave.dev/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🔑</p> <h3 class="text-xl font-semibold" data-translate="soft_massgrave_name">MAS</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_massgrave_desc">Windows / Office activation</p> </a>
             <a href="https://www.ventoy.net/en/index.html" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">💾</p> <h3 class="text-xl font-semibold" data-translate="soft_ventoy_name">Ventoy</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_ventoy_desc">Bootable USB for multiple ISOs</p> </a>
-            <a href="https://github.com/romkatv/powerlevel10k" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">⚡</p> <h3 class="text-xl font-semibold" data-translate="soft_p10k_name">Powerlevel10k</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_p10k_desc">Cool ZSH theme</p> </a>
             <a href="https://diskanalyzer.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🔎</p> <h3 class="text-xl font-semibold" data-translate="soft_wiztree_name">WizTree</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_wiztree_desc">Visual disk space analyzer</p> </a>
             <a href="https://github.com/HandBrake/HandBrake" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🍹</p> <h3 class="text-xl font-semibold" data-translate="soft_handbrake_name">HandBrake</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_handbrake_desc">Free video transcoder</p> </a>
             <a href="https://gravitymark.tellusim.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🌌</p> <h3 class="text-xl font-semibold" data-translate="soft_gravitymark_name">GravityMark</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_gravitymark_desc">Free GPU benchmark / stress test</p> </a>
-             <a href="https://github.com/YerongAI/Office-Tool" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🏢</p> <h3 class="text-xl font-semibold" data-translate="soft_officetool_name">Office Tool Plus</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_officetool_desc">A powerful and useful tool for Office deployments.</p> </a>
+            <a href="https://github.com/YerongAI/Office-Tool" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🏢</p> <h3 class="text-xl font-semibold" data-translate="soft_officetool_name">Office Tool Plus</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_officetool_desc">A powerful and useful tool for Office deployments.</p> </a>
             <a href="https://equalizerapo.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">🎚️</p> <h3 class="text-xl font-semibold" data-translate="soft_eqapo_name">EqualizerAPO</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_eqapo_desc">Free equalizer software</p> </a>
+            <a href="https://getsharex.com/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">📸</p> <h3 class="text-xl font-semibold" data-translate="soft_sharex_name">ShareX</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_sharex_desc">Advanced screenshot and screen recorder tool</p> </a>
+            <a href="https://audiorelay.net/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">📱</p> <h3 class="text-xl font-semibold" data-translate="soft_audiorelay_name">Audiorelay</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_audiorelay_desc">Stream audio from PC to phone</p> </a>
+            <a href="https://crystalmark.info/en/software/crystaldiskmark/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">⏱️</p> <h3 class="text-xl font-semibold" data-translate="soft_cdm_name">CrystalDiskMark</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_cdm_desc">Disk benchmark utility</p> </a>
+            <a href="https://crystalmark.info/en/software/crystaldiskinfo/" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">💊</p> <h3 class="text-xl font-semibold" data-translate="soft_cdi_name">CrystalDiskInfo</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_cdi_desc">HDD/SSD health monitoring</p> </a>
+            <a href="https://www.osforensics.com/tools/mount-disk-images.html" target="_blank" rel="noopener noreferrer" class="glass-card p-6 block h-full flex flex-col justify-start"> <div class="flex items-center gap-3 mb-2"> <p class="text-3xl">💿</p> <h3 class="text-xl font-semibold" data-translate="soft_osfmount_name">OSFMount</h3> </div> <p class="text-base" style="color: var(--text-muted-color);" data-translate="soft_osfmount_desc">Mount virtual disk images</p> </a>
         </section>
 
     </main>
@@ -248,8 +277,6 @@
                     soft_massgrave_desc: "Активация Windows / Office",
                     soft_ventoy_name: "Ventoy",
                     soft_ventoy_desc: "Загрузочный USB для нескольких ISO",
-                    soft_p10k_name: "Powerlevel10k",
-                    soft_p10k_desc: "Крутая тема для ZSH",
                     soft_wiztree_name: "WizTree",
                     soft_wiztree_desc: "Визуальный анализатор дискового пространства",
                     soft_handbrake_name: "HandBrake",
@@ -259,7 +286,17 @@
                     soft_eqapo_name: "EqualizerAPO",
                     soft_eqapo_desc: "Бесплатный эквалайзер",
                     soft_officetool_name: "Office Tool Plus",
-                    soft_officetool_desc: "Мощный инструмент для развертывания Office"
+                    soft_officetool_desc: "Мощный инструмент для развертывания Office",
+                    soft_sharex_name: "ShareX",
+                    soft_sharex_desc: "Продвинутый инструмент для скриншотов",
+                    soft_audiorelay_name: "Audiorelay",
+                    soft_audiorelay_desc: "Трансляция аудио с ПК на телефон",
+                    soft_cdm_name: "CrystalDiskMark",
+                    soft_cdm_desc: "Бенчмарк для дисков",
+                    soft_cdi_name: "CrystalDiskInfo",
+                    soft_cdi_desc: "Мониторинг здоровья HDD/SSD",
+                    soft_osfmount_name: "OSFMount",
+                    soft_osfmount_desc: "Монтирование образов дисков"
                 },
                 en: {
                     doc_title: "Useful Software",
@@ -304,8 +341,6 @@
                     soft_massgrave_desc: "Windows / Office activation",
                     soft_ventoy_name: "Ventoy",
                     soft_ventoy_desc: "Bootable USB for multiple ISOs",
-                    soft_p10k_name: "Powerlevel10k",
-                    soft_p10k_desc: "Cool ZSH theme",
                     soft_wiztree_name: "WizTree",
                     soft_wiztree_desc: "Visual disk space analyzer",
                     soft_handbrake_name: "HandBrake",
@@ -315,7 +350,17 @@
                     soft_eqapo_name: "EqualizerAPO",
                     soft_eqapo_desc: "Free equalizer software",
                     soft_officetool_name: "Office Tool Plus",
-                    soft_officetool_desc: "A powerful and useful tool for Office deployments."
+                    soft_officetool_desc: "A powerful and useful tool for Office deployments.",
+                    soft_sharex_name: "ShareX",
+                    soft_sharex_desc: "Advanced screenshot and screen recorder tool",
+                    soft_audiorelay_name: "Audiorelay",
+                    soft_audiorelay_desc: "Stream audio from PC to phone",
+                    soft_cdm_name: "CrystalDiskMark",
+                    soft_cdm_desc: "Disk benchmark utility",
+                    soft_cdi_name: "CrystalDiskInfo",
+                    soft_cdi_desc: "HDD/SSD health monitoring",
+                    soft_osfmount_name: "OSFMount",
+                    soft_osfmount_desc: "Mount virtual disk images"
                 },
                 ua: {
                     doc_title: "Корисний Софт",
@@ -360,8 +405,6 @@
                     soft_massgrave_desc: "Активація Windows / Office",
                     soft_ventoy_name: "Ventoy",
                     soft_ventoy_desc: "Завантажувальний USB для кількох ISO",
-                    soft_p10k_name: "Powerlevel10k",
-                    soft_p10k_desc: "Класна тема для ZSH",
                     soft_wiztree_name: "WizTree",
                     soft_wiztree_desc: "Візуальний аналізатор дискового простору",
                     soft_handbrake_name: "HandBrake",
@@ -371,20 +414,32 @@
                     soft_eqapo_name: "EqualizerAPO",
                     soft_eqapo_desc: "Безкоштовний еквалайзер",
                     soft_officetool_name: "Office Tool Plus",
-                    soft_officetool_desc: "Потужний інструмент для розгортання Office."
+                    soft_officetool_desc: "Потужний інструмент для розгортання Office.",
+                    soft_sharex_name: "ShareX",
+                    soft_sharex_desc: "Просунутий інструмент для скріншотів",
+                    soft_audiorelay_name: "Audiorelay",
+                    soft_audiorelay_desc: "Трансляція аудіо з ПК на телефон",
+                    soft_cdm_name: "CrystalDiskMark",
+                    soft_cdm_desc: "Бенчмарк для дисків",
+                    soft_cdi_name: "CrystalDiskInfo",
+                    soft_cdi_desc: "Моніторинг здоров'я HDD/SSD",
+                    soft_osfmount_name: "OSFMount",
+                    soft_osfmount_desc: "Монтування образів дисків"
                 }
             };
 
+            // --- DOM Element Selectors ---
             const langSwitcherButton = document.getElementById('lang-switcher-button');
             const langDropdown = document.getElementById('lang-dropdown');
-            const langLinks = langDropdown.querySelectorAll('a[data-lang]');
+            const langButtons = langDropdown.querySelectorAll('button[data-lang]');
             const themeToggleBtn = document.getElementById('theme-toggle');
             const themeToggleText = themeToggleBtn.querySelector('[data-translate="theme_toggle_text"]');
             const themeEmojiIcon = document.getElementById('theme-emoji-icon');
             const paletteButton = document.getElementById('palette-button');
             const paletteModal = document.getElementById('palette-modal');
-            const paletteLinks = paletteModal.querySelectorAll('a[data-scheme]');
+            const paletteButtons = paletteModal.querySelectorAll('button[data-scheme]');
             
+            // --- Translation Function ---
             function updateAllText(lang) {
                 if (!translations[lang]) return;
 
@@ -399,92 +454,129 @@
                     }
                 });
 
-                document.title = translations[lang].doc_title || 'My PC Build';
+                document.title = translations[lang].doc_title || 'Useful Software';
             }
             
+            // --- Language Switcher ---
             function setLanguage(lang) {
                 updateAllText(lang);
                 localStorage.setItem('language', lang);
                 document.documentElement.lang = lang;
 
-                langLinks.forEach(link => {
-                    const checkmark = link.querySelector('.checkmark');
-                    checkmark.classList.toggle('hidden', link.dataset.lang !== lang);
+                langButtons.forEach(button => {
+                    const checkmark = button.querySelector('.checkmark');
+                    checkmark.classList.toggle('hidden', button.dataset.lang !== lang);
                 });
             }
             
+            // --- Theme Switcher ---
             function setTheme(theme, lang = localStorage.getItem('language') || 'en') {
                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                    themeEmojiIcon.textContent = '☀️';
-                    themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    themeEmojiIcon.textContent = '🌙';
-                    themeToggleText.textContent = translations[lang].theme_toggle_text_light;
-                    localStorage.setItem('color-theme', 'light');
-                }
+                     document.documentElement.classList.add('dark');
+                     themeEmojiIcon.textContent = '☀️';
+                     themeToggleText.textContent = translations[lang].theme_toggle_text_dark;
+                     localStorage.setItem('color-theme', 'dark');
+                 } else {
+                     document.documentElement.classList.remove('dark');
+                     themeEmojiIcon.textContent = '🌙';
+                     themeToggleText.textContent = translations[lang].theme_toggle_text_light;
+                     localStorage.setItem('color-theme', 'light');
+                 }
             }
 
+            // --- Color Scheme Switcher ---
             function setColorScheme(scheme) {
                 document.documentElement.dataset.colorScheme = scheme;
                 localStorage.setItem('custom-color-scheme', scheme);
+
+                paletteButtons.forEach(button => {
+                    const checkmark = button.querySelector('.checkmark');
+                    checkmark.classList.toggle('hidden', button.dataset.scheme !== scheme);
+                });
             }
 
-            // --- Language Dropdown Logic ---
+            // --- Dropdown Toggle Logic ---
+            function toggleDropdown(dropdown) {
+                const isHidden = dropdown.classList.contains('hidden');
+                if (isHidden) {
+                    dropdown.classList.remove('hidden');
+                    setTimeout(() => {
+                        dropdown.classList.remove('opacity-0', 'scale-95');
+                        dropdown.classList.add('opacity-100', 'scale-100');
+                    }, 10);
+                } else {
+                    dropdown.classList.remove('opacity-100', 'scale-100');
+                    dropdown.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        dropdown.classList.add('hidden');
+                    }, 200); // Должно совпадать с transition duration
+                }
+            }
+
+            function closeAllDropdowns() {
+                [langDropdown, paletteModal].forEach(dropdown => {
+                    if (!dropdown.classList.contains('hidden')) {
+                       toggleDropdown(dropdown);
+                    }
+                });
+            }
+            
             langSwitcherButton.addEventListener('click', (e) => {
                 e.stopPropagation();
-                langDropdown.classList.toggle('hidden');
-                paletteModal.classList.add('hidden');
+                if(!paletteModal.classList.contains('hidden')) { toggleDropdown(paletteModal); }
+                toggleDropdown(langDropdown);
             });
             
-            langLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    setLanguage(e.currentTarget.dataset.lang);
-                    langDropdown.classList.add('hidden');
-                });
-            });
-
-            // --- Palette Logic ---
             paletteButton.addEventListener('click', (e) => {
                 e.stopPropagation();
-                paletteModal.classList.toggle('hidden');
-                langDropdown.classList.add('hidden');
+                 if(!langDropdown.classList.contains('hidden')) { toggleDropdown(langDropdown); }
+                toggleDropdown(paletteModal);
             });
 
-            paletteLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    setColorScheme(e.currentTarget.dataset.scheme);
-                    paletteModal.classList.add('hidden');
+            langButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    setLanguage(e.currentTarget.dataset.lang);
+                    closeAllDropdowns();
                 });
             });
 
-
-            // --- Close modals on outside click ---
-            window.addEventListener('click', (e) => {
-                if (!e.target.closest('#top-right-controls')) {
-                    langDropdown.classList.add('hidden');
-                    paletteModal.classList.add('hidden');
-                }
+            paletteButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    setColorScheme(e.currentTarget.dataset.scheme);
+                    closeAllDropdowns();
+                });
             });
+
             
-            // --- Theme switcher logic ---
+            // --- Theme toggle button ---
             themeToggleBtn.addEventListener('click', () => {
                 const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 setTheme(newTheme);
             });
+
+            // --- Close Modals & Search on Outside Click ---
+            window.addEventListener('click', (e) => {
+                // Close dropdowns
+                if (!e.target.closest('#top-right-controls')) {
+                    closeAllDropdowns();
+                }
+            });
+
             
-            // --- Init Language, Theme, and Color Scheme ---
+            // --- Initialization ---
             const initialLang = localStorage.getItem('language') || 'en';
-            setLanguage(initialLang);
             const initialTheme = localStorage.getItem('color-theme') || 'light';
-            setTheme(initialTheme, initialLang);
             const initialColorScheme = localStorage.getItem('custom-color-scheme') || 'default';
+
+            setTheme(initialTheme, initialLang); // Установить тему до языка для корректного текста кнопки
+            setLanguage(initialLang);
             setColorScheme(initialColorScheme);
+            
+            // Скрыть все выпадающие списки при начальной загрузке
+            [langDropdown, paletteModal].forEach(dropdown => {
+                dropdown.classList.add('hidden', 'opacity-0', 'scale-95');
+            });
 
         });
     </script>
