@@ -26,6 +26,17 @@
         let userId;
         let docRef;
 
+        // Функция для оптимизации запросов (debounce)
+        const debounce = (func, delay) => {
+            let timeoutId;
+            return (...args) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func(...args);
+                }, delay);
+            };
+        };
+
         async function initFirebase() {
             try {
                 app = initializeApp(firebaseConfig);
@@ -40,6 +51,7 @@
                 }
                 
                 userId = auth.currentUser.uid;
+                document.getElementById('userIdDisplay').textContent = `Ваш ID: ${userId}`;
                 docRef = doc(db, 'artifacts', appId, 'users', userId, 'documents', 'main-text');
 
                 // Слушатель для изменений в документе Firestore
@@ -50,15 +62,18 @@
                     }
                 });
 
-                // Обработчик события ввода
+                // Обработчик события ввода с функцией debounce для оптимизации
                 const editor = document.getElementById('editor');
-                editor.addEventListener('input', async (e) => {
+                const debouncedSave = debounce(async (content) => {
                     try {
-                        const content = e.target.value;
                         await setDoc(docRef, { content: content }, { merge: true });
                     } catch (error) {
                         console.error("Ошибка при сохранении документа: ", error);
                     }
+                }, 500); // 500ms задержка
+
+                editor.addEventListener('input', (e) => {
+                    debouncedSave(e.target.value);
                 });
             } catch (e) {
                 console.error("Ошибка инициализации Firebase: ", e);
@@ -68,7 +83,7 @@
         document.addEventListener('DOMContentLoaded', initFirebase);
     </script>
 </head>
-<body class="bg-gray-900 text-white font-['Inter'] flex justify-center items-center h-screen p-4">
+<body class="bg-gray-900 text-white font-['Inter'] flex flex-col justify-center items-center h-screen p-4">
     <div class="w-full max-w-4xl h-full flex flex-col items-center">
         <textarea 
             id="editor" 
@@ -76,7 +91,8 @@
             placeholder="Начните писать здесь..."
         ></textarea>
         <p class="mt-4 text-gray-400 text-sm">Текст сохраняется автоматически и синхронизируется между вашими устройствами.</p>
+        <p id="userIdDisplay" class="mt-2 text-gray-500 text-xs"></p>
     </div>
 </body>
-<
-/html>
+</html>
+
