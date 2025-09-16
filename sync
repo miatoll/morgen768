@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автосохранение</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script type="module">
+        // Импорт необходимых модулей Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, getDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Глобальные переменные Firebase, предоставленные средой Canvas
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // Инициализация Firebase
+        let app;
+        let db;
+        let auth;
+        let userId;
+        let docRef;
+
+        async function initFirebase() {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Аутентификация пользователя с помощью токена или анонимно
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                userId = auth.currentUser.uid;
+                docRef = doc(db, 'artifacts', appId, 'users', userId, 'documents', 'main-text');
+
+                // Слушатель для изменений в документе Firestore
+                onSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        document.getElementById('editor').value = data.content || '';
+                    }
+                });
+
+                // Обработчик события ввода
+                const editor = document.getElementById('editor');
+                editor.addEventListener('input', async (e) => {
+                    try {
+                        const content = e.target.value;
+                        await setDoc(docRef, { content: content }, { merge: true });
+                    } catch (error) {
+                        console.error("Ошибка при сохранении документа: ", error);
+                    }
+                });
+            } catch (e) {
+                console.error("Ошибка инициализации Firebase: ", e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initFirebase);
+    </script>
+</head>
+<body class="bg-gray-900 text-white font-['Inter'] flex justify-center items-center h-screen p-4">
+    <div class="w-full max-w-4xl h-full flex flex-col items-center">
+        <textarea 
+            id="editor" 
+            class="w-full h-full bg-gray-800 text-white text-3xl md:text-5xl lg:text-6xl p-6 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500 transition-all duration-300 resize-none leading-relaxed"
+            placeholder="Начните писать здесь..."
+        ></textarea>
+        <p class="mt-4 text-gray-400 text-sm">Текст сохраняется автоматически и синхронизируется между вашими устройствами.</p>
+    </div>
+</body>
+<
+/html>
