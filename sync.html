@@ -12,7 +12,7 @@
         // Импорт необходимых модулей Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc, getDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Глобальные переменные Firebase, предоставленные средой Canvas
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -39,6 +39,9 @@
 
         async function initFirebase() {
             try {
+                // Отображение статуса инициализации
+                document.getElementById('statusMessage').textContent = 'Подключение...';
+
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
@@ -66,17 +69,23 @@
                 const editor = document.getElementById('editor');
                 const debouncedSave = debounce(async (content) => {
                     try {
+                        document.getElementById('statusMessage').textContent = 'Сохранение...';
                         await setDoc(docRef, { content: content }, { merge: true });
+                        document.getElementById('statusMessage').textContent = 'Сохранено!';
                     } catch (error) {
                         console.error("Ошибка при сохранении документа: ", error);
+                        document.getElementById('statusMessage').textContent = 'Ошибка сохранения!';
                     }
                 }, 500); // 500ms задержка
 
                 editor.addEventListener('input', (e) => {
                     debouncedSave(e.target.value);
                 });
+
+                document.getElementById('statusMessage').textContent = 'Готово!';
             } catch (e) {
                 console.error("Ошибка инициализации Firebase: ", e);
+                document.getElementById('statusMessage').textContent = `Критическая ошибка: ${e.message}`;
             }
         }
 
@@ -91,8 +100,9 @@
             placeholder="Начните писать здесь..."
         ></textarea>
         <p class="mt-4 text-gray-400 text-sm">Текст сохраняется автоматически и синхронизируется между вашими устройствами.</p>
+        <p id="statusMessage" class="mt-2 text-gray-400 text-sm"></p>
         <p id="userIdDisplay" class="mt-2 text-gray-500 text-xs"></p>
     </div>
-</body>
+</bod
+    y>
 </html>
-
