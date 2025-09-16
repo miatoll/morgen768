@@ -16,9 +16,16 @@
 
         // Глобальные переменные Firebase, предоставленные средой Canvas
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const firebaseConfigRaw = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
+        
+        let firebaseConfig;
+        try {
+            firebaseConfig = JSON.parse(firebaseConfigRaw);
+        } catch (e) {
+            console.error("Ошибка при разборе firebaseConfig:", e);
+        }
+        
         // Инициализация Firebase
         let app;
         let db;
@@ -37,16 +44,30 @@
             };
         };
 
+        // Функция для обновления статуса
+        const setStatus = (message, color) => {
+            const statusMessageEl = document.getElementById('statusMessage');
+            const statusIndicatorEl = document.getElementById('statusIndicator');
+            statusMessageEl.textContent = message;
+            statusIndicatorEl.className = `inline-block h-3 w-3 rounded-full mr-2 ${color}`;
+        };
+
         async function initFirebase() {
             try {
-                // Отображение статуса инициализации
-                document.getElementById('statusMessage').textContent = 'Подключение...';
+                // Проверка наличия firebaseConfig
+                if (!firebaseConfig || !firebaseConfig.projectId) {
+                    const errorMessage = "Критическая ошибка: Данные Firebase не предоставлены. Попробуйте обновить страницу.";
+                    setStatus(errorMessage, 'bg-red-500');
+                    console.error(errorMessage);
+                    return; // Остановка инициализации
+                }
+
+                setStatus('Подключение...', 'bg-yellow-500 animate-pulse');
 
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                // Аутентификация пользователя с помощью токена или анонимно
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
                 } else {
@@ -57,7 +78,6 @@
                 document.getElementById('userIdDisplay').textContent = `Ваш ID: ${userId}`;
                 docRef = doc(db, 'artifacts', appId, 'users', userId, 'documents', 'main-text');
 
-                // Слушатель для изменений в документе Firestore
                 onSnapshot(docRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
@@ -65,27 +85,26 @@
                     }
                 });
 
-                // Обработчик события ввода с функцией debounce для оптимизации
-                const editor = document.getElementById('editor');
+                const editorEl = document.getElementById('editor');
                 const debouncedSave = debounce(async (content) => {
                     try {
-                        document.getElementById('statusMessage').textContent = 'Сохранение...';
+                        setStatus('Сохранение...', 'bg-yellow-500 animate-pulse');
                         await setDoc(docRef, { content: content }, { merge: true });
-                        document.getElementById('statusMessage').textContent = 'Сохранено!';
+                        setStatus('Сохранено!', 'bg-green-500');
                     } catch (error) {
                         console.error("Ошибка при сохранении документа: ", error);
-                        document.getElementById('statusMessage').textContent = 'Ошибка сохранения!';
+                        setStatus('Ошибка сохранения!', 'bg-red-500');
                     }
-                }, 500); // 500ms задержка
+                }, 500);
 
-                editor.addEventListener('input', (e) => {
+                editorEl.addEventListener('input', (e) => {
                     debouncedSave(e.target.value);
                 });
 
-                document.getElementById('statusMessage').textContent = 'Готово!';
+                setStatus('Подключено!', 'bg-green-500');
             } catch (e) {
                 console.error("Ошибка инициализации Firebase: ", e);
-                document.getElementById('statusMessage').textContent = `Критическая ошибка: ${e.message}`;
+                setStatus('Не подключено!', 'bg-red-500');
             }
         }
 
@@ -99,10 +118,13 @@
             class="w-full h-full bg-gray-800 text-white text-3xl md:text-5xl lg:text-6xl p-6 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500 transition-all duration-300 resize-none leading-relaxed"
             placeholder="Начните писать здесь..."
         ></textarea>
-        <p class="mt-4 text-gray-400 text-sm">Текст сохраняется автоматически и синхронизируется между вашими устройствами.</p>
-        <p id="statusMessage" class="mt-2 text-gray-400 text-sm"></p>
+        <div class="mt-4 flex items-center justify-center">
+            <span id="statusIndicator" class="inline-block h-3 w-3 rounded-full mr-2 bg-red-500"></span>
+            <p id="statusMessage" class="text-gray-400 text-sm">Ожидание...</p>
+        </div>
+        <p class="mt-2 text-gray-400 text-xs">Текст сохраняется автоматически и синхронизируется между вашими устройствами.</p>
         <p id="userIdDisplay" class="mt-2 text-gray-500 text-xs"></p>
     </div>
-</bod
-    y>
+</body>
 </html>
+
