@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Розклад курсу</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .current-lesson {
+            border: 2px solid;
+            border-image: linear-gradient(to right, #2563eb, #8b5cf6) 1;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+<div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full">
+    <div class="p-6 md:p-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+        <h1 class="text-3xl md:text-4xl font-bold text-center">Розклад курсу</h1>
+        <p class="text-center text-opacity-80 mt-2 text-sm md:text-base" id="currentDate"></p>
+    </div>
+
+    <div class="p-6 md:p-10">
+        <div class="flex items-center justify-between mb-6">
+            <button id="prevDayBtn" class="bg-gray-200 text-gray-700 p-2 rounded-full hover:bg-gray-300 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-800 text-center flex-1" id="currentDay"></h2>
+            <button id="nextDayBtn" class="bg-gray-200 text-gray-700 p-2 rounded-full hover:bg-gray-300 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+
+        <div id="scheduleList" class="space-y-4">
+            <!-- Розклад буде вставлено сюди динамічно -->
+        </div>
+    </div>
+</div>
+
+<script>
+    const scheduleData = {
+        'Понеділок': {
+            'Чисельник': [
+                { subject: 'Осн. менеджменту та маркетингу', time: '8:00 - 9:20' },
+                { subject: 'Осн. тех. ремонту автомобілів / Фізичне виховання', time: '9:30 - 10:50' },
+                { subject: 'Українська мова', time: '11:20 - 12:40' }
+            ],
+            'Знаменник': [
+                { subject: 'Автомобільні перевезення', time: '8:00 - 9:20' },
+                { subject: 'Осн. охор. праці і охор. праці в гал. / Осн. тех. ремонту автомобілів', time: '9:30 - 10:50' },
+                { subject: 'Основи охорони праці і охорона праці в галузі', time: '11:20 - 12:40' }
+            ]
+        },
+        'Вівторок': {
+            'Чисельник': [
+                { subject: 'Фізичне виховання', time: '8:00 - 9:20' },
+                { subject: 'Основи охорони праці і охорона праці в галузі', time: '9:30 - 10:50' },
+                { subject: 'Автомоб. з альт. сил. установ.', time: '11:20 - 12:40' }
+            ],
+            'Знаменник': [
+                { subject: 'Основи охорони праці і охорона праці в галузі', time: '8:00 - 9:20' },
+                { subject: 'Орг. та планування роботи підприємства', time: '9:30 - 10:50' },
+                { subject: 'Осн. менеджменту та маркетингу', time: '11:20 - 12:40' }
+            ]
+        },
+        'Середа': {
+            'Чисельник': [
+                { subject: 'Осн. менеджменту та маркетингу', time: '8:00 - 9:20' },
+                { subject: 'Автомоб. з альт. сил. установ.', time: '9:30 - 10:50' },
+                { subject: 'Організація та планування роботи підприємства', time: '11:20 - 12:40' }
+            ],
+            'Знаменник': [
+                { subject: 'Українська мова', time: '8:00 - 9:20' },
+                { subject: 'Осн. тех. ремонту автомобілів', time: '9:30 - 10:50' },
+                { subject: 'Автомоб. з альт. сил. установ.', time: '11:20 - 12:40' }
+            ]
+        },
+        'Четвер': {
+            'Чисельник': [
+                { subject: 'Основи охорони праці і охорона праці в галузі', time: '8:00 - 9:20' },
+                { subject: 'Автомобільні перевезення', time: '9:30 - 10:50' },
+                { subject: 'Українська мова', time: '11:20 - 12:40' }
+            ],
+            'Знаменник': [
+                { subject: 'Фізичне виховання', time: '8:00 - 9:20' },
+                { subject: 'Осн. менеджменту та маркетингу', time: '9:30 - 10:50' },
+                { subject: 'Осн. тех. ремонту автомобілів', time: '11:20 - 12:40' }
+            ]
+        },
+        'П’ятниця': {
+            'Чисельник': [
+                { subject: 'Українська мова', time: '8:00 - 9:20' },
+                { subject: 'Осн. тех. ремонту автомобілів', time: '9:30 - 10:50' },
+                { subject: 'Основи охорони праці і охорона праці в галузі', time: '11:20 - 12:40' }
+            ],
+            'Знаменник': [
+                { subject: 'Осн. менеджменту та маркетингу', time: '8:00 - 9:20' },
+                { subject: 'Фізичне виховання', time: '9:30 - 10:50' },
+                { subject: 'Автомобільні перевезення', time: '11:20 - 12:40' }
+            ]
+        },
+        'Субота': {
+            'Чисельник': [
+                { subject: 'Організація та планування роботи підприємства', time: '8:00 - 9:20' },
+                { subject: 'Осн. менеджменту та маркетингу', time: '9:30 - 10:50' },
+                { subject: 'Фізичне виховання', time: '11:20 - 12:40' }
+            ],
+            'Знаменник': [
+                { subject: 'Організація та планування роботи підприємства', time: '8:00 - 9:20' },
+                { subject: 'Осн. тех. ремонту автомобілів', time: '9:30 - 10:50' },
+                { subject: 'Основи охорони праці і охорона праці в галузі', time: '11:20 - 12:40' }
+            ]
+        },
+        'Неділя': {
+            'Чисельник': [],
+            'Знаменник': []
+        }
+    };
+    
+    const monthNames = ["Січня", "Лютого", "Березня", "Квітня", "Травня", "Червня", "Липня", "Серпня", "Вересня", "Жовтня", "Листопада", "Грудня"];
+    const dayNames = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П’ятниця", "Субота"];
+
+    const scheduleList = document.getElementById('scheduleList');
+    const currentDayEl = document.getElementById('currentDay');
+    const currentDateEl = document.getElementById('currentDate');
+    const prevDayBtn = document.getElementById('prevDayBtn');
+    const nextDayBtn = document.getElementById('nextDayBtn');
+
+    let currentDate = new Date();
+
+    const getWeekType = (date) => {
+        const startSeptember = new Date(date.getFullYear(), 8, 1);
+        const startSeptemberDayOfWeek = startSeptember.getDay();
+        const daysFromSeptemberStart = Math.floor((date - startSeptember) / (24 * 60 * 60 * 1000));
+        const weekNumber = Math.floor(daysFromSeptemberStart / 7) + (startSeptemberDayOfWeek > 0 ? 1 : 0);
+        return weekNumber % 2 === 0 ? 'Знаменник' : 'Чисельник';
+    };
+
+    const isCurrentTime = (timeRange) => {
+        if (!timeRange) return false;
+        const now = new Date();
+        const [start, end] = timeRange.split(' - ').map(t => new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...t.split(':').map(Number)));
+        return now >= start && now <= end;
+    };
+
+    const renderSchedule = (date) => {
+        const dayIndex = date.getDay();
+        const dayName = dayNames[dayIndex];
+        const weekType = getWeekType(date);
+        const daySchedule = scheduleData[dayName] ? scheduleData[dayName][weekType] : [];
+
+        currentDayEl.textContent = `${dayName} (${weekType})`;
+        currentDateEl.textContent = `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+        scheduleList.innerHTML = '';
+
+        if (daySchedule.length === 0) {
+            scheduleList.innerHTML = `
+                <div class="p-6 text-center text-gray-500 bg-gray-50 rounded-lg">
+                    <p>На цей день занять немає.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let hasCurrentLesson = false;
+
+        daySchedule.forEach(item => {
+            const isNow = isCurrentTime(item.time) && new Date().getDay() === dayIndex && new Date().getFullYear() === date.getFullYear() && new Date().getMonth() === date.getMonth() && new Date().getDate() === date.getDate();
+            if (isNow) {
+                hasCurrentLesson = true;
+            }
+
+            const lessonItem = document.createElement('div');
+            lessonItem.className = `p-6 bg-gray-50 rounded-lg shadow-sm flex flex-col space-y-2 transition-all ${isNow ? 'current-lesson' : ''}`;
+
+            lessonItem.innerHTML = `
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                    <span class="font-bold">${item.time}</span>
+                    ${isNow ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-500 text-white">Зараз</span>' : ''}
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800">${item.subject}</h3>
+                </div>
+            `;
+            scheduleList.appendChild(lessonItem);
+        });
+
+        if (!hasCurrentLesson && daySchedule.length > 0) {
+            const now = new Date();
+            const firstLessonStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...daySchedule[0].time.split(' - ')[0].split(':').map(Number));
+            const lastLessonEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...daySchedule[daySchedule.length - 1].time.split(' - ')[1].split(':').map(Number));
+
+            let breakMessage = '';
+            if (now < firstLessonStart) {
+                breakMessage = 'Заняття ще не почались';
+            } else if (now > lastLessonEnd) {
+                breakMessage = 'Заняття вже завершились';
+            } else {
+                let currentBreak = null;
+                for (let i = 0; i < daySchedule.length - 1; i++) {
+                    const lessonEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...daySchedule[i].time.split(' - ')[1].split(':').map(Number));
+                    const nextLessonStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...daySchedule[i+1].time.split(' - ')[0].split(':').map(Number));
+                    if (now > lessonEnd && now < nextLessonStart) {
+                        currentBreak = { start: lessonEnd, end: nextLessonStart };
+                        break;
+                    }
+                }
+                if (currentBreak) {
+                    const breakItem = document.createElement('div');
+                    breakItem.className = `p-6 text-center text-gray-500 bg-gray-50 rounded-lg shadow-sm`;
+                    breakItem.innerHTML = `<p class="font-bold">Перерва</p>`;
+                    scheduleList.prepend(breakItem);
+                    return;
+                }
+            }
+            if (breakMessage) {
+                 const messageItem = document.createElement('div');
+                 messageItem.className = `p-6 text-center text-gray-500 bg-gray-50 rounded-lg shadow-sm`;
+                 messageItem.innerHTML = `<p class="font-bold">${breakMessage}</p>`;
+                 scheduleList.prepend(messageItem);
+            }
+        }
+    };
+
+    const updateCurrentTime = () => {
+        renderSchedule(currentDate);
+        setTimeout(updateCurrentTime, 10000);
+    };
+
+    prevDayBtn.addEventListener('click', () => {
+        currentDate.setDate(currentDate.getDate() - 1);
+        renderSchedule(currentDate);
+    });
+
+    nextDayBtn.addEventListener('click', () => {
+        currentDate.setDate(currentDate.getDate() + 1);
+        renderSchedule(currentDate);
+    });
+
+    renderSchedule(currentDate);
+    updateCurrentTime();
+</script>
+
+</body>
+</html>
+
